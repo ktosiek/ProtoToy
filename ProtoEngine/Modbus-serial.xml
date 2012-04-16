@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <protocol name="Modbus-RTU">
   <options>
     <option name="crc_check" type="bool"/>
@@ -35,6 +35,7 @@
       <field name="exception-function_code" type="byte" default="(| $function_code 0x80)"/>
       <field name="exception_code" type="byte"/>
     </msg>
+
     <msg type="response" name="mb_rsp_pdu">
       <field name="function_code" type="byte"/>
       <inc_msg/>
@@ -51,7 +52,7 @@
       </conditional>
     </msg>
     <msg type="response" name="read_coils_resp">
-      <field name="function_code" type="byte" value="1"/>
+      <match name="function_code" value="1"/>
       <field name="byte_count" type="word"/>
       <field name="coil_status" type="array byte $byte_count"/>
     </msg>
@@ -70,7 +71,7 @@
       </responds_when>
       <transactions>
         <transaction name="read_coils">
-          <match variable="msg.name" value="read_coils_req"/>
+<!--       TODO: to nie ma sensu, nazw wiadomości było wiele!   <match variable="msg.name" value="read_coils_req"/> -->
           <set name="last_coil" value="(+ $starting_address $quantity_of_coils 1)"/>
           <conditional>
             <match_expr>(gt $last_coil $number_of_coils)</match_expr>
