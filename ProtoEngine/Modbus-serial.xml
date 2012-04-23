@@ -3,16 +3,17 @@
   <options>
     <option name="crc_check" type="bool"/>
   </options>
+<!-- Do przemyślenia kiedy indziej
   <types>
     <type name="server_address" base="byte"/>
-  </types>
+  </types> -->
   <msg_start_mark>
     <field type="silence" value="3.5"/>
   </msg_start_mark>
   <msgs>
     <msg type="request" name="base">
       <block name="needs_crc">
-        <field name="address" type="server_address"/>
+        <field name="address" type="byte"/>
         <find_device/>
         <field name="function_code" type="byte"/>
         <inc_msg/>
@@ -26,7 +27,7 @@
     </msg>
     <msg type="response" name="base">
       <block name="do_crc">
-        <field name="address" type="server_address" default="$address"/>
+        <field name="address" type="byte" default="$address"/>
         <inc_msg/>
       </block>
       <field name="crc" value="(crc $do_crc)"/>
@@ -62,7 +63,7 @@
   <devices>
     <device name="Coil thingy">
       <options>
-        <option name="dev_addr" type="server_address"/>
+        <option name="dev_addr" type="byte"/>
         <option name="number_of_coils" type="unsigned int"/>
         <option name="coil_values" type="array bool $number_of_coils"/>
       </options>
@@ -71,7 +72,7 @@
       </responds_when>
       <transactions>
         <transaction name="read_coils">
-<!--       TODO: to nie ma sensu, nazw wiadomości było wiele!   <match variable="msg.name" value="read_coils_req"/> -->
+          <match name="function_code" value="1"/>
           <set name="last_coil" value="(+ $starting_address $quantity_of_coils 1)"/>
           <conditional>
             <match_expr>(gt $last_coil $number_of_coils)</match_expr>

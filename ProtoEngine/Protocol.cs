@@ -7,19 +7,20 @@ using System.Collections;
 
 namespace ProtoEngine
 {
-    public delegate void OptionChangedEventHandler(Object sender, Option oldOpt, Option newOpt);
-
     public class Protocol
     {
+        private String name;
+        public String Name { get { return name; } }
+
         List<Message> requestMsgs = new List<Message>();
         List<Message> responseMsgs = new List<Message>();
         Message msg_start_mark = new Message();
         List<Device> devices = new List<Device>();
-        List<Device> devicePrototypes = new List<Device>();
-        Dictionary<String, Option> options = new Dictionary<String, Option>();
-        Dictionary<String, ProtoType> types = new Dictionary<String, ProtoType>();
-
-        public event OptionChangedEventHandler OptionChanged;
+        public List<Device> RegisteredDevices { get { return new List<Device>(devices); } }
+        List<DevicePrototype> devicePrototypes = new List<DevicePrototype>();
+        public List<DevicePrototype> DevicePrototypes { get { return new List<DevicePrototype>(devicePrototypes); } }
+        List<Option> options = new List<Option>();
+        public List<Option> Options { get { return new List<Option>(options); } }
 
         public Protocol(String path)
         {
@@ -42,7 +43,7 @@ namespace ProtoEngine
                         name = attr.Value;
                         break;
                     default:
-                        throw new ArgumentException("Wrong argument " + attr.Name);
+                        throw new ArgumentException("Wrong protocol argument " + attr.Name);
                 }
             }
 
@@ -54,14 +55,7 @@ namespace ProtoEngine
                         foreach (XmlNode optNode in node.ChildNodes)
                         {
                             Option opt = Option.fromXml(node);
-                            options.Add(opt.Name, opt);
-                        }
-                        break;
-                    case "types":
-                        foreach (XmlNode typeNode in node.ChildNodes)
-                        {
-                            ProtoType type = ProtoType.fromXml(typeNode);
-                            types.Add(type.Name, type);
+                            options.Add(opt);
                         }
                         break;
                     case "msg_start_mark":
@@ -99,50 +93,23 @@ namespace ProtoEngine
             }
         }
 
-        private String name;
-        public String Name { get { return name; } }
-
-        public Dictionary<String, Option> getOptions()
-        {
-            return new Dictionary<String, Option>(options);
-        }
-
         /**
-         * Ustawia opcję w słowniku opcji protokołu.
-         * Jeśli synthetic == false wysyła sygnał OptionChanged
-         */
-        public void setOption(Option opt, Boolean synthetic = true)
-        {
-            options[opt.Name].setFrom(opt);
-        }
-
-        public DeviceFactory getDeviceFactory()
-        {
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Dodaje urządzenie do listy urządzeń na magistrali.
+         * Dodaje urządzenie do listy urządzeń na magistrali jeśli go na niej nie ma.
          */
         public void registerDevice(Device device)
         {
-            throw new NotImplementedException();
+            if (!devices.Contains(device))
+                devices.Add(device);
         }
 
         /**
          * Usuwa urządzenie z listy urządzeń na magistrali, jeśli na niej jest.
          */
-        public void removeDevice(Device device)
+        public void unregisterDevice(Device device)
         {
-            throw new NotImplementedException();
+            if (devices.Contains(device))
+                devices.Remove(device);
         }
 
-        /**
-         * Zwraca kopię listy zarejestrowanych urządzeń.
-         */
-        public List<Device> getRegisteredDevices()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

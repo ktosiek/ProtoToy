@@ -5,11 +5,19 @@ using System.Text;
 
 namespace ProtoEngine
 {
-    class OptionBool : Option
+    public class OptionBool : Option
     {
-        public bool Value { get; set; }
+        public delegate void OptionBoolChangeHandler(OptionBool option);
 
-        OptionBool(String name, XmlNode node)
+        private bool myValue;
+        public bool Value
+        {
+            get { return myValue; }
+            set { myValue = value; OptionBoolChanged(this); }
+        }
+        public OptionBoolChangeHandler OptionBoolChanged;
+
+        public OptionBool(String name, XmlNode node)
             : base(name)
         {
             try
@@ -41,7 +49,7 @@ namespace ProtoEngine
             }
         }
 
-        OptionBool(String name, bool value)
+        public OptionBool(String name, bool value)
             : base(name)
         {
             this.Value = value;

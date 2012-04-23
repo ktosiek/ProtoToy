@@ -8,6 +8,9 @@ namespace ProtoEngine
 {
     public abstract class Option
     {
+        private String name;
+        public String Name { get { return name; } }
+
         private static Dictionary<String, Type> optionClasses = new Dictionary<String, Type>() {
             {"bool", typeof(OptionBool)}
         };
@@ -21,18 +24,8 @@ namespace ProtoEngine
                 .Invoke(new object[] { name, node });
         }
 
-        public String Name { get; set; }
-
-        public void setFrom(Option opt)
-        {
-            if (this.GetType() != opt.GetType())
-            {
-                throw new NotSupportedException(); // TODO
-            }
-        }
-
         public Option(String name) {
-            Name = name;
+            this.name = name;
         }
     }
 }
