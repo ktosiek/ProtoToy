@@ -65,7 +65,7 @@
       <options>
         <option name="dev_addr" type="byte"/>
         <option name="number_of_coils" type="unsigned int"/>
-        <option name="coil_values" type="array bool $number_of_coils"/>
+        <option name="coil_values" type="array bool 2000"/>
       </options>
       <responds_when>
         <match variable="address" value="$dev_addr"/>

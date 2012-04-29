@@ -42,8 +42,10 @@
   <ItemGroup>
     <Compile Include="Device.cs" />
     <Compile Include="DevicePrototype.cs" />
+    <Compile Include="EmptyRule.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Option.cs" />
+    <Compile Include="OptionArray.cs" />
     <Compile Include="OptionBool.cs" />
     <Compile Include="OptionInt.cs" />
     <Compile Include="Protocol.cs" />

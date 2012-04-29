@@ -21,8 +21,10 @@ namespace ProtoEngine
             }
         }
         private int maxV, minV;
+        private int mySize;
         public int MaxValue { get {return maxV;}}
-        public int MinValue {get {return minV;} }
+        public int MinValue { get {return minV;} }
+        public int Size { get { return mySize; } }
 
         public OptionIntChangeHandler OptionIntChanged;
 
@@ -36,14 +38,38 @@ namespace ProtoEngine
             if (node.Attributes["min"] != null)
                 minV = int.Parse(node.Attributes["min"].Value);
             else minV = int.MinValue;
+            if (node.Attributes["size"] != null)
+                mySize = int.Parse(node.Attributes["size"].Value);
+            else mySize = (int)Math.Ceiling(Math.Log(MaxValue - MinValue, 2));
         }
 
-        public OptionInt(String name, int value, int min, int max)
+        public OptionInt(String name, int value, int min, int max, int size)
             : base(name)
         {
             this.Value = value;
             this.minV = min;
             this.maxV = max;
+        }
+
+        override public bool match(TransactionalStreamReader s)
+        {
+            int newValue = 0;
+            s.startTransaction();
+            for (int i = 0; i < Size; i++)
+            {
+                newValue <<= 8;
+                newValue |= s.ReadByte();
+            }
+
+            if (MinValue > newValue || newValue > MaxValue)
+            {
+                s.cancelTransaction();
+                return false;
+            }
+
+            Value = newValue;
+            s.commitTransaction();
+            return true;
         }
     }
 }

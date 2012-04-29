@@ -5,27 +5,28 @@ using System.Text;
 
 namespace ProtoEngine
 {
+    /// <summary>
+    /// Odpowiada &lt;field ...>
+    /// </summary>
     class RuleField : Rule
     {
         String name;
-        Option opt;
-        Option defaultOpt;
+        Type type;
+        Option value;
 
-        public RuleField(XmlNode node) { }
+        public RuleField(XmlNode node) {
+            name = node.Attributes["name"].Value;
+            type = Option.optionClasses[ node.Attributes["type"].Value ];
+            try
+            {
+                value = Option.fromXml(node);
+            } catch(Exception ex) { throw; }
+        }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
             TransactionalStreamReader input)
         {
-            try
-            {
-                input.startTransaction();
-                
-            }
-            catch (Exception)
-            {
-                input.cancelTransaction();
-                throw;
-            }
+            return variables;
         }
     }
 }

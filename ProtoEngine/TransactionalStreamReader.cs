@@ -4,7 +4,14 @@ using System.IO;
 
 namespace ProtoEngine
 {
-    class TransactionalStreamReader
+    /// <summary>
+    /// Opakowuje Stream do odczytywania transakcyjnego.
+    /// Operacje odczytujące z niego muszą być wykonywane w transakcji.
+    /// Transakcje mogą się zawierać w sobie, ale nie mogą się przeplatać (commit i cancel działają zawsze na ostatnio otwartej transakcji).
+    /// Commit przenosi listę wczytanych znaków aktualnej transakcji do transakcji poprzedniej, lub ją porzuca jeśli jest to jedyna otwarta transakcja.
+    /// Cancel przenosi listę wczytanych znaków aktualnej transakcji na początek bufora wejściowego, do ponownego wczytania.
+    /// </summary>
+    public class TransactionalStreamReader
     {
         private Stream baseStream;
         private Stack<Stack<char>> ongoingTransactions;
@@ -23,7 +30,13 @@ namespace ProtoEngine
 
         public void commitTransaction()
         {
-            ongoingTransactions.Pop();
+            Stack<Char> thisTrans = ongoingTransactions.Pop();
+            try
+            {
+                foreach (char c in thisTrans)
+                    ongoingTransactions.Peek().Push(c);
+            }
+            catch (InvalidOperationException ex) { /* Peek rzuci je jeśli stos jest pusty */ }
         }
 
         public void cancelTransaction()

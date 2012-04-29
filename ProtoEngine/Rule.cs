@@ -15,7 +15,7 @@ namespace ProtoEngine
 
         public static Rule empty()
         {
-            throw new NotImplementedException();//return new Rule(node);
+            return new EmptyRule();
         }
 
         abstract public Dictionary<String, Option> match(Dictionary<String, Option> variables,

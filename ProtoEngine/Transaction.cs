@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProtoEngine
 {
-    class Transaction
+    public class Transaction
     {
         public static Transaction fromXml(XmlNode node)
         {
