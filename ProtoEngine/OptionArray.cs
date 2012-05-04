@@ -12,12 +12,42 @@ namespace ProtoEngine
     {
         private Type type;
         private Option[] optionsArray;
+        private Option[] OptionsArray { get {
+            if (optionsArray == null) { return optionsArray = (Option[])parent.OptionsArray.Clone(); }
+            else { return optionsArray; }
+        }
+        }
+
+        private OptionArray parent;
+
+        public Option getOption(int n)
+        {
+            if (OptionsArray[n] == null)
+            {
+                return optionsArray[n] = parent.getOption(n).copy();
+            }
+            else
+            {
+                return optionsArray[n];
+            }
+        }
+
+        public void setOption(int n, Option opt)
+        {
+            OptionsArray[n] = opt;
+        }
 
         public OptionArray(String name, XmlNode node)
             : base(name)
         {
             string[] split = node.Attributes["type"].Value.Split();
             construct(split[1], int.Parse(split[2]));
+        }
+
+        private OptionArray(String name, OptionArray parent)
+            : base(name)
+        {
+            this.parent = parent;
         }
 
         private void construct(String type, int size)
@@ -39,12 +69,17 @@ namespace ProtoEngine
             foreach (Option o in optionsArray)
                 if (!o.match(s))
                 {
-                    s.cancelTransaction(); // TODO: A co z zmienionymi już wartościami opcji?
+                    s.cancelTransaction();
                     return false;
                 }
             
             s.commitTransaction();
             return true;
+        }
+
+        public override Option copy()
+        {
+            return new OptionArray(Name, this);
         }
     }
 }

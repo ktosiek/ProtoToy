@@ -27,6 +27,12 @@ namespace ProtoEngine
         /// <returns></returns>
         abstract public bool match(TransactionalStreamReader s);
 
+        /// <summary>
+        /// Zwraca kopię (COW lub pełną) tej opcji.
+        /// </summary>
+        /// <returns>referencja do stworzonej kopii</returns>
+        abstract public Option copy();
+
         public static Dictionary<String, Type> optionClasses = new Dictionary<String, Type>() {
             {"bool", typeof(OptionBool)},
             {"array", typeof(OptionArray)}

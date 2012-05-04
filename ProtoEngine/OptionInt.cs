@@ -71,5 +71,10 @@ namespace ProtoEngine
             s.commitTransaction();
             return true;
         }
+
+        public override Option copy()
+        {
+            return new OptionInt(Name, Value, MinValue, MaxValue, Size);
+        }
     }
 }

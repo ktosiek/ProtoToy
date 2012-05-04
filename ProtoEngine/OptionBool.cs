@@ -86,5 +86,10 @@ namespace ProtoEngine
         {
             return false;
         }
+
+        override public Option copy()
+        {
+            return new OptionBool(Name, Value);
+        }
     }
 }
