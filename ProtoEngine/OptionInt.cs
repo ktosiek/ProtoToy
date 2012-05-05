@@ -9,6 +9,7 @@ namespace ProtoEngine
     {
         public delegate void OptionIntChangeHandler(OptionInt option);
 
+        public OptionIntChangeHandler optionIntChanged;
         private int myValue;
         public int Value
         {
@@ -17,7 +18,7 @@ namespace ProtoEngine
                 if (value > maxV || value < minV)
                     throw new ArgumentOutOfRangeException();
                 myValue = value;
-                OptionIntChanged(this);
+                optionIntChanged(this);
             }
         }
         private int maxV, minV;
@@ -32,6 +33,16 @@ namespace ProtoEngine
             : base(name)
         {
             myValue = int.Parse(node.Attributes.GetNamedItem("value").Value);
+
+            if (node.Attributes["type"] != null) {
+                mySize = (new Dictionary<String, int>() {
+                    {"byte", 1},
+                    {"word", 2},
+                    {"dword", 4},
+                    {"int", 4}
+                })[node.Attributes["type"].Value];
+            }
+
             if (node.Attributes["max"] != null)
                 maxV = int.Parse(node.Attributes["max"].Value);
             else maxV = int.MaxValue;
@@ -46,9 +57,10 @@ namespace ProtoEngine
         public OptionInt(String name, int value, int min, int max, int size)
             : base(name)
         {
-            this.Value = value;
             this.minV = min;
             this.maxV = max;
+            this.mySize = size;
+            this.Value = value;
         }
 
         override public bool match(TransactionalStreamReader s)

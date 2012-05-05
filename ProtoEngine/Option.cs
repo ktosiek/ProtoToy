@@ -35,6 +35,10 @@ namespace ProtoEngine
 
         public static Dictionary<String, Type> optionClasses = new Dictionary<String, Type>() {
             {"bool", typeof(OptionBool)},
+            {"byte", typeof(OptionInt)},
+            {"word", typeof(OptionInt)},
+            {"dword", typeof(OptionInt)},
+            {"int", typeof(OptionInt)},
             {"array", typeof(OptionArray)}
         };
 

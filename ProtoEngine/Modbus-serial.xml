@@ -30,7 +30,7 @@
         <field name="address" type="byte" default="$address"/>
         <inc_msg/>
       </block>
-      <field name="crc" value="(crc $do_crc)"/>
+      <field name="crc" type="word" value="(crc $do_crc)"/>
     </msg>
     <msg type="response" name="mb_excep_rsp_pdu">
       <field name="exception-function_code" type="byte" default="(| $function_code 0x80)"/>

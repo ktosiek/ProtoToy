@@ -66,7 +66,7 @@ namespace ProtoEngine
         override public bool match(TransactionalStreamReader s)
         {
             s.startTransaction();
-            foreach (Option o in optionsArray)
+            foreach (Option o in OptionsArray)
                 if (!o.match(s))
                 {
                     s.cancelTransaction();
