@@ -14,13 +14,12 @@ namespace ProtoEngine
     public class TransactionalStreamReader
     {
         private Stream baseStream;
-        private Stack<Stack<char>> ongoingTransactions;
-        private Stack<char> readData;
+        private Stack<Stack<char>> ongoingTransactions = new Stack<Stack<char>>();
+        private Stack<char> readData = new Stack<char>();
 
         public TransactionalStreamReader(Stream stream)
         {
             baseStream = stream;
-            ongoingTransactions = new Stack<Stack<char>>();
         }
 
         public void startTransaction()

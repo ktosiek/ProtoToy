@@ -71,11 +71,25 @@ namespace ProtoEngineTest
         [TestMethod()]
         public void cancelTransactionTest()
         {
-            Stream stream = null; // TODO: Initialize to an appropriate value
-            TransactionalStreamReader target = new TransactionalStreamReader(stream); // TODO: Initialize to an appropriate value
+            Stream stream = new MemoryStream();
+            TransactionalStreamReader target = new TransactionalStreamReader(stream);
+            // Przygotuj dane testowe
+            stream.WriteByte(9);
+            stream.WriteByte(20);
+            stream.WriteByte(31);
+            stream.WriteByte(42);
+            stream.Seek(0, SeekOrigin.Begin);
             target.startTransaction();
+            Assert.AreEqual(target.ReadByte(), 9);
+            Assert.AreEqual(target.ReadByte(), 20);
             target.cancelTransaction();
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            target.startTransaction();
+            Assert.AreEqual(target.ReadByte(), 9);
+            Assert.AreEqual(target.ReadByte(), 20);
+            Assert.AreEqual(target.ReadByte(), 31);
+            Assert.AreEqual(target.ReadByte(), 42);
+            target.cancelTransaction();
+            Assert.AreEqual(stream.ReadByte(), -1); // Cały strumien został zjedzony
         }
 
         /// <summary>
@@ -84,23 +98,23 @@ namespace ProtoEngineTest
         [TestMethod()]
         public void commitTransactionTest()
         {
-            Stream stream = null; // TODO: Initialize to an appropriate value
-            TransactionalStreamReader target = new TransactionalStreamReader(stream); // TODO: Initialize to an appropriate value
+            Stream stream = new MemoryStream();
+            TransactionalStreamReader target = new TransactionalStreamReader(stream);
+            // Przygotuj dane testowe
+            stream.WriteByte(9);
+            stream.WriteByte(20);
+            stream.WriteByte(31);
+            stream.WriteByte(42);
+            stream.Seek(0, SeekOrigin.Begin);
             target.startTransaction();
+            Assert.AreEqual(target.ReadByte(), 9);
+            Assert.AreEqual(target.ReadByte(), 20);
             target.commitTransaction();
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
-
-        /// <summary>
-        ///A test for startTransaction
-        ///</summary>
-        [TestMethod()]
-        public void startTransactionTest()
-        {
-            Stream stream = null; // TODO: Initialize to an appropriate value
-            TransactionalStreamReader target = new TransactionalStreamReader(stream); // TODO: Initialize to an appropriate value
             target.startTransaction();
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            Assert.AreEqual(target.ReadByte(), 31);
+            Assert.AreEqual(target.ReadByte(), 42);
+            target.commitTransaction();
+            Assert.AreEqual(stream.ReadByte(), -1); // Cały strumien został zjedzony
         }
     }
 }
