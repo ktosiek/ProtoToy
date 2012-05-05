@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProtoEngine
 {
-    class ConstantExpression : Expression
+    public class ConstantExpression : Expression
     {
         Option value;
 

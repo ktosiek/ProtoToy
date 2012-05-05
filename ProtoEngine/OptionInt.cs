@@ -18,7 +18,7 @@ namespace ProtoEngine
                 if (value > maxV || value < minV)
                     throw new ArgumentOutOfRangeException();
                 myValue = value;
-                optionIntChanged(this);
+                if(optionIntChanged != null) optionIntChanged(this);
             }
         }
         private int maxV, minV;

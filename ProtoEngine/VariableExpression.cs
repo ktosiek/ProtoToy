@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProtoEngine
 {
-    class VariableExpression : Expression
+    public class VariableExpression : Expression
     {
         string variable;
         public VariableExpression(String expr)

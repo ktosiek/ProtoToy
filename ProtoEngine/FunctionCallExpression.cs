@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProtoEngine
 {
-    class FunctionCallExpression : Expression
+    public class FunctionCallExpression : Expression
     {
         public delegate Option function(List<Option> args);
         function func;
@@ -19,7 +19,7 @@ namespace ProtoEngine
             foreach(Option opt in args) {
                 sum += ((OptionInt)opt).Value;
                 size = ((OptionInt)opt).Size > size ? ((OptionInt)opt).Size : size;
-                min = ((OptionInt)opt).MinValue > min ? ((OptionInt)opt).MinValue : min;
+                min = ((OptionInt)opt).MinValue < min ? ((OptionInt)opt).MinValue : min;
                 max = ((OptionInt)opt).MaxValue > max ? ((OptionInt)opt).MaxValue : max;
             }
             return new OptionInt("", sum, min, max, size);
@@ -31,19 +31,25 @@ namespace ProtoEngine
 
         public FunctionCallExpression(String expr)
         {
-            string[] split = splitArgs(expr.Substring(1, expr.Length-2));
+            expr = expr.Substring(1, expr.Length - 2);
+            string[] split = splitArgs(expr);
             func = functions[split[0]];
             arguments = new List<Expression>();
             for (int i = 1; i < split.Length; i++)
                 arguments.Add(Expression.fromString(split[i]));
         }
 
+        /// <summary>
+        /// Rozdziela argumenty biorąc pod uwagę ()
+        /// </summary>
+        /// <param name="expr"></param>
+        /// <returns></returns>
         string[] splitArgs(string expr)
         {
             List<string> args = new List<string>();
             string next = "";
             int brackets = 0;
-            foreach (char c in expr.Substring(1))
+            foreach (char c in expr)
             {
                 switch (c)
                 {

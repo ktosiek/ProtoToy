@@ -1,17 +1,18 @@
 ﻿using ProtoEngine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace ProtoEngineTest
 {
     
     
     /// <summary>
-    ///This is a test class for ExpressionTest and is intended
-    ///to contain all ExpressionTest Unit Tests
+    ///This is a test class for FunctionCallExpressionTest and is intended
+    ///to contain all FunctionCallExpressionTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class ExpressionTest
+    public class FunctionCallExpressionTest
     {
 
 
@@ -65,14 +66,15 @@ namespace ProtoEngineTest
 
 
         /// <summary>
-        ///A test for fromString
+        ///A test for eval
         ///</summary>
         [TestMethod()]
-        public void fromStringTest()
+        public void evalTest()
         {
-            Assert.IsInstanceOfType(Expression.fromString("1"), typeof(ConstantExpression));
-            Assert.IsInstanceOfType(Expression.fromString("$test"), typeof(VariableExpression));
-            Assert.IsInstanceOfType(Expression.fromString("(+ 1 1)"), typeof(FunctionCallExpression));
+            FunctionCallExpression target = new FunctionCallExpression("(+ 1 2)");
+            Dictionary<string, Option> env = new Dictionary<string, Option>();
+
+            Assert.AreEqual(((OptionInt)target.eval(env)).Value, 3);
         }
     }
 }
