@@ -1,0 +1,20 @@
+﻿<Window x:Class="KontrolerKomunikacyjny.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Kontroler komunikacyjny na intefejsie RS" Height="555" Width="776">
+    <Grid>
+        <Button Content="Otwórz plik XML" Height="67" HorizontalAlignment="Left" Margin="12,25,0,0" Name="OtworzPrzycisk" VerticalAlignment="Top" Width="117" Click="button1_Click" />
+        <Button Content="Wyślij" Height="58" HorizontalAlignment="Left" Margin="280,214,0,0" Name="WyslijPrzycisk" VerticalAlignment="Top" Width="120" Click="WyslijPrzycisk_Click" />
+        <Label Height="410" HorizontalAlignment="Left" Margin="507,76,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="221" />
+        <Label Content="Urządzenia w systemie" Height="28" HorizontalAlignment="Left" Margin="12,131,0,0" Name="label2" VerticalAlignment="Top" Width="155" />
+        <ListBox Height="151" HorizontalAlignment="Left" Margin="12,165,0,0" Name="UrzadzenLista" VerticalAlignment="Top" Width="141" />
+        <Label  Height="26" HorizontalAlignment="Left" Margin="280,145,0,0" Name="DaneLabel" VerticalAlignment="Top" Width="130" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,84,0,0" Name="FunkcjaTextbox" VerticalAlignment="Top" Width="120" />
+        <Label  Height="26" HorizontalAlignment="Left" Margin="280,84,0,0" Name="FunkcjaLabel" VerticalAlignment="Top" Width="130" />
+        <Label Height="26" HorizontalAlignment="Left" Margin="278,56,0,0" Name="AdresSlaveLabel" VerticalAlignment="Top" Width="130" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,47,0,0" Name="AdresSlaveTextbox" VerticalAlignment="Top" Width="120" />
+        <Label Content="MASTER" Height="31" HorizontalAlignment="Left" Margin="278,8,0,0" Name="label5" VerticalAlignment="Top" Width="205" />
+        <Label Content="Podgląd ramek" Height="31" HorizontalAlignment="Left" Margin="507,42,0,0" Name="label6" VerticalAlignment="Top" Width="205" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,157,0,0" Name="DaneTextbox" VerticalAlignment="Top" Width="120" />
+    </Grid>
+</Window>
