@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Xml;
 using System.Text;
 
@@ -21,6 +22,12 @@ namespace ProtoEngine
         public String Name { get { return name; } }
 
         /// <summary>
+        /// Zwraca wartość tej opcji jako tablicę bajtów, lub null jeśli nie ma wartości.
+        /// </summary>
+        /// <returns></returns>
+        abstract public byte[] toBytes();
+
+        /// <summary>
         /// Dopasuj fragment danych wejściowych do tego typu opcji
         /// </summary>
         /// <param name="s">strumień który będzie dopasowywany</param>
@@ -33,6 +40,8 @@ namespace ProtoEngine
         /// <returns>referencja do stworzonej kopii</returns>
         abstract public Option copy();
 
+        public abstract override bool Equals(object obj);
+
         public static Dictionary<String, Type> optionClasses = new Dictionary<String, Type>() {
             {"bool", typeof(OptionBool)},
             {"byte", typeof(OptionInt)},
@@ -44,11 +53,18 @@ namespace ProtoEngine
 
         public static Option fromXml(XmlNode node)
         {
-            String name = node.Attributes.GetNamedItem("name").Value;
-            return (Option)optionClasses[
-                    node.Attributes.GetNamedItem("type").Value.Split(null)[0]
-                    ].GetConstructor(new Type[] { typeof(String), typeof(XmlNode) })
-                    .Invoke(new object[] { name, node });
+            XmlNode nameNode = node.Attributes.GetNamedItem("name");
+            String name;
+            if (nameNode == null)
+                name = "";
+            else
+                name = nameNode.Value;
+
+            String typeName = node.Attributes["type"].Value.Split(null)[0];
+            Type type = optionClasses[typeName];
+            ConstructorInfo constructor = type.GetConstructor(new Type[] { typeof(String), typeof(XmlNode) });
+            
+            return (Option)constructor.Invoke(new object[] { name, node });
         }
 
         public Option(String name) {

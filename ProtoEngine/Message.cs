@@ -17,28 +17,31 @@ namespace ProtoEngine
         /// </summary>
         /// <param name="node">opis wiadomości jako element XML DOM</param>
         /// <returns>zbudowana wiadomość</returns>
-        public static Message fromXml(XmlNode node)
+        public static Message fromXml(XmlNode node, Protocol protocol)
         {
             MessageType type;
-            switch (node.Attributes["type"].Value)
-            {
-                case "request":
-                    type = MessageType.Request;
-                    break;
-                case "response":
-                    type = MessageType.Response;
-                    break;
-                case "bidir":
-                    type = MessageType.Bidirectional;
-                    break;
-                default:
-                    throw new ArgumentException("Nieznany rodzaj wiadomości: " + node.Attributes["type"].Value);
-            }
+            if (node.Name == "msg_start_mark")
+                type = MessageType.Request;
+            else
+                switch (node.Attributes["type"].Value)
+                {
+                    case "request":
+                        type = MessageType.Request;
+                        break;
+                    case "response":
+                        type = MessageType.Response;
+                        break;
+                    case "bidir":
+                        type = MessageType.Bidirectional;
+                        break;
+                    default:
+                        throw new ArgumentException("Nieznany rodzaj wiadomości: " + node.Attributes["type"].Value);
+                }
 
             String name = null;
             if(node.Attributes["name"] != null)
                 name = node.Attributes["name"].Value;
-            return new Message(name, type, node);
+            return new Message(name, type, node, protocol);
         }
         
 
@@ -53,11 +56,11 @@ namespace ProtoEngine
             rule = Rule.empty();
         }
 
-        public Message(String name, MessageType type, XmlNode node)
+        public Message(String name, MessageType type, XmlNode node, Protocol protocol)
         {
             this.type = type;
             this.name = name;
-            rule = Rule.fromXml(node);
+            rule = Rule.fromXml(node, protocol);
         }
 
         public Dictionary<String, Option> match(Dictionary<String, Option> variables,

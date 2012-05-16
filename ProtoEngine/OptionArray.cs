@@ -20,6 +20,8 @@ namespace ProtoEngine
 
         private OptionArray parent;
 
+        public int Count { get { return OptionsArray.Length; } }
+
         public Option getOption(int n)
         {
             if (OptionsArray[n] == null)
@@ -63,8 +65,31 @@ namespace ProtoEngine
             }
         }
 
+        override public byte[] toBytes()
+        {
+            List<byte[]> bytesList = new List<byte[]>();
+            int len = 0;
+            foreach (Option o in OptionsArray)
+            {
+                byte[] bytes = o.toBytes();
+                if (bytes == null)
+                    return null;
+                bytesList.Add(bytes);
+                len += bytes.Length;
+            }
+            byte[] ret = new byte[len];
+            int i = 0;
+            foreach (byte[] b in bytesList)
+            {
+                b.CopyTo(ret, i);
+                i += b.Length;
+            }
+            return ret;
+        }
+
         override public bool match(TransactionalStreamReader s)
         {
+            // FIXME: wczytywanie vs. dopasowanie tablic
             s.startTransaction();
             foreach (Option o in OptionsArray)
                 if (!o.match(s))
@@ -80,6 +105,24 @@ namespace ProtoEngine
         public override Option copy()
         {
             return new OptionArray(Name, this);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (this.GetType().IsInstanceOfType(obj))
+            {
+                OptionArray other = (OptionArray)obj;
+                for (int i = 0; i < Count; i++)
+                {
+                    if (!this.getOption(i).Equals(other.getOption(i)))
+                        return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

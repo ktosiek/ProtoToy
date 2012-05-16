@@ -12,15 +12,21 @@ namespace ProtoEngine
         private List<Option> options = new List<Option>();
         public List<Option> Options { get { return options; } }
         private Rule responds_when = Rule.empty();
-        private List<Transaction> transactions;
+        public Rule RespondsWhen { get { return responds_when; } }
+        private List<Transaction> transactions = new List<Transaction>();
+        public List<Transaction> Transactions { get { return transactions; } }
 
         public Device(Device dev)
         {
             name = dev.name;
             transactions = dev.transactions;
+            options = new List<Option>();
+            foreach (Option o in dev.options)
+                options.Add(o.copy());
+            responds_when = dev.responds_when;
         }
 
-        public Device(String name, XmlNode deviceNode)
+        public Device(String name, XmlNode deviceNode, Protocol protocol)
         {
             foreach (XmlNode node in deviceNode.ChildNodes)
             {
@@ -29,17 +35,17 @@ namespace ProtoEngine
                     case "options":
                         foreach (XmlNode optNode in node.ChildNodes)
                         {
-                            Option opt = Option.fromXml(node);
+                            Option opt = Option.fromXml(optNode);
                             options.Add(opt);
                         }
                         break;
                     case "responds_when":
-                        responds_when = Rule.fromXml(node);
+                        responds_when = Rule.fromXml(node, protocol);
                         break;
                     case "transactions":
                         foreach (XmlNode tNode in node.ChildNodes)
                         {
-                            Transaction t = Transaction.fromXml(node);
+                            Transaction t = Transaction.fromXml(tNode);
                             transactions.Add(t);
                         }
                         break;
@@ -49,9 +55,9 @@ namespace ProtoEngine
             }
         }
 
-        public static Device fromXml(XmlNode deviceNode)
+        public static Device fromXml(XmlNode deviceNode, Protocol protocol)
         {
-            return new Device(deviceNode.Attributes["name"].Value, deviceNode);
+            return new Device(deviceNode.Attributes["name"].Value, deviceNode, protocol);
         }
 
     }

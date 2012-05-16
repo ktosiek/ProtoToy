@@ -1,6 +1,7 @@
 ﻿using ProtoEngine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Xml;
 using System.Collections.Generic;
 
 namespace ProtoEngineTest
@@ -8,11 +9,11 @@ namespace ProtoEngineTest
     
     
     /// <summary>
-    ///This is a test class for FunctionCallExpressionTest and is intended
-    ///to contain all FunctionCallExpressionTest Unit Tests
+    ///This is a test class for RuleMatchTest and is intended
+    ///to contain all RuleMatchTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class FunctionCallExpressionTest
+    public class RuleMatchTest
     {
 
 
@@ -66,15 +67,21 @@ namespace ProtoEngineTest
 
 
         /// <summary>
-        ///A test for eval
+        ///A test for match
         ///</summary>
         [TestMethod()]
-        public void evalTest()
+        [DeploymentItem("ProtoEngine.dll")]
+        public void matchTest()
         {
-            FunctionCallExpression target = new FunctionCallExpression("(+ 1 2 (+ 5))");
-            Dictionary<string, Option> env = new Dictionary<string, Option>();
-
-            Assert.AreEqual(((OptionInt)target.eval(env)).Value, 8);
+            XmlDocument node = new XmlDocument();
+            node.LoadXml("<match name=\"test\" value=\"10\"/>");
+            RuleMatch rule = new RuleMatch(node.FirstChild, null);
+            Dictionary<String, Option> env = new Dictionary<string, Option>();
+            env.Add("test", new OptionInt("test", 10, 0, 255, 1));
+            Assert.IsNotNull(rule.match(env, null));
+            node.LoadXml("<match name=\"test\" value=\"0\"/>");
+            rule = new RuleMatch(node.FirstChild, null);
+            Assert.IsNull(rule.match(env, null));
         }
     }
 }
