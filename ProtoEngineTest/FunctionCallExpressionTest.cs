@@ -71,10 +71,10 @@ namespace ProtoEngineTest
         [TestMethod()]
         public void evalTest()
         {
-            FunctionCallExpression target = new FunctionCallExpression("(+ 1 2)");
+            FunctionCallExpression target = new FunctionCallExpression("(+ 1 2 (+ 5))");
             Dictionary<string, Option> env = new Dictionary<string, Option>();
 
-            Assert.AreEqual(((OptionInt)target.eval(env)).Value, 3);
+            Assert.AreEqual(((OptionInt)target.eval(env)).Value, 8);
         }
     }
 }
