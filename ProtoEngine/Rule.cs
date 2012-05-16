@@ -20,8 +20,8 @@ namespace ProtoEngine
             {"match", typeof(RuleMatch)},
             {"match_expr", typeof(RuleMatch)},
             {"set", typeof(RuleSet)},
-            {"assert", typeof(RuleMatch)},
-            {"warning", typeof(RuleMatch)}
+            {"assert", typeof(RuleMatch)} //,
+            //{"warning", typeof(RuleWarning)}
         };
 
         public static Rule fromXml(XmlNode node, Protocol protocol)

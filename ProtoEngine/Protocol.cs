@@ -74,7 +74,7 @@ namespace ProtoEngine
         /// <param name="path">ścieżka do pliku opisu protokołu</param>
         public Protocol(String path)
         {
-            FileStream f = new FileStream(path, FileMode.Open);
+            FileStream f = new FileStream(path, FileMode.Open, FileAccess.Read);
             this.constructor(f);
             f.Close();
         }

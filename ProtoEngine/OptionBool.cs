@@ -24,7 +24,12 @@ namespace ProtoEngine
         public bool Value
         {
             get { return myValue == null ? false : (bool)myValue; }
-            set { bool? prev = myValue; myValue = value; OptionBoolChanged(this, prev); }
+            set {
+                bool? prev = myValue;
+                myValue = value;
+                if(OptionBoolChanged != null)
+                    OptionBoolChanged(this, prev);
+            }
         }
         public OptionBoolChangeHandler OptionBoolChanged;
 
@@ -96,6 +101,13 @@ namespace ProtoEngine
         override public Option copy()
         {
             return new OptionBool(Name, Value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (this.GetType().IsInstanceOfType(obj))
+                return ((OptionBool)obj).Value == this.Value;
+            return false;
         }
     }
 }

@@ -25,6 +25,15 @@ namespace ProtoEngine
             return new OptionInt("", sum, min, max, size);
         }
 
+        public static Option eq(List<Option> args)
+        {
+            Option fst = args[0];
+            foreach(Option o in args.GetRange(1, args.Count - 1))
+                if(!fst.Equals(o))
+                    return new OptionBool("", false);
+            return new OptionBool("", true);
+        }
+
         public static Option unimplemented_function(List<Option> args)
         {
             throw new NotImplementedException();
@@ -34,7 +43,7 @@ namespace ProtoEngine
             {"+", add},
             {"crc", unimplemented_function},
             {"gt", unimplemented_function},
-            {"==", unimplemented_function}
+            {"==", eq}
         };
 
         public FunctionCallExpression(String expr)
@@ -47,6 +56,14 @@ namespace ProtoEngine
             arguments = new List<Expression>();
             for (int i = 1; i < split.Length; i++)
                 arguments.Add(Expression.fromString(split[i]));
+        }
+
+        public FunctionCallExpression(String functionName, List<Expression> args)
+        {
+            if (!functions.ContainsKey(functionName))
+                throw new ArgumentException("Unknown function " + functionName);
+            func = functions[functionName];
+            arguments = args;
         }
 
         /// <summary>

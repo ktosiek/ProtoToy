@@ -20,6 +20,8 @@ namespace ProtoEngine
 
         private OptionArray parent;
 
+        public int Count { get { return OptionsArray.Length; } }
+
         public Option getOption(int n)
         {
             if (OptionsArray[n] == null)
@@ -103,6 +105,24 @@ namespace ProtoEngine
         public override Option copy()
         {
             return new OptionArray(Name, this);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (this.GetType().IsInstanceOfType(obj))
+            {
+                OptionArray other = (OptionArray)obj;
+                for (int i = 0; i < Count; i++)
+                {
+                    if (!this.getOption(i).Equals(other.getOption(i)))
+                        return false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -117,5 +117,12 @@ namespace ProtoEngine
         {
             return new OptionInt(Name, Value, MinValue, MaxValue, Size);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (this.GetType().IsInstanceOfType(obj))
+                return ((OptionInt)obj).Value == this.Value;
+            return false;
+        }
     }
 }

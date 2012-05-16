@@ -40,6 +40,8 @@ namespace ProtoEngine
         /// <returns>referencja do stworzonej kopii</returns>
         abstract public Option copy();
 
+        public abstract override bool Equals(object obj);
+
         public static Dictionary<String, Type> optionClasses = new Dictionary<String, Type>() {
             {"bool", typeof(OptionBool)},
             {"byte", typeof(OptionInt)},

@@ -11,8 +11,19 @@ namespace ProtoEngine
 
         public ConstantExpression(String s)
         {
-            value = new OptionInt("", int.Parse(s), int.MinValue, int.MaxValue, sizeof(int));
-            // TODO: inne typy
+            if (s == "true")
+                value = new OptionBool("", true);
+            else if (s == "false")
+                value = new OptionBool("", false);
+            else
+                try
+                {
+                    value = new OptionInt("", int.Parse(s), int.MinValue, int.MaxValue, sizeof(int));
+                }
+                catch (FormatException)
+                {
+                    throw new ArgumentException();
+                }
         }
 
         override public Option eval(Dictionary<String, Option> env)
