@@ -16,7 +16,9 @@ namespace ProtoEngine
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
             TransactionalStreamReader input)
         {
-            throw new NotImplementedException();
+            List<Message> exclude = new List<Message>(p.excludedSoFar);
+            exclude.Add(p.currentMessage);
+            return p.matchIncoming(variables, input, exclude);
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,

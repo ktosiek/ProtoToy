@@ -177,7 +177,7 @@ namespace ProtoEngine
         }
 
         /// <summary>
-        /// Zaczyna odczytywanie danych, kontynuuje do zakończenia strumienia lub wywołania stop()
+        /// Zaczyna odczytywanie danych, kontynuuje do zakończenia strumienia lub wywołania stop() (TODO: faktycznie wprowadź stop())
         /// Ta metoda będzie wywoływać messageReceived i messageSent.
         /// </summary>
         /// <param name="inStream">strumień z którego czytane będą dane</param>
@@ -197,18 +197,7 @@ namespace ProtoEngine
                 if (env == null)
                     throw new NotImplementedException("Should wait for next msg_start_mark");
                 Dictionary<String, Option> nextEnv = null;
-                foreach (Message msg in requestMsgs)
-                {
-                    transStream.startTransaction();
-                    nextEnv = msg.match(env, transStream);
-                    if (nextEnv == null)
-                        transStream.cancelTransaction();
-                    else
-                    {
-                        transStream.commitTransaction();
-                        break;
-                    }
-                }
+                nextEnv = matchIncoming(env, transStream, new List<Message>());
 
                 if (nextEnv == null)
                     throw new NotImplementedException("Should wait for next msg_start_mark (no requestMsg matched)");
@@ -221,6 +210,41 @@ namespace ProtoEngine
                 }
                 // TODO
             }
+        }
+
+
+        public List<Message> excludedSoFar = new List<Message>(); // UGLY UGLY UGLY, potrzebne w RuleIncMsg
+        public Message currentMessage = null;
+        public Dictionary<string, Option> matchIncoming(Dictionary<string, Option> env,
+            TransactionalStreamReader transStream,
+            List<Message> excluded)
+        {
+            List<Message> oldExcluded = excludedSoFar;
+            excludedSoFar = excluded;
+
+            Dictionary<String, Option> nextEnv = null;
+            foreach (Message msg in requestMsgs)
+            {
+                if (!excluded.Contains(msg))
+                {
+                    Message oldCurrentMsg = currentMessage;
+                    transStream.startTransaction();
+                    currentMessage = msg;
+                    nextEnv = msg.match(env, transStream);
+                    currentMessage = oldCurrentMsg;
+                    if (nextEnv == null)
+                        transStream.cancelTransaction();
+                    else
+                    {
+                        transStream.commitTransaction();
+                        break;
+                    }
+                }
+            }
+
+            excludedSoFar = oldExcluded;
+
+            return nextEnv;
         }
     }
 }
