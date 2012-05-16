@@ -14,9 +14,12 @@ namespace ProtoEngine
         Type type;
         Expression value;
 
-        public RuleField(XmlNode node) {
-            name = node.Attributes["name"].Value;
-            type = Option.optionClasses[ node.Attributes["type"].Value ];
+        public RuleField(XmlNode node, Protocol p) {
+            if (node.Attributes["name"] != null)
+                name = node.Attributes["name"].Value;
+            else
+                name = "";
+            type = Option.optionClasses[ node.Attributes["type"].Value.Split()[0] ];
             if (node.Attributes["value"] != null)
                 value = Expression.fromString(node.Attributes["value"].Value);
         }
@@ -25,8 +28,8 @@ namespace ProtoEngine
             TransactionalStreamReader input)
         {
             Option opt;
-            if (value == null)
-            {
+            if (value == null) // No value to match
+            { // Tworzę pustą opcję
                 opt = (Option)Activator.CreateInstance(type, new object[] { name });
             }
             else
@@ -44,6 +47,23 @@ namespace ProtoEngine
             {
                 return null;
             }
+        }
+
+        override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
+            out List<byte[]> output)
+        {
+            if (value == null)
+            {
+                output = null;
+                return null;
+            }
+            Option opt = value.eval(variables);
+            byte[] bytes;
+            output = new List<byte[]>();
+            output.Add(bytes = opt.toBytes());
+            if (bytes == null)
+                return null;
+            return variables;
         }
     }
 }

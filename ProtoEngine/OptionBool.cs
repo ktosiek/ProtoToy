@@ -15,16 +15,16 @@ namespace ProtoEngine
         /// </summary>
         /// <param name="option">zmieniony obiekt OptionBool</param>
         /// <param name="prevValue">poprzednia wartość</param>
-        public delegate void OptionBoolChangeHandler(OptionBool option, bool prevValue);
+        public delegate void OptionBoolChangeHandler(OptionBool option, bool? prevValue);
 
-        private bool myValue;
+        private bool? myValue;
         /// <summary>
         /// Aktualna wartość opcji.
         /// </summary>
         public bool Value
         {
-            get { return myValue; }
-            set { bool prev = myValue; myValue = value; OptionBoolChanged(this, prev); }
+            get { return myValue == null ? false : (bool)myValue; }
+            set { bool? prev = myValue; myValue = value; OptionBoolChanged(this, prev); }
         }
         public OptionBoolChangeHandler OptionBoolChanged;
 
@@ -38,7 +38,10 @@ namespace ProtoEngine
         {
             try
             {
-                String strValue = node.Attributes.GetNamedItem("value").Value;
+                XmlNode strValueNode = node.Attributes.GetNamedItem("value");
+                if (strValueNode == null)
+                    throw new ArgumentException("catch me");
+                String strValue = strValueNode.Value;
                 switch (strValue)
                 {
                     case "true":
@@ -56,7 +59,6 @@ namespace ProtoEngine
                 if (ex is System.ArgumentException ||
                     ex is System.InvalidOperationException)
                 {
-                    Value = false;
                 }
                 else
                 {
@@ -79,7 +81,11 @@ namespace ProtoEngine
         public OptionBool(String name)
             : base(name)
         {
-            Value = false;
+        }
+
+        override public byte[] toBytes()
+        {
+            return null;
         }
 
         override public bool match(TransactionalStreamReader s)

@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Xml;
 using System.Text;
 
 namespace ProtoEngine
 {
-    class EmptyRule : Rule
+    class RuleSet : Rule
     {
+        public RuleSet(XmlNode node, Protocol proto)
+        {
+        }
+
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
             TransactionalStreamReader input)
         {
-            return variables;
+            throw new NotImplementedException();
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
             out List<byte[]> output)
         {
-            output = new List<byte[]>();
-            return variables;
+            throw new NotImplementedException();
         }
     }
 }

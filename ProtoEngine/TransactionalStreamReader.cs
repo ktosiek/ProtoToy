@@ -54,5 +54,18 @@ namespace ProtoEngine
             ongoingTransactions.Peek().Push((char)b);
             return b;
         }
+
+        public bool isReadable()
+        {
+            if (readData.Count > 0)
+                return true;
+            int c;
+            if ((c = baseStream.ReadByte()) != -1)
+            {
+                readData.Push((char)c);
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -7,14 +7,14 @@
   <types>
     <type name="server_address" base="byte"/>
   </types> -->
-  <msg_start_mark>
+  <msg_start_mark> <!--
     <field type="silence" value="3.5"/>
+    -->
   </msg_start_mark>
   <msgs>
     <msg type="request" name="base">
       <block name="needs_crc">
         <field name="address" type="byte"/>
-        <find_device/>
         <field name="function_code" type="byte"/>
         <inc_msg/>
       </block>
@@ -64,7 +64,7 @@
     <device name="Coil thingy">
       <options>
         <option name="dev_addr" type="byte"/>
-        <option name="number_of_coils" type="unsigned int"/>
+        <option name="number_of_coils" type="int"/>
         <option name="coil_values" type="array bool 2000"/>
       </options>
       <responds_when>

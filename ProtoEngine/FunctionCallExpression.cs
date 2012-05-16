@@ -25,14 +25,24 @@ namespace ProtoEngine
             return new OptionInt("", sum, min, max, size);
         }
 
+        public static Option unimplemented_function(List<Option> args)
+        {
+            throw new NotImplementedException();
+        }
+
         Dictionary<String, function> functions = new Dictionary<string, function>() {
-            {"+", add}
+            {"+", add},
+            {"crc", unimplemented_function},
+            {"gt", unimplemented_function},
+            {"==", unimplemented_function}
         };
 
         public FunctionCallExpression(String expr)
         {
             expr = expr.Substring(1, expr.Length - 2);
             string[] split = splitArgs(expr);
+            if (!functions.ContainsKey(split[0]))
+                throw new ArgumentException("Unknown function " + split[0]);
             func = functions[split[0]];
             arguments = new List<Expression>();
             for (int i = 1; i < split.Length; i++)

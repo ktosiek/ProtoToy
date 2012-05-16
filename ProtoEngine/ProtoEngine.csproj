@@ -55,6 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuleBlock.cs" />
     <Compile Include="RuleField.cs" />
+    <Compile Include="RuleIncMsg.cs" />
+    <Compile Include="RuleMatch.cs" />
+    <Compile Include="RuleSet.cs" />
     <Compile Include="TransactionalStreamReader.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="Transaction.cs" />
