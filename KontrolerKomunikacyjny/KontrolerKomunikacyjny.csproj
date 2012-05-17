@@ -55,7 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="PolaRamki.cs" />
+    <Compile Include="Ramka.cs" />
+    <Compile Include="TYMCZASOWA!PolaRamki.cs" />
     <Compile Include="Slave.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

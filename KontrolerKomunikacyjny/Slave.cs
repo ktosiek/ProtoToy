@@ -9,11 +9,11 @@ namespace KontrolerKomunikacyjny
     {
         int adress;
         public Slave(int adress) {this.adress=adress;}
-        public String Receive(String message, int address)
+        public Ramka Receive(Ramka ramka)
         {
-            if (this.adress == address)
-                return message;
-            return null;
+            if (Equals(this.adress, ramka.adres))
+                return ramka;
+            else return null;
         }
     }
 }
