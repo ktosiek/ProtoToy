@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ProtoEngine;
 
 namespace KontrolerKomunikacyjny
 {
@@ -19,56 +20,58 @@ namespace KontrolerKomunikacyjny
     /// </summary>
     public partial class MainWindow : Window
     {
+        public int a;
+        public List<ProtoEngine.Slave> listaSlave;
         public MainWindow()
         {
+
             InitializeComponent();
-           RozmieszczeniePolRamek();
+            RozmieszczeniePolRamek();
+
+            BladAdresSlaveLabel.Visibility = Visibility.Hidden;
+            BladIloscWejscLabel.Visibility = Visibility.Hidden;
+            BladIloscWyjscLabel.Visibility = Visibility.Hidden;
             
+            listaSlave = new List<ProtoEngine.Slave>();
+           
+
 
 
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-           //ProtoEngine.Protocol p1=new ProtoEngine.Protocol( "E:/Projekty/ProtoToy/Modbus-serial.xml" );
-           
+            //ProtoEngine.Protocol p1=new ProtoEngine.Protocol( "E:/Projekty/ProtoToy/Modbus-serial.xml" );
+
 
         }
 
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
-            Ramka ramka_master=new Ramka();
-            ramka_master.adres= AdresSlaveTextbox.Text;
-            ramka_master.funkcja=FunkcjaTextbox.Text;
-            ramka_master.dane=DaneTextbox.Text;
+            ProtoEngine.Ramka ramka_master = new ProtoEngine.Ramka();
+            ramka_master.adres = AdresSlaveTextbox.Text;
+            ramka_master.funkcja = FunkcjaTextbox.Text;
+            ramka_master.dane = DaneTextbox.Text;
             ramka_master.SumaCRC(ramka_master.dane);
             String tmp = "Master: ";
             tmp += ramka_master.Wyswietl();
 
-            Slave s1= new Slave(1);
-            Slave s2=new Slave(2);
-            Slave s3=new Slave(3);
-            List<Slave> listaSlave= new List<Slave>();
             
-            listaSlave.Add(s1);
-            listaSlave.Add(s2);
-            listaSlave.Add(s3);
 
-             Ramka ramka_slave=listaSlave[0].Receive(ramka_master);
-             Ramka ramka_slave1=listaSlave[1].Receive(ramka_master);
+            Ramka ramka_slave = listaSlave[0].Receive(ramka_master);
+         
+
+            tmp += "\nSlave: ";
+            tmp += ramka_slave.Wyswietl();
             
-             Slave slave1 = new Slave(1);
-             tmp += "Slave: ";
-             tmp+=ramka_slave1.Wyswietl();
-             
-            
+
             ChatEtykieta.Content = tmp;
 
-           
+
         }
-         private void RozmieszczeniePolRamek()
+        private void RozmieszczeniePolRamek()
         {
-          PolaRamki polaRamki = new PolaRamki();
+            PolaRamki polaRamki = new PolaRamki();
 
             int marginesGorny = 47;
             int marginesLewy = 280;
@@ -98,5 +101,45 @@ namespace KontrolerKomunikacyjny
                     DaneLabel.Content = polaRamki.listaNazw[i];
                     DaneTextbox.Margin = thicknessTextbox;
                 }
+            }
+        }
+
+        private void button1_Click_1(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow = new Dodaj();
+            Application.Current.MainWindow.Show();
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            int adres, iloscWejsc, iloscWyjsc;
+            if (!int.TryParse(DodajAdresTextbox.Text, out adres))
+                BladAdresSlaveLabel.Visibility = Visibility.Visible;
+            else
+                BladAdresSlaveLabel.Visibility = Visibility.Hidden;
+            if (!int.TryParse(IloscWejscTextbox.Text, out iloscWejsc))
+                BladIloscWejscLabel.Visibility = Visibility.Visible;
+            else
+                BladIloscWejscLabel.Visibility = Visibility.Hidden;
+            if (!int.TryParse(IloscWyjscTextbox.Text, out iloscWyjsc))
+                BladIloscWyjscLabel.Visibility = Visibility.Visible;
+            else
+                BladIloscWyjscLabel.Visibility = Visibility.Hidden;
+            if (BladAdresSlaveLabel.Visibility == Visibility.Hidden
+                && BladIloscWejscLabel.Visibility == Visibility.Hidden
+                && BladIloscWyjscLabel.Visibility == Visibility.Hidden)
+            {
+                Slave slave = new Slave(adres);
+                listaSlave.Add(slave);
+
+                UrzadzeniaWSystemieLabel.Content = "";
+                for (int i = 0; i < listaSlave.Count; i++)
+                {
+                    UrzadzeniaWSystemieLabel.Content += "Slave o adresie: " + listaSlave[i].adress + "\n";
+                }
+            }
+        }
     }
 }

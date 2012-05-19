@@ -1,21 +1,33 @@
 ﻿<Window x:Class="KontrolerKomunikacyjny.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Kontroler komunikacyjny na intefejsie RS" Height="555" Width="776">
-    <Grid>
+      Title="Kontroler komunikacyjny na intefejsie RS" Height="600" Width="776">
+    <Grid Height="544">
         <Button Content="Otwórz plik XML" Height="67" HorizontalAlignment="Left" Margin="12,25,0,0" Name="OtworzPrzycisk" VerticalAlignment="Top" Width="117" Click="button1_Click" />
         <Button Content="Wyślij" Height="58" HorizontalAlignment="Left" Margin="280,214,0,0" Name="WyslijPrzycisk" VerticalAlignment="Top" Width="120" Click="WyslijPrzycisk_Click" />
-        <Label Height="410" HorizontalAlignment="Left" Margin="507,76,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="221" />
-        <Label Content="Urządzenia w systemie" Height="28" HorizontalAlignment="Left" Margin="12,131,0,0" Name="label2" VerticalAlignment="Top" Width="155" />
-        <ListBox Height="151" HorizontalAlignment="Left" Margin="12,165,0,0" Name="UrzadzenLista" VerticalAlignment="Top" Width="141" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,47,0,0" Name="AdresSlaveTextbox" VerticalAlignment="Top" Width="120" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,84,0,0" Name="FunkcjaTextbox" VerticalAlignment="Top" Width="120" />        <Label Height="410" HorizontalAlignment="Left" Margin="507,76,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="221" />
+   <TextBox Height="35" HorizontalAlignment="Left" Margin="361,157,0,0" Name="DaneTextbox" VerticalAlignment="Top" Width="120" />     <Label Content="Urządzenia w systemie" Height="28" HorizontalAlignment="Left" Margin="12,131,0,0" Name="label2" VerticalAlignment="Top" Width="155" />
         <Label  Height="26" HorizontalAlignment="Left" Margin="280,145,0,0" Name="DaneLabel" VerticalAlignment="Top" Width="130" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,84,0,0" Name="FunkcjaTextbox" VerticalAlignment="Top" Width="120" />
+
         <Label  Height="26" HorizontalAlignment="Left" Margin="280,84,0,0" Name="FunkcjaLabel" VerticalAlignment="Top" Width="130" />
         <Label Height="26" HorizontalAlignment="Left" Margin="278,56,0,0" Name="AdresSlaveLabel" VerticalAlignment="Top" Width="130" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,47,0,0" Name="AdresSlaveTextbox" VerticalAlignment="Top" Width="120" />
+ 
         <Label Content="MASTER" Height="31" HorizontalAlignment="Left" Margin="278,8,0,0" Name="label5" VerticalAlignment="Top" Width="205" />
         <Label Content="Podgląd ramek" Height="31" HorizontalAlignment="Left" Margin="507,42,0,0" Name="label6" VerticalAlignment="Top" Width="205" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="361,157,0,0" Name="DaneTextbox" VerticalAlignment="Top" Width="120" />
-   
+        
+        <Label Height="129" HorizontalAlignment="Left" Margin="12,165,0,0" Name="UrzadzeniaWSystemieLabel" VerticalAlignment="Top" Width="139" />
+        <Label Content="Adres slave" Height="26" HorizontalAlignment="Left" Margin="21,362,0,0" Name="label3" VerticalAlignment="Top" Width="130" />
+        <Label Content="Ilość wejść" Height="26" HorizontalAlignment="Left" Margin="21,411,0,0" Name="label4" VerticalAlignment="Top" Width="130" />
+        <Label Content="Ilość wyjść" Height="26" HorizontalAlignment="Left" Margin="21,460,0,0" Name="label7" VerticalAlignment="Top" Width="130" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="93,402,0,0" Name="IloscWejscTextbox" VerticalAlignment="Top" Width="120" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="93,451,0,0" Name="IloscWyjscTextbox" VerticalAlignment="Top" Width="120" />
+        <Label Content="Wpisz poprawny adres (1-247)" Height="26" HorizontalAlignment="Left" Margin="231,362,0,0" Name="BladAdresSlaveLabel" VerticalAlignment="Top" Width="190" />
+        <Label Content="Wpisz poprawną ilość wejść (1-32)" Height="26" HorizontalAlignment="Left" Margin="231,411,0,0" Name="BladIloscWejscLabel" VerticalAlignment="Top" Width="190" />
+        <Label Content="Wpisz poprawną ilość wyjść (1-32)" Height="26" HorizontalAlignment="Left" Margin="231,460,0,0" Name="BladIloscWyjscLabel" VerticalAlignment="Top" Width="190" />
+        <Frame Height="6" HorizontalAlignment="Left" Margin="7,301,0,0" Name="frame1" VerticalAlignment="Top" Width="441" Background="Black" />
+        <Frame Height="191" HorizontalAlignment="Left" Margin="443,311,0,0" Name="frame2" VerticalAlignment="Top" Width="6" Background="Black" />
+        <Button Content="Dodaj urządzenie do systemu" Height="33" HorizontalAlignment="Left" Margin="258,499,0,0" Name="button2" VerticalAlignment="Top" Width="150" Click="button2_Click" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="93,362,0,0" Name="DodajAdresTextbox" VerticalAlignment="Top" Width="120" />
     </Grid>
 </Window>

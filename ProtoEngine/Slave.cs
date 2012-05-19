@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KontrolerKomunikacyjny
+namespace ProtoEngine
 {
-    class Slave
+    public class Slave
     {
-        int adress;
+        public int adress { get; set; }
         public Slave(int adress) {this.adress=adress;}
         public Ramka Receive(Ramka ramka)
         {
             if (Equals(this.adress, ramka.adres))
                 return ramka;
-            else return null;
+
+            else
+            {
+                ramka.adres = "blad";
+                return ramka;
+            }
         }
     }
 }

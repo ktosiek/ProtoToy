@@ -55,9 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Ramka.cs" />
+    <Compile Include="Dodaj.xaml.cs">
+      <DependentUpon>Dodaj.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ListaSlave.cs" />
     <Compile Include="TYMCZASOWA!PolaRamki.cs" />
-    <Compile Include="Slave.cs" />
+    <Page Include="Dodaj.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

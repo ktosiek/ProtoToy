@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows;
 
-namespace KontrolerKomunikacyjny
+namespace ProtoEngine
 {
-    class Ramka
+    public class Ramka
     {
         public String adres;
         public String funkcja;
@@ -15,13 +14,13 @@ namespace KontrolerKomunikacyjny
         public Ramka() { }
         public void SumaCRC(String dane)
         {
-            this.suma= 23;
+            this.suma = 23;
 
         }
         public String Wyswietl()
         {
             return adres + " " + funkcja + " " + dane;
-        }   
-        
+        }
+
     }
 }
