@@ -46,6 +46,7 @@
     <Compile Include="EmptyRule.cs" />
     <Compile Include="Expression.cs" />
     <Compile Include="FunctionCallExpression.cs" />
+    <Compile Include="ListaSlave.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="OptionArray.cs" />

@@ -7,19 +7,19 @@ namespace ProtoEngine
 {
     public class Ramka
     {
-        public String adres;
-        public String funkcja;
-        public String dane;
+        public int adres;
+        public int funkcja;
+        public int dane;
         public int suma;
         public Ramka() { }
-        public void SumaCRC(String dane)
+        public void SumaCRC(int dane)
         {
-            this.suma = 23;
+            this.suma = dane;
 
         }
         public String Wyswietl()
         {
-            return adres + " " + funkcja + " " + dane;
+            return adres.ToString() + " " + funkcja.ToString() + " " + dane.ToString();
         }
 
     }

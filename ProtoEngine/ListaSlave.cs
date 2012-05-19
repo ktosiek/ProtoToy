@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KontrolerKomunikacyjny
+namespace ProtoEngine
 {
-    class ListaSlave
+    public class ListaSlave
     {
         public IList<ProtoEngine.Slave> lista;
         public ListaSlave() {

@@ -20,52 +20,67 @@ namespace KontrolerKomunikacyjny
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int a;
         public List<ProtoEngine.Slave> listaSlave;
         public MainWindow()
         {
-
             InitializeComponent();
             RozmieszczeniePolRamek();
 
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
             BladIloscWyjscLabel.Visibility = Visibility.Hidden;
+            BladMasterAdresLabel.Visibility = Visibility.Hidden;
+            BladMasterFunkcjaLabel.Visibility = Visibility.Hidden;
+            BladMasterDaneLabel.Visibility = Visibility.Hidden;
             
             listaSlave = new List<ProtoEngine.Slave>();
-           
-
-
-
         }
-
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             //ProtoEngine.Protocol p1=new ProtoEngine.Protocol( "E:/Projekty/ProtoToy/Modbus-serial.xml" );
 
 
         }
-
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
             ProtoEngine.Ramka ramka_master = new ProtoEngine.Ramka();
-            ramka_master.adres = AdresSlaveTextbox.Text;
-            ramka_master.funkcja = FunkcjaTextbox.Text;
-            ramka_master.dane = DaneTextbox.Text;
+            
+           
+            int adres, funkcja, dane;
+            if (!int.TryParse(AdresSlaveTextbox.Text, out adres))
+                BladMasterAdresLabel.Visibility = Visibility.Visible;
+            else
+                BladMasterAdresLabel.Visibility = Visibility.Hidden;
+            if (!int.TryParse(FunkcjaTextbox.Text, out funkcja))
+                BladMasterFunkcjaLabel.Visibility = Visibility.Visible;
+            else
+                BladMasterFunkcjaLabel.Visibility = Visibility.Hidden;
+            if (!int.TryParse(DaneTextbox.Text, out dane))
+                BladMasterDaneLabel.Visibility = Visibility.Visible;
+            else
+                BladMasterDaneLabel.Visibility = Visibility.Hidden;
+            
+            ramka_master.adres = adres;
+            ramka_master.funkcja = funkcja;
+            ramka_master.dane = dane;
+
             ramka_master.SumaCRC(ramka_master.dane);
+
             String tmp = "Master: ";
             tmp += ramka_master.Wyswietl();
 
-            
+         for (int i=0;i<listaSlave.Count;i++)
+            {
+                Ramka ramka_slave = listaSlave[i].Receive(ramka_master);
+                if (ramka_slave.adres != -1)
+                {
+                    tmp += "\nSlave: ";
+                    tmp += ramka_slave.Wyswietl();
+                    ChatEtykieta.Content +="\n"+ tmp;
+                }
 
-            Ramka ramka_slave = listaSlave[0].Receive(ramka_master);
-         
-
-            tmp += "\nSlave: ";
-            tmp += ramka_slave.Wyswietl();
-            
-
-            ChatEtykieta.Content = tmp;
+            }
+          
 
 
         }
@@ -103,13 +118,6 @@ namespace KontrolerKomunikacyjny
                 }
             }
         }
-
-        private void button1_Click_1(object sender, RoutedEventArgs e)
-        {
-            Application.Current.MainWindow = new Dodaj();
-            Application.Current.MainWindow.Show();
-        }
-
         private void button2_Click(object sender, RoutedEventArgs e)
         {
 
