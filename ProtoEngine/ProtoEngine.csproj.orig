@@ -57,9 +57,13 @@
     <Compile Include="Ramka.cs" />
     <Compile Include="RuleBlock.cs" />
     <Compile Include="RuleField.cs" />
+<<<<<<< HEAD
+    <Compile Include="Slave.cs" />
+=======
+    <Compile Include="RuleIncMsg.cs" />
     <Compile Include="RuleMatch.cs" />
     <Compile Include="RuleSet.cs" />
-    <Compile Include="Slave.cs" />
+>>>>>>> origin/master
     <Compile Include="TransactionalStreamReader.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="Transaction.cs" />

@@ -16,7 +16,7 @@ namespace ProtoEngine
             {"conditional", typeof(RuleBlock)},
             {"responds_when", typeof(RuleBlock)},
             {"field", typeof(RuleField)},
-            {"inc_msg", typeof(RuleIncMsg)},
+           // {"inc_msg", typeof(RuleIncMsg)},
             {"match", typeof(RuleMatch)},
             {"match_expr", typeof(RuleMatch)},
             {"set", typeof(RuleSet)},
