@@ -10,10 +10,10 @@ namespace ProtoEngine
         public delegate void OptionIntChangeHandler(OptionInt option);
 
         public OptionIntChangeHandler optionIntChanged;
-        private int myValue;
+        private int? myValue;
         public int Value
         {
-            get { return myValue; }
+            get { return myValue == null ? Int32.MinValue : (int)myValue; }
             set {
                 if (value > maxV || value < minV)
                     throw new ArgumentOutOfRangeException();
@@ -32,7 +32,8 @@ namespace ProtoEngine
         public OptionInt(String name, XmlNode node)
             : base(name)
         {
-            myValue = int.Parse(node.Attributes.GetNamedItem("value").Value);
+            if(node.Attributes["value"] != null)
+                myValue = int.Parse(node.Attributes["value"].Value);
 
             if (node.Attributes["type"] != null) {
                 mySize = (new Dictionary<String, int>() {
@@ -63,14 +64,28 @@ namespace ProtoEngine
             this.Value = value;
         }
 
+        override public byte[] toBytes()
+        {
+            if (myValue == null)
+                return null;
+            byte[] bytes = new byte[Size];
+            int tmp = Value;
+            for (int i = 0; i < Size; i++)
+            {
+                bytes[Size - 1 - i] = (byte)tmp;
+                tmp /= 256;
+            }
+            return bytes;
+        }
+
         override public bool match(TransactionalStreamReader s)
         {
+            // First, read whatever is in the stream
             int newValue = 0;
             s.startTransaction();
             for (int i = 0; i < Size; i++)
             {
-                newValue <<= 8;
-                newValue |= s.ReadByte();
+                newValue |= s.ReadByte() << (8*i);
             }
 
             if (MinValue > newValue || newValue > MaxValue)
@@ -79,14 +94,35 @@ namespace ProtoEngine
                 return false;
             }
 
-            Value = newValue;
-            s.commitTransaction();
-            return true;
+            if (myValue == null)
+            {
+                Value = newValue;
+                s.commitTransaction();
+                return true;
+            }
+            else // myValue != null
+                if (myValue == newValue)
+                {
+                    s.commitTransaction();
+                    return true;
+                }
+                else
+                {
+                    s.cancelTransaction();
+                    return false;
+                }
         }
 
         public override Option copy()
         {
             return new OptionInt(Name, Value, MinValue, MaxValue, Size);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (this.GetType().IsInstanceOfType(obj))
+                return ((OptionInt)obj).Value == this.Value;
+            return false;
         }
     }
 }

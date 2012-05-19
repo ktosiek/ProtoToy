@@ -10,14 +10,23 @@ namespace ProtoEngine
         private Device device;
         public String Name { get { return device.Name; } }
 
-        public static DevicePrototype fromXml(XmlNode node)
+        /// <summary>
+        /// Tworzy nową instancję urządzenia.
+        /// </summary>
+        /// <returns></returns>
+        public Device create()
         {
-            return new DevicePrototype(node);
+            return new Device(device);
         }
 
-        public DevicePrototype(XmlNode node)
+        public static DevicePrototype fromXml(XmlNode node, Protocol protocol)
         {
-            device = Device.fromXml(node);
+            return new DevicePrototype(node, protocol);
+        }
+
+        public DevicePrototype(XmlNode node, Protocol protocol)
+        {
+            device = Device.fromXml(node, protocol);
         }
     }
 }

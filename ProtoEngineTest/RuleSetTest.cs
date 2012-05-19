@@ -1,6 +1,7 @@
 ﻿using ProtoEngine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Xml;
 using System.Collections.Generic;
 
 namespace ProtoEngineTest
@@ -8,11 +9,11 @@ namespace ProtoEngineTest
     
     
     /// <summary>
-    ///This is a test class for FunctionCallExpressionTest and is intended
-    ///to contain all FunctionCallExpressionTest Unit Tests
+    ///This is a test class for RuleSetTest and is intended
+    ///to contain all RuleSetTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class FunctionCallExpressionTest
+    public class RuleSetTest
     {
 
 
@@ -66,15 +67,17 @@ namespace ProtoEngineTest
 
 
         /// <summary>
-        ///A test for eval
+        ///A test for match
         ///</summary>
         [TestMethod()]
-        public void evalTest()
+        public void matchTest()
         {
-            FunctionCallExpression target = new FunctionCallExpression("(+ 1 2 (+ 5))");
-            Dictionary<string, Option> env = new Dictionary<string, Option>();
-
-            Assert.AreEqual(((OptionInt)target.eval(env)).Value, 8);
+            XmlDocument node = new XmlDocument();
+            node.LoadXml("<set name=\"test\" value=\"10\"/>");
+            Rule rule = new RuleSet(node.FirstChild, null);
+            Dictionary<String, Option> env = new Dictionary<string, Option>();
+            env = rule.match(env, null);
+            Assert.AreEqual(new OptionInt("", 10, 0, 255, 1), env["test"]);
         }
     }
 }

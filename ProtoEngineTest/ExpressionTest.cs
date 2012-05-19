@@ -72,7 +72,7 @@ namespace ProtoEngineTest
         {
             Assert.IsInstanceOfType(Expression.fromString("1"), typeof(ConstantExpression));
             Assert.IsInstanceOfType(Expression.fromString("$test"), typeof(VariableExpression));
-            Assert.IsInstanceOfType(Expression.fromString("(+ 1 1)"), typeof(FunctionCallExpression));
+            Assert.IsInstanceOfType(Expression.fromString("(+ (+ 1 1) 1)"), typeof(FunctionCallExpression));
         }
     }
 }

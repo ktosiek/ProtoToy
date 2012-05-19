@@ -57,7 +57,8 @@
     <Compile Include="Ramka.cs" />
     <Compile Include="RuleBlock.cs" />
     <Compile Include="RuleField.cs" />
-    <Compile Include="Slave.cs" />
+    <Compile Include="RuleMatch.cs" />
+    <Compile Include="RuleSet.cs" />
     <Compile Include="TransactionalStreamReader.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="Transaction.cs" />

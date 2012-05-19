@@ -74,7 +74,9 @@ namespace ProtoEngine
         /// <param name="path">ścieżka do pliku opisu protokołu</param>
         public Protocol(String path)
         {
-            this.constructor(new FileStream(path, FileMode.Open));
+            FileStream f = new FileStream(path, FileMode.Open, FileAccess.Read);
+            this.constructor(f);
+            f.Close();
         }
 
         /// <summary>
@@ -94,7 +96,8 @@ namespace ProtoEngine
         {
             XmlDocument proto = new XmlDocument();
             proto.Load(file);
-            foreach (XmlAttribute attr in proto.Attributes) {
+            XmlNode protoNode = proto.ChildNodes[1];
+            foreach (XmlAttribute attr in protoNode.Attributes) {
                 switch (attr.Name)
                 {
                     case "name":
@@ -105,24 +108,24 @@ namespace ProtoEngine
                 }
             }
 
-            foreach (XmlNode node in proto.ChildNodes)
+            foreach (XmlNode node in protoNode.ChildNodes)
             {
                 switch (node.Name)
                 {
                     case "options":
                         foreach (XmlNode optNode in node.ChildNodes)
                         {
-                            Option opt = Option.fromXml(node);
+                            Option opt = Option.fromXml(optNode);
                             options.Add(opt);
                         }
                         break;
                     case "msg_start_mark":
-                        msg_start_mark = Message.fromXml(node);
+                        msg_start_mark = Message.fromXml(node, this);
                         break;
                     case "msgs":
                         foreach (XmlNode msgNode in node.ChildNodes)
                         {
-                            Message msg = Message.fromXml(msgNode);
+                            Message msg = Message.fromXml(msgNode, this);
                             switch (msg.Type)
                             {
                                 case MessageType.Request:
@@ -141,12 +144,14 @@ namespace ProtoEngine
                     case "devices":
                         foreach (XmlNode devNode in node.ChildNodes)
                         {
-                            Device dev = Device.fromXml(devNode);
-                            devices.Add(dev);
+                            DevicePrototype dev = DevicePrototype.fromXml(devNode, this);
+                            devicePrototypes.Add(dev);
                         }
                         break;
                     default:
-                        throw new ArgumentException("Unexpected node: " + node.Name);
+                        if(node.Name[0] != '#')
+                            throw new ArgumentException("Unexpected node: " + node.Name);
+                        break;
                 }
             }
         }
@@ -172,14 +177,74 @@ namespace ProtoEngine
         }
 
         /// <summary>
-        /// Zaczyna odczytywanie danych, kontynuuje do zakończenia strumienia lub wywołania stop()
+        /// Zaczyna odczytywanie danych, kontynuuje do zakończenia strumienia lub wywołania stop() (TODO: faktycznie wprowadź stop())
         /// Ta metoda będzie wywoływać messageReceived i messageSent.
         /// </summary>
         /// <param name="inStream">strumień z którego czytane będą dane</param>
         /// <param name="outStream">strumień do którego wysyłane będą odpowiedzi</param>
         public void run(Stream inStream, Stream outStream)
         {
-            throw new NotImplementedException();
+            TransactionalStreamReader transStream = new TransactionalStreamReader(inStream);
+            while (transStream.isReadable())
+            {
+                // Zmienne środowiskowe dla tej transakcji
+                Dictionary<String,Option> env = new Dictionary<string,Option>();
+                foreach(Option opt in options)
+                    env.Add(opt.Name, opt);
+
+                transStream.startTransaction();
+                env = this.msg_start_mark.match(env, transStream);
+                if (env == null)
+                    throw new NotImplementedException("Should wait for next msg_start_mark");
+                Dictionary<String, Option> nextEnv = null;
+                nextEnv = matchIncoming(env, transStream, new List<Message>());
+
+                if (nextEnv == null)
+                    throw new NotImplementedException("Should wait for next msg_start_mark (no requestMsg matched)");
+                else
+                    env = nextEnv;
+
+                foreach (Device d in this.RegisteredDevices)
+                {
+                    // TODO
+                }
+                // TODO
+            }
+        }
+
+
+        public List<Message> excludedSoFar = new List<Message>(); // UGLY UGLY UGLY, potrzebne w RuleIncMsg
+        public Message currentMessage = null;
+        public Dictionary<string, Option> matchIncoming(Dictionary<string, Option> env,
+            TransactionalStreamReader transStream,
+            List<Message> excluded)
+        {
+            List<Message> oldExcluded = excludedSoFar;
+            excludedSoFar = excluded;
+
+            Dictionary<String, Option> nextEnv = null;
+            foreach (Message msg in requestMsgs)
+            {
+                if (!excluded.Contains(msg))
+                {
+                    Message oldCurrentMsg = currentMessage;
+                    transStream.startTransaction();
+                    currentMessage = msg;
+                    nextEnv = msg.match(env, transStream);
+                    currentMessage = oldCurrentMsg;
+                    if (nextEnv == null)
+                        transStream.cancelTransaction();
+                    else
+                    {
+                        transStream.commitTransaction();
+                        break;
+                    }
+                }
+            }
+
+            excludedSoFar = oldExcluded;
+
+            return nextEnv;
         }
     }
 }
