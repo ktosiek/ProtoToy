@@ -41,10 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConstantExpression.cs" />
+    <Compile Include="DekodowanieFunkcji.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="DevicePrototype.cs" />
     <Compile Include="EmptyRule.cs" />
     <Compile Include="Expression.cs" />
+    <Compile Include="FullMessage.cs" />
     <Compile Include="FunctionCallExpression.cs" />
     <Compile Include="ListaSlave.cs" />
     <Compile Include="Message.cs" />
@@ -58,12 +60,13 @@
     <Compile Include="RuleBlock.cs" />
     <Compile Include="RuleField.cs" />
 <<<<<<< HEAD
-    <Compile Include="Slave.cs" />
 =======
     <Compile Include="RuleIncMsg.cs" />
+    <Compile Include="RuleIsSet.cs" />
+>>>>>>> Tak, znów dump
     <Compile Include="RuleMatch.cs" />
     <Compile Include="RuleSet.cs" />
->>>>>>> origin/master
+    <Compile Include="Slave.cs" />
     <Compile Include="TransactionalStreamReader.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="Transaction.cs" />

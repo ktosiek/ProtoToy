@@ -86,7 +86,7 @@
             <isnset name="byte_count"/>
             <set name="byte_count" value="(+ 1 (/ $quantity_of_coils 8))"/>
           </conditional>
-          <set name="coil_status" value="(pack_bool (substr $coil_values $starting_addres (+ 1 $loast_coil)))"/>
+          <set name="coil_status" value="(pack_bool (substr $coil_values $starting_address (+ 1 $last_coil)))"/>
         </transaction>
       </transactions>
     </device>

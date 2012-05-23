@@ -18,7 +18,7 @@ namespace ProtoEngine
         /// <param name="msgPrototype">prototyp odebranej wiadomości</param>
         /// <param name="env">stan opcji i zmiennych w momencie jej odebrania,
         /// ważne tylko do powrotu z tej funkcji (jeśli chcesz to zapamiętać - skopiuj)</param>
-        public delegate void MessageReceived(Message msgPrototype, List<Option> env);
+        public delegate void MessageReceived(FullMessage msg, List<Option> env);
 
         /// <summary>
         /// Callback wywoływany zaraz przed wysłaniem wiadomości.
@@ -27,8 +27,8 @@ namespace ProtoEngine
         /// <param name="msgIn">wiadomość od której zdekodowania się zaczęło</param>
         /// <param name="msgOut">wiadomość która ma zostać wysłana</param>
         /// <param name="env">stan opcji i zmiennych po zbudowaniu odpowiedzi</param>
-        public delegate void MessageSent(Transaction transaction, Message msgIn,
-            Message msgOut, List<Option> env);
+        public delegate void MessageSent(Transaction transaction, FullMessage msgIn,
+            FullMessage msgOut, List<Option> env);
 
         /// <summary>
         /// Callback wywoływany gdy zostanie zdekodowana wiadomość.
@@ -192,23 +192,62 @@ namespace ProtoEngine
                 foreach(Option opt in options)
                     env.Add(opt.Name, opt);
 
+                List<Option> fields;
                 transStream.startTransaction();
-                env = this.msg_start_mark.match(env, transStream);
+                env = this.msg_start_mark.match(env, transStream, out fields);
                 if (env == null)
                     throw new NotImplementedException("Should wait for next msg_start_mark");
                 Dictionary<String, Option> nextEnv = null;
-                nextEnv = matchIncoming(env, transStream, new List<Message>());
+                nextEnv = matchIncoming(env, transStream, new List<Message>(), out fields);
 
                 if (nextEnv == null)
                     throw new NotImplementedException("Should wait for next msg_start_mark (no requestMsg matched)");
-                else
-                    env = nextEnv;
+                
+                env = nextEnv;
+                FullMessage msgIn = new FullMessage(fields);
 
+                if(messageReceived != null)
+                    messageReceived(msgIn, new List<Option>(env.Values));
+
+
+                Transaction transaction = null;
                 foreach (Device d in this.RegisteredDevices)
                 {
-                    // TODO
+                    Dictionary<String, Option> deviceEnv = new Dictionary<string, Option>(env);
+                    foreach (Option opt in d.Options)
+                    {
+                        deviceEnv.Add(opt.Name, opt);
+                    }
+
+                    foreach (Transaction t in d.Transactions)
+                    {
+                        Dictionary<String, Option> transEnv = new Dictionary<string,Option>(deviceEnv);
+                        transEnv = t.match(transEnv);
+                        if (transEnv != null)
+                        {
+                            transaction = t;
+                            env = transEnv;
+                            break;
+                        }
+                    }
+                    if (transaction != null)
+                        break;
                 }
-                // TODO
+
+                if (transaction == null)
+                    throw new NotImplementedException("No transaction matched, wait for next message");
+
+                List<byte[]> output;
+                nextEnv = matchOutgoing(env, new List<Message>(), out output, out fields);
+                if(nextEnv == null)
+                    throw new NotImplementedException("No outgoing message matched, wait for next message");
+
+                FullMessage msgOut = new FullMessage(fields);
+                if (messageSent != null)
+                    messageSent(transaction, msgIn, msgOut, new List<Option>(env.Values));
+
+                foreach (byte[] data in output)
+                    outStream.Write(data, 0, data.Length);
             }
         }
 
@@ -217,26 +256,74 @@ namespace ProtoEngine
         public Message currentMessage = null;
         public Dictionary<string, Option> matchIncoming(Dictionary<string, Option> env,
             TransactionalStreamReader transStream,
-            List<Message> excluded)
+            List<Message> excluded,
+            out List<Option> fields)
         {
             List<Message> oldExcluded = excludedSoFar;
             excludedSoFar = excluded;
 
             Dictionary<String, Option> nextEnv = null;
+            fields = new List<Option>();
             foreach (Message msg in requestMsgs)
             {
                 if (!excluded.Contains(msg))
                 {
+                    List<Option> newFields;
                     Message oldCurrentMsg = currentMessage;
-                    transStream.startTransaction();
                     currentMessage = msg;
-                    nextEnv = msg.match(env, transStream);
+
+                    transStream.startTransaction();
+                    nextEnv = msg.match(env, transStream, out newFields);
+
                     currentMessage = oldCurrentMsg;
+
                     if (nextEnv == null)
                         transStream.cancelTransaction();
                     else
                     {
+                        if (newFields != null)
+                            fields.AddRange(newFields);
                         transStream.commitTransaction();
+                        break;
+                    }
+                }
+            }
+
+            excludedSoFar = oldExcluded;
+
+            return nextEnv;
+        }
+
+        public Dictionary<string, Option> matchOutgoing(Dictionary<string, Option> env,
+            List<Message> excluded,
+            out List<byte[]> output,
+            out List<Option> fields)
+        {
+            output = new List<byte[]>();
+            List<Message> oldExcluded = excludedSoFar;
+            excludedSoFar = excluded;
+
+            Dictionary<String, Option> nextEnv = null;
+            fields = new List<Option>();
+            foreach (Message msg in responseMsgs)
+            {
+                if (!excluded.Contains(msg))
+                {
+                    List<Option> newFields;
+                    List<byte[]> newOutput;
+                    Message oldCurrentMsg = currentMessage;
+                    currentMessage = msg;
+
+                    nextEnv = msg.match(env, out newOutput, out newFields);
+
+                    currentMessage = oldCurrentMsg;
+
+                    if (nextEnv != null)
+                    {
+                        if (newFields != null)
+                            fields.AddRange(newFields);
+                        if (newOutput != null)
+                            output.AddRange(newOutput);
                         break;
                     }
                 }

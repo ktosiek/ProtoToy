@@ -15,11 +15,12 @@ namespace ProtoEngine
     /// </summary>
     public abstract class Option
     {
-        private String name;
         /// <summary>
         /// Nazwa opcji lub zmiennej.
         /// </summary>
-        public String Name { get { return name; } }
+        public String Name { get; set; }
+
+        abstract public String TypeName { get; }
 
         /// <summary>
         /// Zwraca wartość tej opcji jako tablicę bajtów, lub null jeśli nie ma wartości.
@@ -62,13 +63,15 @@ namespace ProtoEngine
 
             String typeName = node.Attributes["type"].Value.Split(null)[0];
             Type type = optionClasses[typeName];
-            ConstructorInfo constructor = type.GetConstructor(new Type[] { typeof(String), typeof(XmlNode) });
+            ConstructorInfo constructor = type.GetConstructor(new Type[] {
+                typeof(String), // name
+                typeof(XmlNode) });
             
             return (Option)constructor.Invoke(new object[] { name, node });
         }
 
         public Option(String name) {
-            this.name = name;
+            this.Name = name;
         }
     }
 }

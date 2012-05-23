@@ -46,6 +46,7 @@
     <Compile Include="DevicePrototype.cs" />
     <Compile Include="EmptyRule.cs" />
     <Compile Include="Expression.cs" />
+    <Compile Include="FullMessage.cs" />
     <Compile Include="FunctionCallExpression.cs" />
     <Compile Include="ListaSlave.cs" />
     <Compile Include="Message.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Ramka.cs" />
     <Compile Include="RuleBlock.cs" />
     <Compile Include="RuleField.cs" />
+    <Compile Include="RuleIsSet.cs" />
     <Compile Include="RuleMatch.cs" />
     <Compile Include="RuleSet.cs" />
     <Compile Include="Slave.cs" />

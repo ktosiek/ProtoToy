@@ -76,7 +76,8 @@ namespace ProtoEngineTest
             node.LoadXml("<set name=\"test\" value=\"10\"/>");
             Rule rule = new RuleSet(node.FirstChild, null);
             Dictionary<String, Option> env = new Dictionary<string, Option>();
-            env = rule.match(env, null);
+            List<Option> fields;
+            env = rule.match(env, null, out fields);
             Assert.AreEqual(new OptionInt("", 10, 0, 255, 1), env["test"]);
         }
     }
