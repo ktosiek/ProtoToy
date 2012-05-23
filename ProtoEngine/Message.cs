@@ -64,9 +64,17 @@ namespace ProtoEngine
         }
 
         public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            TransactionalStreamReader input)
+            TransactionalStreamReader input,
+            out List<Option> fields)
         {
-            return rule.match(variables, input);
+            return rule.match(variables, input, out fields);
+        }
+
+        public Dictionary<String, Option> match(Dictionary<String, Option> variables,
+            out List<byte[]> output,
+            out List<Option> fields)
+        {
+            return rule.match(variables, out output, out fields);
         }
     }
 }

@@ -14,17 +14,21 @@ namespace ProtoEngine
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            TransactionalStreamReader input)
+            TransactionalStreamReader input,
+            out List<Option> fields)
         {
             List<Message> exclude = new List<Message>(p.excludedSoFar);
             exclude.Add(p.currentMessage);
-            return p.matchIncoming(variables, input, exclude);
+            return p.matchIncoming(variables, input, exclude, out fields);
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            out List<byte[]> output)
+            out List<byte[]> output,
+            out List<Option> fields)
         {
-            throw new NotImplementedException();
+            List<Message> exclude = new List<Message>(p.excludedSoFar);
+            exclude.Add(p.currentMessage);
+            return p.matchOutgoing(variables, exclude, out output, out fields);
         }
     }
 }

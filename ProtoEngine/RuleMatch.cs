@@ -25,29 +25,34 @@ namespace ProtoEngine
             }
         }
 
-        private Dictionary<String, Option> match(Dictionary<String, Option> variables)
+        private Dictionary<String, Option> match(Dictionary<String, Option> variables,
+            out List<Option> fields)
         {
             if (myExpr.eval(variables).Equals(new OptionBool("", true)))
             {
+                fields = null;
                 return variables;
             }
             else
             {
+                fields = null;
                 return null;
             }
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            TransactionalStreamReader input)
+            TransactionalStreamReader input,
+            out List<Option> fields)
         {
-            return match(variables);
+            return match(variables, out fields);
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            out List<byte[]> output)
+            out List<byte[]> output,
+            out List<Option> fields)
         {
             output = null;
-            return match(variables);
+            return match(variables, out fields);
         }
     }
 }

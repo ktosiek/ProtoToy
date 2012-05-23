@@ -20,6 +20,8 @@ namespace ProtoEngine
             {"match", typeof(RuleMatch)},
             {"match_expr", typeof(RuleMatch)},
             {"set", typeof(RuleSet)},
+            {"isset", typeof(RuleIsSet)},
+            {"isnset", typeof(RuleIsSet)},
             {"assert", typeof(RuleMatch)} //,
             //{"warning", typeof(RuleWarning)}
         };
@@ -44,9 +46,10 @@ namespace ProtoEngine
         /// </summary>
         /// <param name="variables">stan środowiska przed dopasowywaniem</param>
         /// <param name="input">strumień wejściowy</param>
+        /// <param name="fields">dopasowane pola wiadomości</param>
         /// <returns>stan środowiska po dopasowaniu lub null jeśli się ono nie udało</returns>
         abstract public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            TransactionalStreamReader input);
+            TransactionalStreamReader input, out List<Option> fields);
 
         /// <summary>
         /// Spróbuj skonstruować odpowiedź na podstawie środowiska.
@@ -55,6 +58,6 @@ namespace ProtoEngine
         /// <param name="output"></param>
         /// <returns></returns>
         abstract public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            out List<byte[]> output);
+            out List<byte[]> output, out List<Option> fields);
     }
 }

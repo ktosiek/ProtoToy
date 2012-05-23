@@ -45,6 +45,7 @@
     <Compile Include="DevicePrototype.cs" />
     <Compile Include="EmptyRule.cs" />
     <Compile Include="Expression.cs" />
+    <Compile Include="FullMessage.cs" />
     <Compile Include="FunctionCallExpression.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Option.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="RuleBlock.cs" />
     <Compile Include="RuleField.cs" />
     <Compile Include="RuleIncMsg.cs" />
+    <Compile Include="RuleIsSet.cs" />
     <Compile Include="RuleMatch.cs" />
     <Compile Include="RuleSet.cs" />
     <Compile Include="TransactionalStreamReader.cs" />

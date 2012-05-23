@@ -76,12 +76,13 @@ namespace ProtoEngineTest
             XmlDocument node = new XmlDocument();
             node.LoadXml("<match name=\"test\" value=\"10\"/>");
             RuleMatch rule = new RuleMatch(node.FirstChild, null);
+            List<Option> fields; // ignore it anyway
             Dictionary<String, Option> env = new Dictionary<string, Option>();
             env.Add("test", new OptionInt("test", 10, 0, 255, 1));
-            Assert.IsNotNull(rule.match(env, null));
+            Assert.IsNotNull(rule.match(env, null, out fields));
             node.LoadXml("<match name=\"test\" value=\"0\"/>");
             rule = new RuleMatch(node.FirstChild, null);
-            Assert.IsNull(rule.match(env, null));
+            Assert.IsNull(rule.match(env, null, out fields));
         }
     }
 }

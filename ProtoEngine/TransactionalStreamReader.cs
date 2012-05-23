@@ -67,5 +67,10 @@ namespace ProtoEngine
             }
             return false;
         }
+
+        public List<char> getTransactionData()
+        {
+            return new List<char>(ongoingTransactions.Peek());
+        }
     }
 }

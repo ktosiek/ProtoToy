@@ -27,7 +27,34 @@ namespace ProtoEngine
         public int MinValue { get {return minV;} }
         public int Size { get { return mySize; } }
 
+        public override string TypeName
+        {
+            get {
+                switch (mySize)
+                {
+                    case 1: return "byte";
+                    case 2: return "word";
+                    case 4: return "int";
+                    default: return "int";
+                }
+            }
+        }
+
         public OptionIntChangeHandler OptionIntChanged;
+
+        static private Dictionary<String, int> sizes = new Dictionary<String, int>() {
+                    {"byte", 1},
+                    {"word", 2},
+                    {"dword", 4},
+                    {"int", 4}};
+
+        public OptionInt(String name, String type)
+            : base(name)
+        {
+            mySize = sizes[type];
+            minV = int.MinValue; // TODO: yeah, right
+            maxV = int.MaxValue;
+        }
 
         public OptionInt(String name, XmlNode node)
             : base(name)
@@ -36,12 +63,7 @@ namespace ProtoEngine
                 myValue = int.Parse(node.Attributes["value"].Value);
 
             if (node.Attributes["type"] != null) {
-                mySize = (new Dictionary<String, int>() {
-                    {"byte", 1},
-                    {"word", 2},
-                    {"dword", 4},
-                    {"int", 4}
-                })[node.Attributes["type"].Value];
+                mySize = sizes[node.Attributes["type"].Value];
             }
 
             if (node.Attributes["max"] != null)

@@ -11,7 +11,8 @@ namespace ProtoEngine
     class RuleField : Rule
     {
         String name;
-        Type type;
+        String type;
+        Option option;
         Expression value;
 
         public RuleField(XmlNode node, Protocol p) {
@@ -19,18 +20,25 @@ namespace ProtoEngine
                 name = node.Attributes["name"].Value;
             else
                 name = "";
-            type = Option.optionClasses[ node.Attributes["type"].Value.Split()[0] ];
+            
+            type = node.Attributes["type"].Value;
+
             if (node.Attributes["value"] != null)
+            {
                 value = Expression.fromString(node.Attributes["value"].Value);
+            }
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            TransactionalStreamReader input)
+            TransactionalStreamReader input,
+            out List<Option> fields)
         {
             Option opt;
             if (value == null) // No value to match
             { // Tworzę pustą opcję
-                opt = (Option)Activator.CreateInstance(type, new object[] { name });
+                opt = (Option)Activator.CreateInstance(
+                    Option.optionClasses[type.Split()[0]],
+                    new object[] { name, type });
             }
             else
             {
@@ -39,23 +47,38 @@ namespace ProtoEngine
 
             if (opt != null && opt.match(input))
             {
+                opt.Name = this.name;
                 Dictionary<String, Option> newEnv = new Dictionary<string, Option>(variables);
                 newEnv.Add(opt.Name, opt);
+                fields = new List<Option>();
+                fields.Add(opt);
                 return newEnv;
             }
             else
             {
+                fields = null;
                 return null;
             }
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            out List<byte[]> output)
+            out List<byte[]> output,
+            out List<Option> fields)
         {
+            fields = null;
             if (value == null)
             {
                 output = null;
-                return null;
+                if (variables.ContainsKey(name))
+                {
+                    fields = new List<Option>();
+                    fields.Add(variables[name]);
+                    output = new List<byte[]>();
+                    output.Add(variables[name].toBytes());
+                    return variables;
+                }
+                else
+                    return null;
             }
             Option opt = value.eval(variables);
             byte[] bytes;
@@ -63,6 +86,9 @@ namespace ProtoEngine
             output.Add(bytes = opt.toBytes());
             if (bytes == null)
                 return null;
+            fields = new List<Option>();
+            opt.Name = this.name;
+            fields.Add(opt);
             return variables;
         }
     }

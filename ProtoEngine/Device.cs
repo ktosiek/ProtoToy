@@ -45,7 +45,7 @@ namespace ProtoEngine
                     case "transactions":
                         foreach (XmlNode tNode in node.ChildNodes)
                         {
-                            Transaction t = Transaction.fromXml(tNode);
+                            Transaction t = Transaction.fromXml(tNode, protocol);
                             transactions.Add(t);
                         }
                         break;
