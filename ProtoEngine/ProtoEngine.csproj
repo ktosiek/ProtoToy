@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConstantExpression.cs" />
+    <Compile Include="DekodowanieFunkcji.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="DevicePrototype.cs" />
     <Compile Include="EmptyRule.cs" />
