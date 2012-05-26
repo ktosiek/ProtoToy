@@ -43,10 +43,12 @@ namespace ProtoEngine
         }
         public Ramka DekodowanieFunkcji(Ramka ramka)
         {
-            for (int i=0; i<listaKodowFunkcji.Count; i++)
-                if (ramka.funkcja == listaKodowFunkcji[0].kod)
-                    if(listaKodowFunkcji[0].dane)
-                        ramka.dane=wejscia;
+            for (int i = 0; i < listaKodowFunkcji.Count; i++)
+                if (ramka.funkcja == listaKodowFunkcji[i].kod)
+                    if (listaKodowFunkcji[i].dane)
+                        if (listaKodowFunkcji[i].wejscia)
+                            ramka.dane = wejscia;
+                        else ramka.dane = wyjscia;
 
             return ramka;
         }
@@ -57,18 +59,22 @@ namespace ProtoEngine
             d1.znaczenie = "odczyt wyjść bitowych";
             d1.dane = true;
             d1.kod = 1;
+            d1.wejscia = false;
             DekodowanieFunkcji d2 = new DekodowanieFunkcji();
             d2.znaczenie = "odczyt wejść bitowych";
             d2.dane = true;
             d2.kod = 2;
+            d2.wejscia = true;
             DekodowanieFunkcji d3 = new DekodowanieFunkcji();
             d3.znaczenie = "odczyt n rejestrów wyjściowych";
             d3.dane = true;
             d3.kod = 3;
+            d3.wejscia = false;
             DekodowanieFunkcji d4 = new DekodowanieFunkcji();
             d4.znaczenie = "odczyt n rejestrów wejsciowych";
             d4.dane = true;
             d4.kod = 4;
+            d4.wejscia = true;
             DekodowanieFunkcji d5 = new DekodowanieFunkcji();
             d5.znaczenie = "zapis 1 bitu";
             d5.dane = false;
