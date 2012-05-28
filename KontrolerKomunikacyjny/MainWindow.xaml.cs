@@ -34,6 +34,16 @@ namespace KontrolerKomunikacyjny
             BladMasterDaneLabel.Visibility = Visibility.Hidden;
             
             listaSlave = new List<ProtoEngine.Slave>();
+            DodajAdresTextbox.Text = "1";
+            IloscWejscTextbox.Text = "1";
+            IloscWyjscTextbox.Text = "1";
+            byte adres;
+            byte.TryParse(DodajAdresTextbox.Text, out adres);
+ 
+            Slave slave = new Slave(adres,1,1);
+            listaSlave.Add(slave);
+            UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
+
         }
         private void button1_Click(object sender, RoutedEventArgs e)
         {
@@ -43,46 +53,43 @@ namespace KontrolerKomunikacyjny
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
-            ProtoEngine.Ramka ramka_master = new ProtoEngine.Ramka();
-            
-           
-            int adres, funkcja, dane;
-            if (!int.TryParse(AdresSlaveTextbox.Text, out adres))
+            ProtoEngine.Ramka ramka_master = new ProtoEngine.Ramka(1);
+
+
+            byte adres, funkcja, dane;
+            if (!byte.TryParse(AdresSlaveTextbox.Text, out adres))
                 BladMasterAdresLabel.Visibility = Visibility.Visible;
             else
                 BladMasterAdresLabel.Visibility = Visibility.Hidden;
-            if (!int.TryParse(FunkcjaTextbox.Text, out funkcja))
+            if (!byte.TryParse(FunkcjaTextbox.Text, out funkcja))
                 BladMasterFunkcjaLabel.Visibility = Visibility.Visible;
             else
                 BladMasterFunkcjaLabel.Visibility = Visibility.Hidden;
-            if (!int.TryParse(DaneTextbox.Text, out dane))
+            if (!byte.TryParse(DaneTextbox.Text, out dane))
                 BladMasterDaneLabel.Visibility = Visibility.Visible;
             else
                 BladMasterDaneLabel.Visibility = Visibility.Hidden;
             
             ramka_master.adres = adres;
             ramka_master.funkcja = funkcja;
-            ramka_master.dane = dane;
+            ramka_master.dane[0] = dane;
 
-            ramka_master.SumaCRC(ramka_master.dane);
+            ramka_master.SumaCRC(ramka_master.dane[0]);
 
             String tmp = "Master: ";
             tmp += ramka_master.Wyswietl();
-
+             Ramka ramka_slave;
          for (int i=0;i<listaSlave.Count;i++)
             {
-                Ramka ramka_slave = listaSlave[i].Receive(ramka_master);
-                if (ramka_slave.adres != -1)
+                ramka_slave= listaSlave[i].Receive(ramka_master);
+                if (ramka_slave.adres != 0)
                 {
-                    tmp += "\nSlave: ";
+                    tmp += "\nSlave "+listaSlave[i].adress.ToString()+": ";
                     tmp += ramka_slave.Wyswietl();
                     ChatEtykieta.Content +="\n"+ tmp;
                 }
 
             }
-          
-
-
         }
         private void RozmieszczeniePolRamek()
         {
@@ -122,8 +129,9 @@ namespace KontrolerKomunikacyjny
         {
 
 
-            int adres, iloscWejsc, iloscWyjsc;
-            if (!int.TryParse(DodajAdresTextbox.Text, out adres))
+            byte adres;
+            int iloscWejsc, iloscWyjsc;
+            if (!byte.TryParse(DodajAdresTextbox.Text, out adres))
                 BladAdresSlaveLabel.Visibility = Visibility.Visible;
             else
                 BladAdresSlaveLabel.Visibility = Visibility.Hidden;
@@ -139,14 +147,20 @@ namespace KontrolerKomunikacyjny
                 && BladIloscWejscLabel.Visibility == Visibility.Hidden
                 && BladIloscWyjscLabel.Visibility == Visibility.Hidden)
             {
-                Slave slave = new Slave(adres);
-                listaSlave.Add(slave);
-
+                Slave slave = new Slave(adres,iloscWejsc,iloscWyjsc);
+                bool jest=false;
+                for (int i = 0; i < listaSlave.Count(); i++)
+                    if (listaSlave[i].adress == slave.adress)
+                        jest = true;
+                if (!jest)
+                    listaSlave.Add(slave);
+               else
+              MessageBox.Show("Slave o wybranym adresie już istnieje");
+              
                 UrzadzeniaWSystemieLabel.Content = "";
                 for (int i = 0; i < listaSlave.Count; i++)
-                {
-                    UrzadzeniaWSystemieLabel.Content += "Slave o adresie: " + listaSlave[i].adress + "\n";
-                }
+             
+                    UrzadzeniaWSystemieLabel.Content +=  listaSlave[i].Wyswietl();
             }
         }
     }

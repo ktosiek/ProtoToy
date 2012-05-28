@@ -11,5 +11,6 @@ namespace ProtoEngine
        public String znaczenie { get; set; }
        public bool dane;
        public bool wejscia;
+       public bool cyfrowe;
     }
 }
