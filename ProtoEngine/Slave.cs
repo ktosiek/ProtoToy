@@ -58,12 +58,12 @@ namespace ProtoEngine
 
                     if (ramka.funkcja == 2)
                     {
-                        ramka.dane[0] = 0; // wejscia[0];
+                        ramka.dane[0] = Convert.ToByte(wejscia[0]);
                         return ramka;
                     }
                     if (ramka.funkcja == 1)
                     {
-                        ramka.dane[0] = 1; //wyjscia[0];
+                        ramka.dane[0] = Convert.ToByte(wyjscia[0]);
                         return ramka;
                     }
                     if (ramka.funkcja == 3)
@@ -74,6 +74,22 @@ namespace ProtoEngine
                     if (ramka.funkcja == 4)
                     {
                         ramka.dane[0] = rejestryWejsciowe[0];
+                        return ramka;
+                    }
+                    if (ramka.funkcja == 5)
+                    {
+                        if (ramka.dane[1] > 0 && ramka.dane[1] <= iloscWyjsc)
+                            wyjscia[ramka.dane[1]] = Convert.ToBoolean(ramka.dane[0]);
+                        else
+                            ramka.dane[0] = 2;
+                        return ramka;
+                    }
+                    if (ramka.funkcja == 6)
+                    {
+                        if (ramka.dane[1] > 0 && ramka.dane[1] <= iloscWyjsc)
+                        rejestryWyjsciowe[ramka.dane[1]] = ramka.dane[0];
+                        else
+                            ramka.dane[0] = 2;
                         return ramka;
                     }
                 }
@@ -197,7 +213,7 @@ namespace ProtoEngine
         }
         public String Wyswietl()
         {
-            return "Adres: " + this.adress.ToString() + "; Ilość wejść: " + this.iloscWejsc.ToString() + "; Ilość wyjść" + this.iloscWyjsc.ToString() + "\n";
+                return "Adres: " + this.adress.ToString() + "; Ilość wejść: " + this.iloscWejsc.ToString() + "; Ilość wyjść" + this.iloscWyjsc.ToString() + "\n";
         }
     }
 }

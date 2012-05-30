@@ -31,8 +31,9 @@ namespace KontrolerKomunikacyjny
             BladIloscWyjscLabel.Visibility = Visibility.Hidden;
             BladMasterAdresLabel.Visibility = Visibility.Hidden;
             BladMasterFunkcjaLabel.Visibility = Visibility.Hidden;
-            BladMasterDaneLabel.Visibility = Visibility.Hidden;
-            
+            BladMasterAdresWeWyLabel.Visibility = Visibility.Hidden;
+            BladMasterWartoscLabel.Visibility = Visibility.Hidden;
+
             listaSlave = new List<ProtoEngine.Slave>();
             DodajAdresTextbox.Text = "1";
             IloscWejscTextbox.Text = "1";
@@ -53,42 +54,64 @@ namespace KontrolerKomunikacyjny
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
-            ProtoEngine.Ramka ramka_master = new ProtoEngine.Ramka(1);
+            ProtoEngine.Ramka ramka_master = new ProtoEngine.Ramka(2);
 
 
-            byte adres, funkcja, dane;
+            byte adres, funkcja, adresWeWy,wartosc;
+            int blad = 0;
             if (!byte.TryParse(AdresSlaveTextbox.Text, out adres))
+            {
                 BladMasterAdresLabel.Visibility = Visibility.Visible;
+                blad = 1;
+            }
             else
                 BladMasterAdresLabel.Visibility = Visibility.Hidden;
             if (!byte.TryParse(FunkcjaTextbox.Text, out funkcja))
+            {
                 BladMasterFunkcjaLabel.Visibility = Visibility.Visible;
+                blad = 1;
+            }
             else
                 BladMasterFunkcjaLabel.Visibility = Visibility.Hidden;
-            if (!byte.TryParse(DaneTextbox.Text, out dane))
-                BladMasterDaneLabel.Visibility = Visibility.Visible;
-            else
-                BladMasterDaneLabel.Visibility = Visibility.Hidden;
-            
+            if (funkcja == 5 || funkcja == 6)
+            {
+                if (!byte.TryParse(AdresWeWyTextbox.Text, out adresWeWy))
+                {
+                    BladMasterAdresWeWyLabel.Visibility = Visibility.Visible;
+                    blad = 1;
+                }
+                else
+                    BladMasterAdresWeWyLabel.Visibility = Visibility.Hidden;
+                if (!byte.TryParse(WartoscTextbox.Text, out wartosc))
+                {
+                    BladMasterWartoscLabel.Visibility = Visibility.Visible;
+                    blad = 1;
+                }
+                else
+                    BladMasterWartoscLabel.Visibility = Visibility.Hidden;
+                ramka_master.dane[1] = adresWeWy;
+                ramka_master.dane[0] = wartosc;
+            }
             ramka_master.adres = adres;
             ramka_master.funkcja = funkcja;
-            ramka_master.dane[0] = dane;
+           
 
             ramka_master.SumaCRC(ramka_master.dane[0]);
-
-            String tmp = "Master: ";
-            tmp += ramka_master.Wyswietl();
-             Ramka ramka_slave;
-         for (int i=0;i<listaSlave.Count;i++)
+            if (blad == 0)
             {
-                ramka_slave= listaSlave[i].Receive(ramka_master);
-                if (ramka_slave.adres != 0)
+                String tmp = "Master: ";
+                tmp += ramka_master.Wyswietl(true);
+                Ramka ramka_slave;
+                for (int i = 0; i < listaSlave.Count; i++)
                 {
-                    tmp += "\nSlave "+listaSlave[i].adress.ToString()+": ";
-                    tmp += ramka_slave.Wyswietl();
-                    ChatEtykieta.Content +="\n"+ tmp;
+                    ramka_slave = listaSlave[i].Receive(ramka_master);
+                    if (ramka_slave.adres != 0)
+                    {
+                        tmp += "\nSlave " + listaSlave[i].adress.ToString() + ": ";
+                        tmp += ramka_slave.Wyswietl(false);
+                        ChatEtykieta.Content += "\n" + tmp;
+                    }
                 }
-
             }
         }
         private void RozmieszczeniePolRamek()
@@ -101,7 +124,7 @@ namespace KontrolerKomunikacyjny
             double przes = AdresSlaveLabel.Height + 20;
             Thickness thickness;
             int i = 0;
-            for (double tmp = marginesGorny; i < 3; i++, tmp += przes)
+            for (double tmp = marginesGorny; i < 5; i++, tmp += przes)
             {
                 thickness = new Thickness(marginesLewy, tmp, 0, 0);
                 Thickness thicknessTextbox = new Thickness(marginesLewyTextbox, tmp, 0, 0);
@@ -121,7 +144,19 @@ namespace KontrolerKomunikacyjny
                 {
                     DaneLabel.Margin = thickness;
                     DaneLabel.Content = polaRamki.listaNazw[i];
-                    DaneTextbox.Margin = thicknessTextbox;
+                 
+                }
+                else if(i==3)
+                {
+                    AdresWyWeLabel.Margin=thickness;
+                    AdresWyWeLabel.Content = polaRamki.listaNazw[i];
+                    AdresWeWyTextbox.Margin = thicknessTextbox;
+                }
+                else if (i == 4)
+                {
+                    WartoscLabel.Margin = thickness;
+                    WartoscLabel.Content = polaRamki.listaNazw[i];
+                    WartoscTextbox.Margin = thicknessTextbox;
                 }
             }
         }

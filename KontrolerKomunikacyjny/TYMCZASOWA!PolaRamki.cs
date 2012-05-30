@@ -26,6 +26,8 @@ namespace KontrolerKomunikacyjny
             listaNazw.Add("Adres slave");
             listaNazw.Add("Funkcja");
             listaNazw.Add("Dane");
+            listaNazw.Add("Adres we/wy");
+            listaNazw.Add("Wartość");
         }
         private void InicjalizacjaListyTypow()
         {
@@ -33,6 +35,7 @@ namespace KontrolerKomunikacyjny
             listaTypow.Add("byte");
             listaTypow.Add("byte");
             listaTypow.Add("String");
+
         }
         private void InicjalizacjaListyWartosciMax() {
             listaWartosciMax = new List<int>();

@@ -24,9 +24,13 @@ namespace ProtoEngine
         {
             this.suma = dane;
         }
-        public String Wyswietl()
+        public String Wyswietl(bool a)
         {
-            return adres.ToString() + " " + funkcja.ToString() + " " + dane[0].ToString();
+            if(a)
+                return adres.ToString() + " " + funkcja.ToString();
+            else
+
+                return adres.ToString() + " " + funkcja.ToString() + " " + dane[0].ToString();
         }
 
     }
