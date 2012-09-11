@@ -150,6 +150,15 @@ namespace ProtoEngineTest
                     case "dev_addr":
                         ((OptionInt)opt).Value = devAddr;
                         break;
+                    case "number_of_coils":
+                        ((OptionInt)opt).Value = 8;
+                        break;
+                    case "coil_values":
+                        for (int i = 0; i < 8; i++)
+                        {
+                            ((OptionArray)opt).setOption(i, new OptionBool("", i < 4));
+                        }
+                        break;
                 }
             }
             protocol.registerDevice(device);
@@ -165,13 +174,17 @@ namespace ProtoEngineTest
             Stream outStream = new MemoryStream();
 
             protocol.run(inStream, outStream); // TODO: test callbacks
+            outStream.Seek(0, SeekOrigin.Begin);
 
             Assert.AreEqual(devAddr, outStream.ReadByte());
             Assert.AreEqual(1, outStream.ReadByte()); // function code
             Assert.AreEqual(0, outStream.ReadByte()); // len, byte 1
-            Assert.AreEqual(1, outStream.ReadByte()); // len, byte 2
-            Assert.AreEqual(0, outStream.ReadByte()); // coil status
-            Assert.IsFalse(outStream.CanRead); // end of stream
+            Assert.AreEqual(0, outStream.ReadByte()); // len, byte 2
+            Assert.AreEqual(0, outStream.ReadByte()); // len, byte 3
+            Assert.AreEqual(1, outStream.ReadByte()); // len, byte 4
+            Assert.AreEqual(0x0f, outStream.ReadByte()); // coil status
+            outStream.Seek(2, SeekOrigin.Current); // CRC
+            Assert.AreEqual(-1, outStream.ReadByte()); // end of stream
         }
     }
 }
