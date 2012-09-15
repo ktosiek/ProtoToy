@@ -1,0 +1,75 @@
+# Dokumentacja formatu opisu protokołu
+
+Konwencja przyjęta w tym dokumencie:
+Gdy mowa o znaczniku, jego nazwa będzie podawana pomiędzy `<>`, np. "`<protocol>`.
+Na początku sekcji opisującej znacznik podany jest on z wszystkimi wymaganymi atrybutami,
+a także z atrybutami opcjonalnymi w `[]`, np.
+"`<field name="Nazwa" type="Typ pola" [default="wyrażenie zwracające wartość domyślną"] />`"
+Jeśli znacznik jest zawsze pusty, podany jest z `/` na końcu.
+Głównym znacznikiem jest `<protocol>`.
+
+## Znaczniki:
+
+### `<protocol name="Nazwa protokołu">`
+
+Może zawierać:
+
+ - `<options>` - opcje dla całego protokołu
+ - `<msg_start_mark>` - blok dopasowywany na początku każdej wiadomości,
+                        zakłada się że jego obecność oznacza kolejną wiadomość przychodzącą
+ - `<msgs>` - lista wiadomości rozumianych przez dany protokół
+   Może zawierać:
+
+    - `<msg type="Typ" [name="Nazwa"]>` - Wiadomość na liście, przetwarzanie zaczynane jest od
+                                          pierwszej wiadomości o danym typie (request/response).
+                                          Każda wiadomość jest blokiem (patrz: `<block>`)
+
+
+### `<devices>` - lista urządzeń
+
+Może zawierać:
+
+ - `<device>` - opis urządzenia
+
+
+### `<options>` - lista opcji
+
+Może zawierać:
+
+ - `<option name="Nazwa zmiennej która otrzyma wartość tej opcji" type="Typ opcji">`
+
+
+### `<device name="Nazwa urządzenia">`
+
+Może zawierać:
+
+ - `<options>` - opcje dotyczące instancji tego urządzenia
+ - `<responds_when>` - blok który, jeśli pasuje, oznacza że to urządzenia przyjmie przychodzącą wiadomość.
+                       Ten blok ma dostęp do ustawień urządzenia, więc może np. sprawdzać jego adres.
+ - `<transactions>` - lista transakcji dla tego urządzenia.
+   Może zawierać:
+
+     - `<transaction name="Nazwa transakcji">` - blok opisujący transakcję.
+
+
+### `<block [name="Nazwa"]>` - blok reguł
+Blok reguł dopasowywanych po kolei. Po dopasowaniu wszystkich dane które brały udział
+w dopasowaniu są dodawane do środowiska pod nazwą bloku.
+Może zawierać:
+
+ - `<block>` - podblok
+ - `<field name="nazwa w środowisku" type="typ" [default="Wartość domyślna"] />` - pole w wiadomości.
+    Przy wczytywaniu - musi być obecne w strumieniu wejściowym, wartość name określa nazwę
+    zmiennej która otrzyma jego wartość.
+    Przy generowaniu - jeśli nie podano "default", w miejsce tego znacznika wstawiona będzie
+    wartość zmiennej o podanej nazwie i typie. Jeśli podano "default", wstawiona będzie wartość wyrażenia
+    w tym atrybucie.
+ - `<inc_msg />` - tylko w `<msg>`. Znajdź i dopasuj inną wiadomoś tego samego typu.
+ - `<conditional>` - jak blok, ale jeśli jego zawartość nie pasuje sam nie zgłasza niedopasowania.
+ - `<assert name="nazwa zmiennej" value="wartość zmiennej" [err_msg="wiadomość"]/>` - sprawdza
+    czy zmienna ma odpowiednią wartość. Jeśli nie, wywołuje błąd (przerywa przetwarzanie)!
+ - `<match name="nazwa zmiennej" value="wartość">` - synonim `<match_expr>(== $name value)</match_expr>`
+ - `<match_expr>` - dopasowane tylko wtedy gdy wartość wyrażenia wewnątrz znacznika jest prawdziwa
+ - `<set name="nazwa zmiennej" value="wartość" />` - ustawia wartość zmiennej
+ - `<isset name="nazwa zmiennej" />` - dopasowane jeśli dana zmienna istnieje
+ - `<isnset name="nazwa zmiennej" />` - dopasowane jeśli dana zmienna nie istnieje
