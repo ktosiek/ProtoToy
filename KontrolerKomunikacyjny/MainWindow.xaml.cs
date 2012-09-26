@@ -48,9 +48,17 @@ namespace KontrolerKomunikacyjny
         }
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            //ProtoEngine.Protocol p1=new ProtoEngine.Protocol( "E:/Projekty/ProtoToy/Modbus-serial.xml" );
+            
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.Filter = "XML documents (.xml) | *.xml";
 
-
+            Nullable<bool> result = dlg.ShowDialog();
+            String filename;
+            if (result == true)
+            {
+                filename = dlg.FileName;
+                Protocol p1 = new Protocol(filename);
+            }
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
