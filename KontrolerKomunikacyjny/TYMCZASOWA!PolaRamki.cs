@@ -24,10 +24,10 @@ namespace KontrolerKomunikacyjny
         {
             listaNazw = new List<string>();
             listaNazw.Add("Adres slave");
-            listaNazw.Add("Funkcja");
+            listaNazw.Add("Kod funkcji");
             listaNazw.Add("Dane");
             listaNazw.Add("Adres we/wy");
-            listaNazw.Add("Wartość");
+            listaNazw.Add("Wartość we/wy");
         }
         private void InicjalizacjaListyTypow()
         {

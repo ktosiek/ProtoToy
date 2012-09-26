@@ -20,7 +20,7 @@ namespace KontrolerKomunikacyjny
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<ProtoEngine.Slave> listaSlave;
+        public List<Slave> listaSlave;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,35 +54,44 @@ namespace KontrolerKomunikacyjny
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
-            ProtoEngine.Ramka ramka_master = new ProtoEngine.Ramka(2);
+            Ramka ramka_master = new Ramka(2);
 
 
             byte adres, funkcja, adresWeWy,wartosc;
             int blad = 0;
-            if (!byte.TryParse(AdresSlaveTextbox.Text, out adres))
+            if (!byte.TryParse(AdresSlaveTextbox.Text, out adres)) //sprawdza, czy adres jest typu byte
             {
                 BladMasterAdresLabel.Visibility = Visibility.Visible;
                 blad = 1;
             }
             else
                 BladMasterAdresLabel.Visibility = Visibility.Hidden;
-            if (!byte.TryParse(FunkcjaTextbox.Text, out funkcja))
+            if (!byte.TryParse(FunkcjaTextbox.Text, out funkcja)) //sprawdza, czy kod funkcji jest typu byte
             {
                 BladMasterFunkcjaLabel.Visibility = Visibility.Visible;
                 blad = 1;
             }
             else
                 BladMasterFunkcjaLabel.Visibility = Visibility.Hidden;
-            if (funkcja == 5 || funkcja == 6)
+            if (funkcja == 1 || funkcja == 2)
             {
-                if (!byte.TryParse(AdresWeWyTextbox.Text, out adresWeWy))
+                if (!byte.TryParse(AdresWeWyTextbox.Text, out adresWeWy)) //TODO sprawdza czy adres we/wy jest typu 2*byte
+                {
+                    BladMasterAdresWeWyLabel.Visibility = Visibility.Visible;
+                    blad = 1;
+                }
+                ramka_master.dane[1] = adresWeWy; //TODO zamienić dane[1]=adresWeWy na dane[0]=adresWeWy
+            }
+            if (funkcja == 5 || funkcja == 6) //jeśli kod funkcji oznacza zapis
+            {
+                if (!byte.TryParse(AdresWeWyTextbox.Text, out adresWeWy)) //TODO sprawdza czy adres we/wy jest typu 2*byte
                 {
                     BladMasterAdresWeWyLabel.Visibility = Visibility.Visible;
                     blad = 1;
                 }
                 else
                     BladMasterAdresWeWyLabel.Visibility = Visibility.Hidden;
-                if (!byte.TryParse(WartoscTextbox.Text, out wartosc))
+                if (!byte.TryParse(WartoscTextbox.Text, out wartosc)) //sprawdza, czy wartość we/wy jest typu byte
                 {
                     BladMasterWartoscLabel.Visibility = Visibility.Visible;
                     blad = 1;
@@ -97,17 +106,19 @@ namespace KontrolerKomunikacyjny
            
 
             ramka_master.SumaCRC(ramka_master.dane[0]);
+
             if (blad == 0)
             {
-                String tmp = "Master: ";
+                String tmp = "Master [adres_slave kod_funkcji]: ";
                 tmp += ramka_master.Wyswietl(true);
-                Ramka ramka_slave;
-                for (int i = 0; i < listaSlave.Count; i++)
+                Ramka ramka_slave=new Ramka(2); //TODO dlaczego nie =new Ramka(2)?
+                for (int i = 0; i < listaSlave.Count; i++) //do każdego slave z listy
                 {
-                    ramka_slave = listaSlave[i].Receive(ramka_master);
-                    if (ramka_slave.adres != 0)
+                    ramka_slave = listaSlave[i].Receive(ramka_master); //wysyła ramkę od mastera
+                    //slave zwraca ramkę odpowiedzi
+                    if (ramka_slave.adres != 0)                         
                     {
-                        tmp += "\nSlave " + listaSlave[i].adress.ToString() + ": ";
+                        tmp += "\nSlave [adres_slave kod_funkcji, ] " + listaSlave[i].adress.ToString() + ": ";
                         tmp += ramka_slave.Wyswietl(false);
                         ChatEtykieta.Content += "\n" + tmp;
                     }

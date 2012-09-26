@@ -55,15 +55,14 @@ namespace ProtoEngine
             for (int i = 0; i < listaKodowFunkcji.Count; i++)
                 if (ramka.funkcja == listaKodowFunkcji[i].kod)
                 {
-
-                    if (ramka.funkcja == 2)
-                    {
-                        ramka.dane[0] = Convert.ToByte(wejscia[0]);
-                        return ramka;
-                    }
                     if (ramka.funkcja == 1)
                     {
                         ramka.dane[0] = Convert.ToByte(wyjscia[0]);
+                        return ramka;
+                    }
+                    if (ramka.funkcja == 2)
+                    {
+                        ramka.dane[0] = Convert.ToByte(wejscia[0]);
                         return ramka;
                     }
                     if (ramka.funkcja == 3)
@@ -78,7 +77,7 @@ namespace ProtoEngine
                     }
                     if (ramka.funkcja == 5)
                     {
-                        if (ramka.dane[1] > 0 && ramka.dane[1] <= iloscWyjsc)
+                        if (ramka.dane[1] >= 0 && ramka.dane[1] <= iloscWyjsc)
                             wyjscia[ramka.dane[1]] = Convert.ToBoolean(ramka.dane[0]);
                         else
                             ramka.dane[0] = 2;
@@ -86,7 +85,7 @@ namespace ProtoEngine
                     }
                     if (ramka.funkcja == 6)
                     {
-                        if (ramka.dane[1] > 0 && ramka.dane[1] <= iloscWyjsc)
+                        if (ramka.dane[1] >= 0 && ramka.dane[1] <= iloscWyjsc)
                         rejestryWyjsciowe[ramka.dane[1]] = ramka.dane[0];
                         else
                             ramka.dane[0] = 2;
@@ -141,13 +140,13 @@ namespace ProtoEngine
         {
             listaKodowFunkcji = new List<DekodowanieFunkcji>();
             DekodowanieFunkcji d1 = new DekodowanieFunkcji();
-            d1.znaczenie = "odczyt wyjść bitowych";
+            d1.znaczenie = "odczyt wyjścia bitowego";
             d1.dane = true;
             d1.kod = 1;
             d1.wejscia = false;
             d1.cyfrowe = true;
             DekodowanieFunkcji d2 = new DekodowanieFunkcji();
-            d2.znaczenie = "odczyt wejść bitowych";
+            d2.znaczenie = "odczyt wejścia bitowego";
             d2.dane = true;
             d2.kod = 2;
             d2.wejscia = true;
@@ -165,12 +164,12 @@ namespace ProtoEngine
             d4.wejscia = true;
             d4.cyfrowe = false;
             DekodowanieFunkcji d5 = new DekodowanieFunkcji();
-            d5.znaczenie = "zapis 1 bitu";
+            d5.znaczenie = "zapis 1 bitu wyjściowego";
             d5.dane = false;
             d5.kod = 5;
             d5.cyfrowe = true;
             DekodowanieFunkcji d6 = new DekodowanieFunkcji();
-            d6.znaczenie = "zapis 1 rejestru";
+            d6.znaczenie = "zapis 1 rejestru wyjściowego";
             d6.dane = false;
             d6.kod = 6;
             d6.cyfrowe = false;
