@@ -25,7 +25,8 @@ namespace KontrolerKomunikacyjny
         {
             InitializeComponent();
             RozmieszczeniePolRamek();
-
+            comboBox1.Items.Add("COM1");
+            comboBox1.Items.Add("COM2");
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
             BladIloscWyjscLabel.Visibility = Visibility.Hidden;
