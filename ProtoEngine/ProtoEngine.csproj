@@ -59,6 +59,7 @@
     <Compile Include="Ramka.cs" />
     <Compile Include="RuleBlock.cs" />
     <Compile Include="RuleField.cs" />
+    <Compile Include="RuleIncMsg.cs" />
     <Compile Include="RuleIsSet.cs" />
     <Compile Include="RuleMatch.cs" />
     <Compile Include="RuleSet.cs" />
