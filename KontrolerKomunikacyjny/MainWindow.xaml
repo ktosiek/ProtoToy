@@ -37,7 +37,10 @@
         <Label Content="LISTA URZĄDZEŃ W SYSTEMIE" Height="28" HorizontalAlignment="Left" Margin="464,382,0,0" Name="label2" VerticalAlignment="Top" Width="209" />
         <Label Height="205" HorizontalAlignment="Left" Margin="464,416,0,0" Name="UrzadzeniaWSystemieLabel" VerticalAlignment="Top" Width="242" />
         <Label Content="LISTA PROTOTYPÓW URZĄDZEŃ" Height="28" HorizontalAlignment="Left" Margin="10,127,0,0" Name="label9" VerticalAlignment="Top" Width="189" />
-        <ListBox Height="142" HorizontalAlignment="Left" Margin="12,153,0,0" Name="listBox1" VerticalAlignment="Top" Width="168" ItemsSource="{Binding}" SelectionChanged="listBox1_SelectionChanged" MouseDoubleClick="listBox1_MouseDoubleClick" />
+        <ListBox Height="142" HorizontalAlignment="Left" Margin="12,153,0,0" Name="listBox1" VerticalAlignment="Top" Width="168" ItemsSource="{Binding}" SelectionChanged="listBox1_SelectionChanged"  >
+            <ListBoxItem>Coil thingy</ListBoxItem>
+            <ListBoxItem>3wejścia2wyjścia</ListBoxItem>
+        </ListBox>
         <Label Height="26" HorizontalAlignment="Left" Margin="12,349,0,0" Name="prototypeLabel" VerticalAlignment="Top" Width="168" />
         <Label Content="Adres slave" Height="26" HorizontalAlignment="Left" Margin="18,393,0,0" Name="label3" VerticalAlignment="Top" Width="130" />
         <Label Content="Ilość wejść" Height="26" HorizontalAlignment="Left" Margin="18,442,0,0" Name="label4" VerticalAlignment="Top" Width="130" />

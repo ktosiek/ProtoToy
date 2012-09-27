@@ -22,17 +22,12 @@ namespace KontrolerKomunikacyjny
     public partial class MainWindow : Window
     {
         public List<Slave> listaSlave;
-
         public MainWindow()
         {
             InitializeComponent();
             RozmieszczeniePolRamek();
             ZaladowanieNazwPortow();
             
-            listBox1.Items.Add("Coil thingy");
-            listBox1.Items.Add("3wejścia2wyjścia");
-            listBox1.Items.GetItemAt(0);
-           
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
             BladIloscWyjscLabel.Visibility = Visibility.Hidden;
@@ -239,17 +234,10 @@ namespace KontrolerKomunikacyjny
            
                 ListBoxItem lbi = new ListBoxItem();
                 lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
-                if (lbi!= null) 
-                prototypeLabel.Content = " Zmieniłeś zaznaczenie: "; //lbi.Content.ToString() + " :";
+                 prototypeLabel.Content = lbi.Content.ToString();
          
         }
 
-        private void listBox1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ListBoxItem lbi = new ListBoxItem();
-            lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
-           // if (lbi != null)
-                prototypeLabel.Content = " Kliknąłeś 2 razy: "; //lbi.Content.ToString() + " :";
-        }
+       
     }
 }
