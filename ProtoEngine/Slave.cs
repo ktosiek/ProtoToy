@@ -214,7 +214,7 @@ namespace ProtoEngine
         }
         public String Wyswietl()
         {
-                return "Nazwa: "+this.nazwa+" Adres: " + this.adress.ToString() + "; Ilość wejść: " + this.iloscWejsc.ToString() + "; Ilość wyjść" + this.iloscWyjsc.ToString() + "\n";
+            return "Adres: " + this.adress.ToString() + "; Ilość wejść: " + this.iloscWejsc.ToString() + "; Ilość wyjść: " + this.iloscWyjsc.ToString() + " Nazwa: " + this.nazwa + "\n";
         }
     }
 }
