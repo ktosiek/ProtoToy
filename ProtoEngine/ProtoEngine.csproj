@@ -63,7 +63,9 @@
     <Compile Include="RuleIsSet.cs" />
     <Compile Include="RuleMatch.cs" />
     <Compile Include="RuleSet.cs" />
-    <Compile Include="Slave.cs" />
+    <Compile Include="Slave.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TransactionalStreamReader.cs" />
     <Compile Include="Rule.cs" />
     <Compile Include="Transaction.cs" />

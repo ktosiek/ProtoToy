@@ -7,11 +7,11 @@ namespace ProtoEngine
 {
     public class ListaSlave
     {
-        public IList<ProtoEngine.Slave> lista;
+        public IList<Slave> lista;
         public ListaSlave() {
-            lista = new List<ProtoEngine.Slave>();
+            lista = new List<Slave>();
         }
-        public void Dodaj(ProtoEngine.Slave slave)
+        public void Dodaj(Slave slave)
         {
             lista.Add(slave);
         }
