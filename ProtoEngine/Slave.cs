@@ -12,13 +12,15 @@ namespace ProtoEngine
         List<bool> wyjscia;
         List<byte> rejestryWejsciowe;
         List<byte> rejestryWyjsciowe;
+        public String nazwa;
 
         public int iloscWejsc { get; set; }
         public int iloscWyjsc { get; set; }
         public List<DekodowanieFunkcji> listaKodowFunkcji;
 
-        public Slave(byte adress, int iloscWejsc, int iloscWyjsc)
+        public Slave(String nazwa,byte adress, int iloscWejsc, int iloscWyjsc)
         {
+            this.nazwa = nazwa;
             this.adress = adress;
             this.iloscWejsc = iloscWejsc;
             this.iloscWyjsc = iloscWyjsc;
@@ -212,7 +214,7 @@ namespace ProtoEngine
         }
         public String Wyswietl()
         {
-                return "Adres: " + this.adress.ToString() + "; Ilość wejść: " + this.iloscWejsc.ToString() + "; Ilość wyjść" + this.iloscWyjsc.ToString() + "\n";
+                return "Nazwa: "+this.nazwa+" Adres: " + this.adress.ToString() + "; Ilość wejść: " + this.iloscWejsc.ToString() + "; Ilość wyjść" + this.iloscWyjsc.ToString() + "\n";
         }
     }
 }

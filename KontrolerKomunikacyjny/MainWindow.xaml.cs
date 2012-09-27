@@ -42,8 +42,9 @@ namespace KontrolerKomunikacyjny
             IloscWyjscTextbox.Text = "1";
             byte adres;
             byte.TryParse(DodajAdresTextbox.Text, out adres);
- 
-            Slave slave = new Slave(adres,1,1);
+            ListBoxItem lbi = new ListBoxItem();
+            lbi = (listBox1.Items.GetItemAt(0) as ListBoxItem);
+            Slave slave = new Slave(lbi.Content.ToString(),adres,1,1);
             listaSlave.Add(slave);
             UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
 
@@ -190,44 +191,6 @@ namespace KontrolerKomunikacyjny
                 }
             }
         }
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-
-
-            byte adres;
-            int iloscWejsc, iloscWyjsc;
-            if (!byte.TryParse(DodajAdresTextbox.Text, out adres))
-                BladAdresSlaveLabel.Visibility = Visibility.Visible;
-            else
-                BladAdresSlaveLabel.Visibility = Visibility.Hidden;
-            if (!int.TryParse(IloscWejscTextbox.Text, out iloscWejsc))
-                BladIloscWejscLabel.Visibility = Visibility.Visible;
-            else
-                BladIloscWejscLabel.Visibility = Visibility.Hidden;
-            if (!int.TryParse(IloscWyjscTextbox.Text, out iloscWyjsc))
-                BladIloscWyjscLabel.Visibility = Visibility.Visible;
-            else
-                BladIloscWyjscLabel.Visibility = Visibility.Hidden;
-            if (BladAdresSlaveLabel.Visibility == Visibility.Hidden
-                && BladIloscWejscLabel.Visibility == Visibility.Hidden
-                && BladIloscWyjscLabel.Visibility == Visibility.Hidden)
-            {
-                Slave slave = new Slave(adres,iloscWejsc,iloscWyjsc);
-                bool jest=false;
-                for (int i = 0; i < listaSlave.Count(); i++)
-                    if (listaSlave[i].adress == slave.adress)
-                        jest = true;
-                if (!jest)
-                    listaSlave.Add(slave);
-               else
-              MessageBox.Show("Slave o wybranym adresie już istnieje");
-              
-                UrzadzeniaWSystemieLabel.Content = "";
-                for (int i = 0; i < listaSlave.Count; i++)
-             
-                    UrzadzeniaWSystemieLabel.Content +=  listaSlave[i].Wyswietl();
-            }
-        }
 
         private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -236,6 +199,50 @@ namespace KontrolerKomunikacyjny
                 lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
                  prototypeLabel.Content = lbi.Content.ToString();
          
+        }
+
+        private void dodajUrzadzenie_Click(object sender, RoutedEventArgs e)
+        {
+            byte adres;
+            int iloscWejsc, iloscWyjsc;
+            if (listBox1.SelectedItem != null)
+            {
+                if (!byte.TryParse(DodajAdresTextbox.Text, out adres))
+                    BladAdresSlaveLabel.Visibility = Visibility.Visible;
+                else
+                    BladAdresSlaveLabel.Visibility = Visibility.Hidden;
+                if (!int.TryParse(IloscWejscTextbox.Text, out iloscWejsc))
+                    BladIloscWejscLabel.Visibility = Visibility.Visible;
+                else
+                    BladIloscWejscLabel.Visibility = Visibility.Hidden;
+                if (!int.TryParse(IloscWyjscTextbox.Text, out iloscWyjsc))
+                    BladIloscWyjscLabel.Visibility = Visibility.Visible;
+                else
+                    BladIloscWyjscLabel.Visibility = Visibility.Hidden;
+                if (BladAdresSlaveLabel.Visibility == Visibility.Hidden
+                    && BladIloscWejscLabel.Visibility == Visibility.Hidden
+                    && BladIloscWyjscLabel.Visibility == Visibility.Hidden)
+                {
+                     ListBoxItem lbi = new ListBoxItem();
+                     lbi = (listBox1.SelectedItem as ListBoxItem);
+                    Slave slave = new Slave(lbi.Content.ToString(),adres, iloscWejsc, iloscWyjsc);
+                    bool jest = false;
+                    for (int i = 0; i < listaSlave.Count(); i++)
+                        if (listaSlave[i].adress == slave.adress)
+                            jest = true;
+                    if (!jest)
+                        listaSlave.Add(slave);
+                    else
+                        MessageBox.Show("Slave o wybranym adresie już istnieje");
+
+                    UrzadzeniaWSystemieLabel.Content = "";
+                    for (int i = 0; i < listaSlave.Count; i++)
+
+                        UrzadzeniaWSystemieLabel.Content += listaSlave[i].Wyswietl();
+                }
+            }
+            else MessageBox.Show("Zaznacz prototyp");
+           
         }
 
        
