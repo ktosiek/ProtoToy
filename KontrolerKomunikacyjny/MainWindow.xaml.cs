@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ProtoEngine;
+using System.IO.Ports;
 
 namespace KontrolerKomunikacyjny
 {
@@ -26,8 +27,8 @@ namespace KontrolerKomunikacyjny
         {
             InitializeComponent();
             RozmieszczeniePolRamek();
-            comboBox1.Items.Add("COM1");
-            comboBox1.Items.Add("COM2");
+            ZaladowanieNazwPortow();
+            
             listBox1.Items.Add("Coil thingy");
             listBox1.Items.Add("3wejścia2wyjścia");
             listBox1.Items.GetItemAt(0);
@@ -51,6 +52,15 @@ namespace KontrolerKomunikacyjny
             listaSlave.Add(slave);
             UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
 
+        }
+        private void ZaladowanieNazwPortow(){
+            String[] ports = SerialPort.GetPortNames();
+            foreach (String port in ports)
+            {
+                comboBox1.Items.Add(port);
+            }
+            comboBox1.Items.Add("COM1");
+            comboBox1.Items.Add("COM2");
         }
         private void button1_Click(object sender, RoutedEventArgs e)
         {
