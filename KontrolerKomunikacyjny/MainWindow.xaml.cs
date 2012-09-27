@@ -21,12 +21,17 @@ namespace KontrolerKomunikacyjny
     public partial class MainWindow : Window
     {
         public List<Slave> listaSlave;
+
         public MainWindow()
         {
             InitializeComponent();
             RozmieszczeniePolRamek();
             comboBox1.Items.Add("COM1");
             comboBox1.Items.Add("COM2");
+            listBox1.Items.Add("Coil thingy");
+            listBox1.Items.Add("3wejścia2wyjścia");
+            listBox1.Items.GetItemAt(0);
+           
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
             BladIloscWyjscLabel.Visibility = Visibility.Hidden;
@@ -217,6 +222,24 @@ namespace KontrolerKomunikacyjny
              
                     UrzadzeniaWSystemieLabel.Content +=  listaSlave[i].Wyswietl();
             }
+        }
+
+        private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+                ListBoxItem lbi = new ListBoxItem();
+                lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
+                if (lbi!= null) 
+                prototypeLabel.Content = " Zmieniłeś zaznaczenie: "; //lbi.Content.ToString() + " :";
+         
+        }
+
+        private void listBox1_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListBoxItem lbi = new ListBoxItem();
+            lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
+           // if (lbi != null)
+                prototypeLabel.Content = " Kliknąłeś 2 razy: "; //lbi.Content.ToString() + " :";
         }
     }
 }
