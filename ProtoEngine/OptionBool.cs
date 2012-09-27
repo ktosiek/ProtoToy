@@ -33,6 +33,16 @@ namespace ProtoEngine
         }
         public OptionBoolChangeHandler OptionBoolChanged;
 
+        public override string TypeName
+        {
+            get { return "bool"; }
+        }
+
+        public OptionBool(String name, String type)
+            : base(name)
+        {
+        }
+
         /// <summary>
         /// Konstruktor przyjmujący fragmet DOM opisujący opcję
         /// </summary>
@@ -82,6 +92,7 @@ namespace ProtoEngine
         {
             this.Value = value;
         }
+
 
         public OptionBool(String name)
             : base(name)

@@ -9,6 +9,7 @@ namespace ProtoEngine
     {
         List<Rule> rules = new List<Rule>();
         bool failSilently = false;
+        String name;
 
         public RuleBlock(XmlNode node, Protocol protocol)
         {
@@ -19,18 +20,25 @@ namespace ProtoEngine
                 if(child.Name[0] != '#')
                     rules.Add(Rule.fromXml(child, protocol));
             }
+            if (node.Attributes["name"] != null)
+                name = node.Attributes["name"].Value;
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            TransactionalStreamReader input)
+            TransactionalStreamReader input,
+            out List<Option> fields)
         {
             input.startTransaction();
             Dictionary<String, Option> myEnv = variables;
+            fields = new List<Option>();
             foreach (Rule rule in rules)
             {
-                myEnv = rule.match(myEnv, input);
+                List<Option> newFields;
+                myEnv = rule.match(myEnv, input, out newFields);
                 if (myEnv == null)
                     break;
+                if (newFields != null)
+                    fields.AddRange(newFields);
             }
             if (myEnv == null)
             {
@@ -42,23 +50,40 @@ namespace ProtoEngine
             }
             else
             {
+                if (this.name != null)
+                    myEnv[name] = new OptionArray(name, input.getTransactionData());
                 input.commitTransaction();
                 return myEnv;
             }
         }
 
         override public Dictionary<String, Option> match(Dictionary<String, Option> variables,
-            out List<byte[]> output)
+            out List<byte[]> output,
+            out List<Option> fields)
         {
             Dictionary<String, Option> myEnv = new Dictionary<String, Option>(variables);
             output = new List<byte[]>();
-            List<byte[]> list;
+            List<byte[]> newOutput;
+            fields = new List<Option>();
             foreach (Rule rule in rules)
             {
-                myEnv = rule.match(myEnv, out list);
+                List<Option> newFields;
+                myEnv = rule.match(myEnv, out newOutput, out newFields);
                 if (myEnv == null)
                     return null;
-                output.AddRange(list);
+                if (newOutput != null)
+                    output.AddRange(newOutput);
+                if (newFields != null)
+                    fields.AddRange(newFields);
+            }
+
+            if (this.name != null)
+            {
+                List<char> data = new List<char>();
+                foreach (byte[] bs in output)
+                    foreach (byte b in bs)
+                        data.Add((char)b);
+                myEnv[name] = new OptionArray(name, data);
             }
             return myEnv;
         }

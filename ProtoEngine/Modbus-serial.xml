@@ -73,7 +73,7 @@
       <transactions>
         <transaction name="read_coils">
           <match name="function_code" value="1"/>
-          <set name="last_coil" value="(+ $starting_address $quantity_of_coils 1)"/>
+          <set name="last_coil" value="(+ $starting_address $quantity_of_coils)"/>
           <conditional>
             <match_expr>(gt $last_coil $number_of_coils)</match_expr>
             <set name="exception_code" value="2"/>
@@ -86,7 +86,7 @@
             <isnset name="byte_count"/>
             <set name="byte_count" value="(+ 1 (/ $quantity_of_coils 8))"/>
           </conditional>
-          <set name="coil_status" value="(pack_bool (substr $coil_values $starting_addres (+ 1 $loast_coil)))"/>
+          <set name="coil_status" value="(pack_bool (substr $coil_values $starting_address (+ 1 $last_coil)))"/>
         </transaction>
       </transactions>
     </device>

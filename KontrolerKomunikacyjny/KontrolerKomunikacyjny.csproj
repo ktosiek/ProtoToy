@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="SzeregowyPort.cs" />
     <Compile Include="TYMCZASOWA!PolaRamki.cs" />
+    <Compile Include="Slave.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

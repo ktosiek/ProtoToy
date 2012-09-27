@@ -124,5 +124,67 @@ namespace ProtoEngineTest
             protocol.unregisterDevice(protocol.DevicePrototypes[0].create());
             Assert.IsTrue(protocol.RegisteredDevices.Count == 0);
         }
+
+        /// <summary>
+        ///A test for run
+        ///</summary>
+        [TestMethod()]
+        public void runTest()
+        {
+            byte devAddr = 10;
+            foreach (Option opt in protocol.Options)
+            {
+                switch (opt.Name)
+                {
+                    case "crc_check":
+                        ((OptionBool)opt).Value = false;
+                        break;
+                }
+            }
+
+            Device device = protocol.DevicePrototypes[0].create(); // TODO: search for the right device
+            foreach (Option opt in device.Options)
+            {
+                switch (opt.Name)
+                {
+                    case "dev_addr":
+                        ((OptionInt)opt).Value = devAddr;
+                        break;
+                    case "number_of_coils":
+                        ((OptionInt)opt).Value = 8;
+                        break;
+                    case "coil_values":
+                        for (int i = 0; i < 8; i++)
+                        {
+                            ((OptionArray)opt).setOption(i, new OptionBool("", i < 4));
+                        }
+                        break;
+                }
+            }
+            protocol.registerDevice(device);
+
+            // Prepare input stream, one message to read coils 0-8
+            Stream inStream = new MemoryStream();
+            inStream.WriteByte(devAddr); // Address
+            inStream.WriteByte(1); // function code, read coils
+            inStream.Write(new byte[] { 0, 0 }, 0, 2); // starting address
+            inStream.Write(new byte[] { 8, 0 }, 0, 2); // quantity TODO: is it 8 or 8*256?
+            inStream.Write(new byte[] { 0, 0 }, 0, 2); // TODO: make this a real CRC
+            inStream.Seek(0, SeekOrigin.Begin);
+            Stream outStream = new MemoryStream();
+
+            protocol.run(inStream, outStream); // TODO: test callbacks
+            outStream.Seek(0, SeekOrigin.Begin);
+
+            Assert.AreEqual(devAddr, outStream.ReadByte());
+            Assert.AreEqual(1, outStream.ReadByte()); // function code
+            Assert.AreEqual(0, outStream.ReadByte()); // len, byte 1
+            Assert.AreEqual(0, outStream.ReadByte()); // len, byte 2
+            Assert.AreEqual(0, outStream.ReadByte()); // len, byte 3
+            Assert.AreEqual(1, outStream.ReadByte()); // len, byte 4
+            Assert.AreEqual(0x0f, outStream.ReadByte()); // coil status
+            outStream.Seek(2, SeekOrigin.Current); // CRC
+            Assert.AreEqual(-1, outStream.ReadByte()); // end of stream
+        }
     }
 }

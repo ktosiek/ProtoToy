@@ -22,6 +22,9 @@ namespace ProtoEngine
 
         public int Count { get { return OptionsArray.Length; } }
 
+        private string typeName;
+        public override string TypeName { get { return typeName; } }
+
         public Option getOption(int n)
         {
             if (OptionsArray[n] == null)
@@ -39,17 +42,37 @@ namespace ProtoEngine
             OptionsArray[n] = opt;
         }
 
+        public OptionArray(String name, List<char> data)
+            : base(name)
+        {
+            this.typeName = "array byte " + data.Count;
+            optionsArray = new Option[data.Count];
+            for (int i = 0; i < data.Count; i++)
+            {
+                setOption(i, new OptionInt("", (byte)data[i], 0, 255, 1));
+            }
+        }
+
         public OptionArray(String name, XmlNode node)
             : base(name)
         {
-            string[] split = node.Attributes["type"].Value.Split();
+            typeName = node.Attributes["type"].Value;
+            string[] split = typeName.Split();
             construct(split[1], int.Parse(split[2]));
         }
 
         private OptionArray(String name, OptionArray parent)
             : base(name)
         {
+            this.typeName = parent.TypeName;
             this.parent = parent;
+        }
+
+        public OptionArray(String name, String type)
+            : base(name)
+        {
+            this.typeName = type;
+            construct(type.Split()[1], int.Parse(type.Split()[2]));
         }
 
         private void construct(String type, int size)
@@ -60,7 +83,9 @@ namespace ProtoEngine
             {
                 optionsArray[n] = (Option)Activator.CreateInstance(
                    this.type,
-                    new object[] { "____" + this.Name + "[" + n + "]" }
+                    new object[] {
+                        "____" + this.Name + "[" + n + "]",
+                        type }
                 );
             }
         }
