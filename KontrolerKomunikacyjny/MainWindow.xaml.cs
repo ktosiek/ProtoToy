@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -23,11 +24,23 @@ namespace KontrolerKomunikacyjny
     {
         public List<Slave> listaSlave;
         private Protocol protocol;
+        private ArrayList daneListyPrototypow;
+        public ArrayList lista()
+        {
+            ArrayList list = new ArrayList();
+            list.Add("coil thingy");
+            list.Add("2wejscia3wyjscia");
+            return list;
+        }
         public MainWindow()
         {
             InitializeComponent();
+           ZaladowanieNazwPrototypow();
+            
+          
             RozmieszczeniePolRamek();
             ZaladowanieNazwPortow();
+
             
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
@@ -43,13 +56,18 @@ namespace KontrolerKomunikacyjny
             IloscWyjscTextbox.Text = "1";
             byte adres;
             byte.TryParse(DodajAdresTextbox.Text, out adres);
-            ListBoxItem lbi = new ListBoxItem();
-            lbi = (listBox1.Items.GetItemAt(0) as ListBoxItem);
-            Slave slave = new Slave(lbi.Content.ToString(),adres,1,1);
+            Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(),adres,1,1);
             listaSlave.Add(slave);
             UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
 
         }
+        private void ZaladowanieNazwPrototypow()
+        {
+            daneListyPrototypow = lista();
+           prototypyListBox.ItemsSource = daneListyPrototypow;
+        }
+
+      
         private void ZaladowanieNazwPortow(){
             String[] ports = SerialPort.GetPortNames();
             foreach (String port in ports)
@@ -192,21 +210,11 @@ namespace KontrolerKomunikacyjny
                 }
             }
         }
-
-        private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           
-                ListBoxItem lbi = new ListBoxItem();
-                lbi = ((sender as ListBox).SelectedItem as ListBoxItem);
-                 prototypeLabel.Content = lbi.Content.ToString();
-         
-        }
-
         private void dodajUrzadzenie_Click(object sender, RoutedEventArgs e)
         {
             byte adres;
             int iloscWejsc, iloscWyjsc;
-            if (listBox1.SelectedItem != null)
+            if (prototypyListBox.SelectedItem != null)
             {
                 if (!byte.TryParse(DodajAdresTextbox.Text, out adres))
                     BladAdresSlaveLabel.Visibility = Visibility.Visible;
@@ -224,9 +232,7 @@ namespace KontrolerKomunikacyjny
                     && BladIloscWejscLabel.Visibility == Visibility.Hidden
                     && BladIloscWyjscLabel.Visibility == Visibility.Hidden)
                 {
-                     ListBoxItem lbi = new ListBoxItem();
-                     lbi = (listBox1.SelectedItem as ListBoxItem);
-                    Slave slave = new Slave(lbi.Content.ToString(),adres, iloscWejsc, iloscWyjsc);
+                    Slave slave = new Slave(prototypyListBox.SelectedValue.ToString(), adres, iloscWejsc, iloscWyjsc);
                     bool jest = false;
                     for (int i = 0; i < listaSlave.Count(); i++)
                         if (listaSlave[i].adress == slave.adress)
@@ -244,6 +250,11 @@ namespace KontrolerKomunikacyjny
             }
             else MessageBox.Show("Zaznacz prototyp");
            
+        }
+
+        private void prototypyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            prototypeLabel.Content = (sender as ListBox).SelectedValue.ToString();
         }
 
        
