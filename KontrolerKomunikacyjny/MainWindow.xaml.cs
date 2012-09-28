@@ -25,19 +25,9 @@ namespace KontrolerKomunikacyjny
         public List<Slave> listaSlave;
         private Protocol protocol;
         private ArrayList daneListyPrototypow;
-        public ArrayList listaPrototypow()
-        {
-            ArrayList list = new ArrayList();
-            list.Add("coil thingy");
-            list.Add("2wejscia3wyjscia");
-            //protocol.DevicePrototypes.
-            return list;
-        }
         public MainWindow()
         {
             InitializeComponent();
-            ZaladowanieNazwPrototypow();
-
 
             RozmieszczeniePolRamek();
             ZaladowanieNazwPortow();
@@ -55,17 +45,20 @@ namespace KontrolerKomunikacyjny
             DodajAdresTextbox.Text = "1";
             IloscWejscTextbox.Text = "1";
             IloscWyjscTextbox.Text = "1";
-            byte adres;
-            byte.TryParse(DodajAdresTextbox.Text, out adres);
-            Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(), adres, 1, 1);
-            listaSlave.Add(slave);
-            UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
+           
+           
 
         }
         private void ZaladowanieNazwPrototypow()
         {
-            daneListyPrototypow = listaPrototypow();
-            prototypyListBox.ItemsSource = daneListyPrototypow;
+            daneListyPrototypow = new ArrayList();
+            ArrayList list = new ArrayList();
+            
+            foreach (DevicePrototype device in protocol.DevicePrototypes)
+                list.Add(device.Name);
+                daneListyPrototypow=list;
+            prototypyListBox.ItemsSource = null;
+            prototypyListBox.ItemsSource = daneListyPrototypow; 
         }
         private void ZaladowanieNazwPortow()
         {
@@ -82,6 +75,7 @@ namespace KontrolerKomunikacyjny
 
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.Filter = "XML documents (.xml) | *.xml";
+            dlg.FileName = "Modbus-serial";
 
             Nullable<bool> result = dlg.ShowDialog();
             String filename;
@@ -90,6 +84,12 @@ namespace KontrolerKomunikacyjny
                 filename = dlg.FileName;
                 protocol = new Protocol(filename);
                 protocolLabel.Content += protocol.Name;
+                ZaladowanieNazwPrototypow();
+                byte adres;
+                byte.TryParse(DodajAdresTextbox.Text, out adres);
+                Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(), adres, 1, 1);
+                 listaSlave.Add(slave);
+                 UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
             }
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
