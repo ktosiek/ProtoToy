@@ -25,23 +25,24 @@ namespace KontrolerKomunikacyjny
         public List<Slave> listaSlave;
         private Protocol protocol;
         private ArrayList daneListyPrototypow;
-        public ArrayList lista()
+        public ArrayList listaPrototypow()
         {
             ArrayList list = new ArrayList();
             list.Add("coil thingy");
             list.Add("2wejscia3wyjscia");
+            //protocol.DevicePrototypes.
             return list;
         }
         public MainWindow()
         {
             InitializeComponent();
-           ZaladowanieNazwPrototypow();
-            
-          
+            ZaladowanieNazwPrototypow();
+
+
             RozmieszczeniePolRamek();
             ZaladowanieNazwPortow();
 
-            
+
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
             BladIloscWyjscLabel.Visibility = Visibility.Hidden;
@@ -56,19 +57,18 @@ namespace KontrolerKomunikacyjny
             IloscWyjscTextbox.Text = "1";
             byte adres;
             byte.TryParse(DodajAdresTextbox.Text, out adres);
-            Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(),adres,1,1);
+            Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(), adres, 1, 1);
             listaSlave.Add(slave);
             UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
 
         }
         private void ZaladowanieNazwPrototypow()
         {
-            daneListyPrototypow = lista();
-           prototypyListBox.ItemsSource = daneListyPrototypow;
+            daneListyPrototypow = listaPrototypow();
+            prototypyListBox.ItemsSource = daneListyPrototypow;
         }
-
-      
-        private void ZaladowanieNazwPortow(){
+        private void ZaladowanieNazwPortow()
+        {
             String[] ports = SerialPort.GetPortNames();
             foreach (String port in ports)
             {
@@ -79,7 +79,7 @@ namespace KontrolerKomunikacyjny
         }
         private void otworzPrzycisk(object sender, RoutedEventArgs e)
         {
-            
+
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.Filter = "XML documents (.xml) | *.xml";
 
@@ -89,6 +89,7 @@ namespace KontrolerKomunikacyjny
             {
                 filename = dlg.FileName;
                 protocol = new Protocol(filename);
+                protocolLabel.Content += protocol.Name;
             }
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
@@ -96,7 +97,7 @@ namespace KontrolerKomunikacyjny
             Ramka ramka_master = new Ramka(2);
 
 
-            byte adres, funkcja, adresWeWy,wartosc;
+            byte adres, funkcja, adresWeWy, wartosc;
             int blad = 0;
             if (!byte.TryParse(AdresSlaveTextbox.Text, out adres)) //sprawdza, czy adres jest typu byte
             {
@@ -142,7 +143,7 @@ namespace KontrolerKomunikacyjny
             }
             ramka_master.adres = adres;
             ramka_master.funkcja = funkcja;
-           
+
 
             ramka_master.SumaCRC(ramka_master.dane[0]);
 
@@ -150,12 +151,12 @@ namespace KontrolerKomunikacyjny
             {
                 String tmp = "Master [adres_slave kod_funkcji]: ";
                 tmp += ramka_master.Wyswietl(true);
-                Ramka ramka_slave=new Ramka(2); //TODO dlaczego nie =new Ramka(2)?
+                Ramka ramka_slave = new Ramka(2); //TODO dlaczego nie =new Ramka(2)?
                 for (int i = 0; i < listaSlave.Count; i++) //do każdego slave z listy
                 {
                     ramka_slave = listaSlave[i].Receive(ramka_master); //wysyła ramkę od mastera
                     //slave zwraca ramkę odpowiedzi
-                    if (ramka_slave.adres != 0)                         
+                    if (ramka_slave.adres != 0)
                     {
                         tmp += "\nSlave [adres_slave kod_funkcji, ] " + listaSlave[i].adress.ToString() + ": ";
                         tmp += ramka_slave.Wyswietl(false);
@@ -194,11 +195,11 @@ namespace KontrolerKomunikacyjny
                 {
                     DaneLabel.Margin = thickness;
                     DaneLabel.Content = polaRamki.listaNazw[i];
-                 
+
                 }
-                else if(i==3)
+                else if (i == 3)
                 {
-                    AdresWyWeLabel.Margin=thickness;
+                    AdresWyWeLabel.Margin = thickness;
                     AdresWyWeLabel.Content = polaRamki.listaNazw[i];
                     AdresWeWyTextbox.Margin = thicknessTextbox;
                 }
@@ -249,7 +250,7 @@ namespace KontrolerKomunikacyjny
                 }
             }
             else MessageBox.Show("Zaznacz prototyp");
-           
+
         }
 
         private void prototypyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -257,6 +258,6 @@ namespace KontrolerKomunikacyjny
             prototypeLabel.Content = (sender as ListBox).SelectedValue.ToString();
         }
 
-       
+
     }
 }

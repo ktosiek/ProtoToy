@@ -7,7 +7,7 @@
             <RowDefinition Height="538*" />
             <RowDefinition Height="6*" />
         </Grid.RowDefinitions>
-        <Button Content="Otwórz plik XML" Height="67" HorizontalAlignment="Left" Margin="7,23,0,0" Name="OtworzPrzycisk" VerticalAlignment="Top" Width="117" Click="otworzPrzycisk" />
+        <Button Content="Otwórz plik XML" Height="67" HorizontalAlignment="Left" Margin="7,6,0,0" Name="OtworzPrzycisk" VerticalAlignment="Top" Width="117" Click="otworzPrzycisk" />
         <Button Content="Wyślij" Height="58" HorizontalAlignment="Left" Margin="542,296,0,0" Name="WyslijPrzycisk" VerticalAlignment="Top" Width="120" Click="WyslijPrzycisk_Click" />
         <TextBox Height="35" HorizontalAlignment="Left" Margin="361,47,0,0" Name="AdresSlaveTextbox" VerticalAlignment="Top" Width="120" />
         <TextBox Height="35" HorizontalAlignment="Left" Margin="361,84,0,0" Name="FunkcjaTextbox" VerticalAlignment="Top" Width="120" />        <Label Height="410" HorizontalAlignment="Left" Margin="812,50,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="221" />
@@ -49,5 +49,6 @@
         <Button Content="Dodaj urządzenie do systemu" Height="33" HorizontalAlignment="Left" Margin="255,530,0,0" Name="dodajUrzadzenie" VerticalAlignment="Top" Width="150" Click="dodajUrzadzenie_Click" />
         <TextBox Height="35" HorizontalAlignment="Left" Margin="90,393,0,0" Name="DodajAdresTextbox" VerticalAlignment="Top" Width="120" />
         <ListBox Height="143" HorizontalAlignment="Left" Margin="12,152,0,0" Name="prototypyListBox" VerticalAlignment="Top" Width="237" SelectionChanged="prototypyListBox_SelectionChanged" />
+        <Label Content="Protokół: " Height="28" HorizontalAlignment="Left" Margin="10,82,0,0" Name="protocolLabel" VerticalAlignment="Top" Width="155" />
     </Grid>
 </Window>
