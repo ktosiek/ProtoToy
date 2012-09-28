@@ -28,6 +28,7 @@ namespace ProtoEngine
 
         public Device(String name, XmlNode deviceNode, Protocol protocol)
         {
+            this.name = name;
             foreach (XmlNode node in deviceNode.ChildNodes)
             {
                 switch (node.Name)

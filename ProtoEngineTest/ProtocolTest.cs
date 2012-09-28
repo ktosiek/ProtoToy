@@ -101,6 +101,15 @@ namespace ProtoEngineTest
         {
             Assert.IsTrue(protocol.RegisteredDevices.Count == 0);
         }
+        
+        /// <summary>
+        ///A test for loading names
+        ///</summary>
+        [TestMethod()]
+        public void PrototypeNameNotNullTest()
+        {
+            Assert.IsNotNull(protocol.DevicePrototypes[0].Name);
+        }
 
         /// <summary>
         ///A test for registerDevice
