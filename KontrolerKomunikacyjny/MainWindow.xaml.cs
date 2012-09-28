@@ -22,6 +22,7 @@ namespace KontrolerKomunikacyjny
     public partial class MainWindow : Window
     {
         public List<Slave> listaSlave;
+        private Protocol protocol;
         public MainWindow()
         {
             InitializeComponent();
@@ -58,7 +59,7 @@ namespace KontrolerKomunikacyjny
             comboBox1.Items.Add("COM1");
             comboBox1.Items.Add("COM2");
         }
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void otworzPrzycisk(object sender, RoutedEventArgs e)
         {
             
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -69,7 +70,7 @@ namespace KontrolerKomunikacyjny
             if (result == true)
             {
                 filename = dlg.FileName;
-                Protocol p1 = new Protocol(filename);
+                protocol = new Protocol(filename);
             }
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
