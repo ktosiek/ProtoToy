@@ -108,7 +108,10 @@ namespace ProtoEngineTest
         [TestMethod()]
         public void PrototypeNameNotNullTest()
         {
-            Assert.IsNotNull(protocol.DevicePrototypes[0].Name);
+            foreach (DevicePrototype prototype in protocol.DevicePrototypes)
+            {
+                Assert.IsNotNull(prototype.Name);
+            }
         }
 
         /// <summary>
