@@ -46,8 +46,6 @@ namespace KontrolerKomunikacyjny
          //   IloscWejscTextbox.Text = "1";
          //   IloscWyjscTextbox.Text = "1";
            
-           
-
         }
         private void ZaladowanieNazwPrototypow()
         {
@@ -56,7 +54,7 @@ namespace KontrolerKomunikacyjny
             
             foreach (DevicePrototype device in protocol.DevicePrototypes)
                 list.Add(device.Name);
-                daneListyPrototypow=list;
+            daneListyPrototypow = list;
             prototypyListBox.ItemsSource = null;
             prototypyListBox.ItemsSource = daneListyPrototypow; 
         }
@@ -95,25 +93,20 @@ namespace KontrolerKomunikacyjny
         }
         private void ZaladowanieOpcjiPrototypow()
         {
-            double left = 90;
-            double top = 580;
-            double right = 0;
-            double bottom = -100;
-            double dtop = 0; //+50
+            ScrollViewer scroll = new ScrollViewer();
+            scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            Thickness thick = new Thickness(30, 570, 690, 0);
+            scroll.Margin = thick;
+            StackPanel panel = new StackPanel();
             foreach (Option option in protocol.Options)
             {
-                Label lab = new Label();
-                lab.Content = option.Name;
                 CheckBox check = new CheckBox();
-                
-                Thickness thickness = new Thickness(left, top+dtop, right, bottom-dtop);
-                lab.Margin = thickness;
-                Thickness thickness2 = new Thickness(left-20, top+dtop, right+20, bottom-dtop);
-                check.Margin = thickness2;
-                dtop += 50;
-                grid1.Children.Add(lab);
-                grid1.Children.Add(check);
+                check.Content = option.Name;
+                panel.Children.Add(check);           
             }
+            scroll.Content = panel;
+            grid1.Children.Add(scroll);
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
