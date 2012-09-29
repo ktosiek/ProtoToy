@@ -42,9 +42,9 @@ namespace KontrolerKomunikacyjny
             BladMasterWartoscLabel.Visibility = Visibility.Hidden;
 
             listaSlave = new List<ProtoEngine.Slave>();
-            DodajAdresTextbox.Text = "1";
-            IloscWejscTextbox.Text = "1";
-            IloscWyjscTextbox.Text = "1";
+         //   DodajAdresTextbox.Text = "1";
+         //   IloscWejscTextbox.Text = "1";
+         //   IloscWyjscTextbox.Text = "1";
            
            
 
@@ -85,11 +85,34 @@ namespace KontrolerKomunikacyjny
                 protocol = new Protocol(filename);
                 protocolLabel.Content += protocol.Name;
                 ZaladowanieNazwPrototypow();
+                ZaladowanieOpcjiPrototypow();
                 byte adres;
                 byte.TryParse(DodajAdresTextbox.Text, out adres);
                 Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(), adres, 1, 1);
                  listaSlave.Add(slave);
                  UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
+            }
+        }
+        private void ZaladowanieOpcjiPrototypow()
+        {
+            double left = 90;
+            double top = 580;
+            double right = 0;
+            double bottom = -100;
+            double dtop = 0; //+50
+            foreach (Option option in protocol.Options)
+            {
+                Label lab = new Label();
+                lab.Content = option.Name;
+                CheckBox check = new CheckBox();
+                
+                Thickness thickness = new Thickness(left, top+dtop, right, bottom-dtop);
+                lab.Margin = thickness;
+                Thickness thickness2 = new Thickness(left-20, top+dtop, right+20, bottom-dtop);
+                check.Margin = thickness2;
+                dtop += 50;
+                grid1.Children.Add(lab);
+                grid1.Children.Add(check);
             }
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
