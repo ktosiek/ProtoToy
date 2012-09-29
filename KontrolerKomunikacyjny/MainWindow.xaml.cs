@@ -297,9 +297,22 @@ namespace KontrolerKomunikacyjny
                     return proto;
             return null;
     }
+        private Device ZwrocDevice(String nazwa)
+        {
+
+            foreach (Device dev in protocol.RegisteredDevices)
+                if (dev.Name == nazwa)
+                    return dev;
+            return null;
+        }
         private void usunUrzadzenieButton_Click_1(object sender, RoutedEventArgs e)
         {
+             if (prototypyListBox.SelectedItem != null)
+            {
+                 protocol.unregisterDevice(ZwrocDevice(urzadzeniaListBox.SelectedItem.ToString()));
             urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
+            }
+             else MessageBox.Show("Zaznacz urządzenie");
         }
 
 
