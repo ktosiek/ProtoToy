@@ -83,7 +83,7 @@ namespace KontrolerKomunikacyjny
                 protocol = new Protocol(filename);
                 protocolLabel.Content += protocol.Name;
                 ZaladowanieNazwPrototypow();
-                ZaladowanieOpcjiPrototypow();
+                ZaladowanieOpcjiProtokolu();
                 byte adres;
                 byte.TryParse(DodajAdresTextbox.Text, out adres);
                 Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(), adres, 1, 1);
@@ -91,7 +91,7 @@ namespace KontrolerKomunikacyjny
                  UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
             }
         }
-        private void ZaladowanieOpcjiPrototypow()
+        private void ZaladowanieOpcjiProtokolu()
         {
             ScrollViewer scroll = new ScrollViewer();
             scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -274,6 +274,36 @@ namespace KontrolerKomunikacyjny
             prototypeLabel.Content = (sender as ListBox).SelectedValue.ToString();
         }
 
+        private void dodajUrzadzenieButton_Click(object sender, RoutedEventArgs e)
+        {
+             if (prototypyListBox.SelectedItem != null)
+            {
+                 DevicePrototype proto=ZwrocDevicePrototype(prototypyListBox.SelectedItem.ToString());
+                 if (proto != null)
+                 {
+                     protocol.registerDevice(proto.create());
+                     urzadzeniaListBox.Items.Add(prototypyListBox.SelectedValue.ToString());
+                     
+                 }
+                 else
+                     MessageBox.Show("Nie znaleziono na liscie prototypow.");
+                 }
+            else MessageBox.Show("Zaznacz prototyp");
+        }
+        private DevicePrototype ZwrocDevicePrototype(String nazwa) {
+
+            foreach (DevicePrototype proto in protocol.DevicePrototypes)
+                if (proto.Name == nazwa)
+                    return proto;
+            return null;
+    }
+        private void usunUrzadzenieButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
+        }
+
+
+       
 
     }
 }
