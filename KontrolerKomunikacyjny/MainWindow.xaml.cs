@@ -25,6 +25,7 @@ namespace KontrolerKomunikacyjny
         public List<Slave> listaSlave;
         private Protocol protocol;
         private ArrayList daneListyPrototypow;
+        int i = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -269,11 +270,7 @@ namespace KontrolerKomunikacyjny
 
         }
 
-        private void prototypyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            prototypeLabel.Content = (sender as ListBox).SelectedValue.ToString();
-        }
-
+     
         private void dodajUrzadzenieButton_Click(object sender, RoutedEventArgs e)
         {
              if (prototypyListBox.SelectedItem != null)
@@ -282,7 +279,7 @@ namespace KontrolerKomunikacyjny
                  if (proto != null)
                  {
                      protocol.registerDevice(proto.create());
-                     urzadzeniaListBox.Items.Add(prototypyListBox.SelectedValue.ToString());
+                     urzadzeniaListBox.Items.Add(prototypyListBox.SelectedValue.ToString()+ " " +i++);
                      
                  }
                  else
@@ -307,12 +304,21 @@ namespace KontrolerKomunikacyjny
         }
         private void usunUrzadzenieButton_Click_1(object sender, RoutedEventArgs e)
         {
-             if (prototypyListBox.SelectedItem != null)
+             if (urzadzeniaListBox.SelectedItem != null)
             {
                  protocol.unregisterDevice(ZwrocDevice(urzadzeniaListBox.SelectedItem.ToString()));
             urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
             }
              else MessageBox.Show("Zaznacz urządzenie");
+        }
+
+        private void urzadzeniaListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((sender as ListBox) != null)
+                if ((sender as ListBox).SelectedValue != null)
+                    prototypeLabel.Content = (sender as ListBox).SelectedValue.ToString();
+                else prototypeLabel.Content = null;
+    
         }
 
 
