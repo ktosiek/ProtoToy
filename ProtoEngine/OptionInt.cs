@@ -140,6 +140,11 @@ namespace ProtoEngine
             return new OptionInt(Name, Value, MinValue, MaxValue, Size);
         }
 
+        public override void setValueFromString(string valueString)
+        {
+            this.Value = int.Parse(valueString.Trim());
+        }
+
         public override bool Equals(object obj)
         {
             if (this.GetType().IsInstanceOfType(obj))

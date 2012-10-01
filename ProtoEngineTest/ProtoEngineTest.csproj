@@ -53,6 +53,9 @@
     <Compile Include="ConstantExpressionTest.cs" />
     <Compile Include="ExpressionTest.cs" />
     <Compile Include="FunctionCallExpressionTest.cs" />
+    <Compile Include="OptionArrayTest.cs" />
+    <Compile Include="OptionBoolTest.cs" />
+    <Compile Include="OptionIntTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolTest.cs" />
     <Compile Include="RuleMatchTest.cs" />

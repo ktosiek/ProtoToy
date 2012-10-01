@@ -132,6 +132,19 @@ namespace ProtoEngine
             return new OptionArray(Name, this);
         }
 
+        public override void setValueFromString(string valueString)
+        {
+            string[] elems = valueString.Split(',');
+            if (elems.Length != this.OptionsArray.Length)
+            {
+                throw new ArgumentException("Wrong amount of elements!");
+            }
+            for(int i = 0; i < elems.Length; i++)
+            {
+                optionsArray[i].setValueFromString(elems[i]);
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (this.GetType().IsInstanceOfType(obj))

@@ -41,6 +41,12 @@ namespace ProtoEngine
         /// <returns>referencja do stworzonej kopii</returns>
         abstract public Option copy();
 
+        /// <summary>
+        /// Ustawia wartość opcji na podstawie ciągu znaków.
+        /// </summary>
+        /// <param name="valueString"></param>
+        abstract public void setValueFromString(string valueString);
+
         public abstract override bool Equals(object obj);
 
         public static Dictionary<String, Type> optionClasses = new Dictionary<String, Type>() {

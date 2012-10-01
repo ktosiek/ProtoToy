@@ -51,26 +51,17 @@ namespace ProtoEngine
         public OptionBool(String name, XmlNode node)
             : base(name)
         {
+            String strValue = "";
             try
             {
                 XmlNode strValueNode = node.Attributes.GetNamedItem("value");
                 if (strValueNode == null)
-                    throw new ArgumentException("catch me");
-                String strValue = strValueNode.Value;
-                switch (strValue)
-                {
-                    case "true":
-                        Value = true;
-                        break;
-                    case "false":
-                        Value = false;
-                        break;
-                    default:
-                        throw new NotSupportedException("Bad value for type bool: " + strValue);
-                }
+                     throw new ArgumentException("catch me");
+                strValue = strValueNode.Value;
             }
             catch (Exception ex)
             {
+                // ignoruję te wyjątki - oznaczają tylko że opcja jest pusta
                 if (ex is System.ArgumentException ||
                     ex is System.InvalidOperationException)
                 {
@@ -80,6 +71,8 @@ namespace ProtoEngine
                     throw;
                 }
             }
+            if(strValue.Trim() != "")
+                setValueFromString(strValue);
         }
 
         /// <summary>
@@ -112,6 +105,21 @@ namespace ProtoEngine
         override public Option copy()
         {
             return new OptionBool(Name, Value);
+        }
+
+        public override void setValueFromString(string valueString)
+        {
+            switch (valueString.Trim())
+            {
+                case "true":
+                    Value = true;
+                    break;
+                case "false":
+                    Value = false;
+                    break;
+                default:
+                    throw new ArgumentException("Bad value for type bool: \"" + valueString + "\"");
+            }
         }
 
         public override bool Equals(object obj)
