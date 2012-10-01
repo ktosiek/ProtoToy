@@ -22,7 +22,6 @@ namespace KontrolerKomunikacyjny
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<Slave> listaSlave;
         private Protocol protokol;
         private ArrayList daneListyPrototypow;
         ScrollViewer opcjeUrzadzeniaScroll = new ScrollViewer();
@@ -30,12 +29,12 @@ namespace KontrolerKomunikacyjny
            
         int i = 0;
         Device zaznaczonyDevice;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            RozmieszczeniePolRamek();
-            ZaladowanieNazwPortow();
+             ZaladowanieNazwPortow();
 
             opcjeUrzadzeniaScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             opcjeUrzadzeniaScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -44,19 +43,6 @@ namespace KontrolerKomunikacyjny
             grid1.Children.Add(opcjeUrzadzeniaScroll);
             zaznaczonyDevice = null;
 
-            BladAdresSlaveLabel.Visibility = Visibility.Hidden;
-            BladIloscWejscLabel.Visibility = Visibility.Hidden;
-            BladIloscWyjscLabel.Visibility = Visibility.Hidden;
-            BladMasterAdresLabel.Visibility = Visibility.Hidden;
-            BladMasterFunkcjaLabel.Visibility = Visibility.Hidden;
-            BladMasterAdresWeWyLabel.Visibility = Visibility.Hidden;
-            BladMasterWartoscLabel.Visibility = Visibility.Hidden;
-
-            listaSlave = new List<ProtoEngine.Slave>();
-         //   DodajAdresTextbox.Text = "1";
-         //   IloscWejscTextbox.Text = "1";
-         //   IloscWyjscTextbox.Text = "1";
-           
         }
         private void ZaladowanieNazwPrototypow()
         {
@@ -97,9 +83,6 @@ namespace KontrolerKomunikacyjny
                 ZaladowanieOpcjiProtokolu();
                 byte adres;
                 byte.TryParse(DodajAdresTextbox.Text, out adres);
-                Slave slave = new Slave(prototypyListBox.Items.GetItemAt(0).ToString(), adres, 1, 1);
-                 listaSlave.Add(slave);
-                 UrzadzeniaWSystemieLabel.Content += listaSlave[0].Wyswietl();
             }
         }
         private void ZaladowanieOpcjiProtokolu()
@@ -125,7 +108,8 @@ namespace KontrolerKomunikacyjny
             scroll.Content = panel;
             grid1.Children.Add(scroll);
         }
-        private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
+
+     /*   private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
             Ramka ramka_master = new Ramka(2);
 
@@ -198,7 +182,8 @@ namespace KontrolerKomunikacyjny
                 }
             }
         }
-        private void RozmieszczeniePolRamek()
+        */
+    /*    private void RozmieszczeniePolRamek()
         {
             PolaRamki polaRamki = new PolaRamki();
 
@@ -244,7 +229,8 @@ namespace KontrolerKomunikacyjny
                 }
             }
         }
-        private void dodajUrzadzenie_Click(object sender, RoutedEventArgs e)
+        */
+       /* private void dodajUrzadzenie_Click(object sender, RoutedEventArgs e)
         {
             byte adres;
             int iloscWejsc, iloscWyjsc;
@@ -286,7 +272,7 @@ namespace KontrolerKomunikacyjny
 
         }
 
-     
+     */
         private void dodajUrzadzenieButton_Click(object sender, RoutedEventArgs e)
         {
              if (prototypyListBox.SelectedItem != null)
@@ -303,6 +289,7 @@ namespace KontrolerKomunikacyjny
                  }
             else MessageBox.Show("Zaznacz prototyp");
         }
+
         private DevicePrototype ZwrocDevicePrototype(String nazwa) {
 
             foreach (DevicePrototype proto in protokol.DevicePrototypes)
@@ -318,6 +305,7 @@ namespace KontrolerKomunikacyjny
                     return dev;
             return null;
         }
+
         private void usunUrzadzenieButton_Click_1(object sender, RoutedEventArgs e)
         {
              if (urzadzeniaListBox.SelectedItem != null)
