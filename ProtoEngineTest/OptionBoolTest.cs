@@ -73,6 +73,10 @@ namespace ProtoEngineTest
             OptionBool target = new OptionBool("test", false);
             target.setValueFromString("true");
             Assert.AreEqual(true, target.Value);
+            target.setValueFromString("0");
+            Assert.AreEqual(false, target.Value);
+            target.setValueFromString("TruE");
+            Assert.AreEqual(true, target.Value);
         }
     }
 }

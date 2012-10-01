@@ -109,16 +109,13 @@ namespace ProtoEngine
 
         public override void setValueFromString(string valueString)
         {
-            switch (valueString.Trim())
-            {
-                case "true":
-                    Value = true;
-                    break;
-                case "false":
-                    Value = false;
-                    break;
-                default:
-                    throw new ArgumentException("Bad value for type bool: \"" + valueString + "\"");
+            string v = valueString.Trim().ToLower();
+            if(v == "true" || v == "1") {
+                Value = true;
+            } else if(v == "false" || v == "0") {
+                Value = false;
+            } else {
+                throw new ArgumentException("Bad value for type bool: \"" + valueString + "\"");
             }
         }
 
