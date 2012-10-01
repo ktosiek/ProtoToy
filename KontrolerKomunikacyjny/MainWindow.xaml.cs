@@ -26,6 +26,8 @@ namespace KontrolerKomunikacyjny
         private Protocol protokol;
         private ArrayList daneListyPrototypow;
         ScrollViewer opcjeUrzadzeniaScroll = new ScrollViewer();
+        StackPanel opcjeUrzadzeniaPanel = new StackPanel();
+           
         int i = 0;
         Device zaznaczonyDevice;
         public MainWindow()
@@ -323,6 +325,7 @@ namespace KontrolerKomunikacyjny
                  protokol.unregisterDevice(ZwrocDevice(urzadzeniaListBox.SelectedItem.ToString()));
                  urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
                  opcjeUrzadzeniaScroll.Content = null;
+                 opcjeUrzadzeniaPanel = new StackPanel(); 
                  prototypeLabel.Content = null;
                  zaznaczonyDevice = null;
             }
@@ -330,18 +333,17 @@ namespace KontrolerKomunikacyjny
         }
         private void ZaladowanieOpcjiUrzadzenia(Device device)
         {
-            StackPanel panel = new StackPanel();
-            prototypeLabel.Content = device.Name;
+             prototypeLabel.Content = device.Name;
             foreach (Option option in device.Options)
             {
 
                 Label label = new Label();
                 label.Content = option.Name;
-                panel.Children.Add(label);
+                opcjeUrzadzeniaPanel.Children.Add(label);
                 TextBox text = new TextBox();
-                panel.Children.Add(text);
+                opcjeUrzadzeniaPanel.Children.Add(text);
             }
-            opcjeUrzadzeniaScroll.Content = panel;
+            opcjeUrzadzeniaScroll.Content = opcjeUrzadzeniaPanel;
         }
         private void urzadzeniaListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -355,7 +357,13 @@ namespace KontrolerKomunikacyjny
 
         private void ustawOpcjeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (zaznaczonyDevice != null)
+            {
+                foreach (Option option in zaznaczonyDevice.Options)
+                {
+                   // option=panel
+                }
+            }
         }
 
         
