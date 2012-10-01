@@ -40,6 +40,7 @@ namespace KontrolerKomunikacyjny
             Thickness thick = new Thickness(5, 590, 900, 0);
             opcjeUrzadzeniaScroll.Margin = thick;
             grid1.Children.Add(opcjeUrzadzeniaScroll);
+            zaznaczonyDevice = null;
 
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
@@ -322,12 +323,15 @@ namespace KontrolerKomunikacyjny
                  protokol.unregisterDevice(ZwrocDevice(urzadzeniaListBox.SelectedItem.ToString()));
                  urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
                  opcjeUrzadzeniaScroll.Content = null;
+                 prototypeLabel.Content = null;
+                 zaznaczonyDevice = null;
             }
              else MessageBox.Show("Zaznacz urządzenie");
         }
         private void ZaladowanieOpcjiUrzadzenia(Device device)
         {
             StackPanel panel = new StackPanel();
+            prototypeLabel.Content = device.Name;
             foreach (Option option in device.Options)
             {
 
@@ -346,9 +350,7 @@ namespace KontrolerKomunikacyjny
                 {
                     zaznaczonyDevice = ZwrocDevice((sender as ListBox).SelectedValue.ToString());
                     ZaladowanieOpcjiUrzadzenia(zaznaczonyDevice);
-                }
-                else prototypeLabel.Content = null;
-    
+                }    
         }
 
         private void ustawOpcjeButton_Click(object sender, RoutedEventArgs e)
