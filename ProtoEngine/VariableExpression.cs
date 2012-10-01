@@ -15,7 +15,11 @@ namespace ProtoEngine
 
         override public Option eval(Dictionary<String, Option> env)
         {
-            return env[variable];
+            if(env.ContainsKey(variable)) {
+                return env[variable];
+            } else {
+                throw new ExpressionException("No variable named " + variable);
+            }
         }
     }
 }

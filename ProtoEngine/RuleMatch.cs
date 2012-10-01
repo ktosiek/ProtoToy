@@ -28,12 +28,20 @@ namespace ProtoEngine
         private Dictionary<String, Option> match(Dictionary<String, Option> variables,
             out List<Option> fields)
         {
-            if (myExpr.eval(variables).Equals(new OptionBool("", true)))
+            try
             {
-                fields = null;
-                return variables;
+                if (myExpr.eval(variables).Equals(new OptionBool("", true)))
+                {
+                    fields = null;
+                    return variables;
+                }
+                else
+                {
+                    fields = null;
+                    return null;
+                }
             }
-            else
+            catch (ExpressionException)
             {
                 fields = null;
                 return null;

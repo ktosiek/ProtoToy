@@ -403,7 +403,7 @@ namespace KontrolerKomunikacyjny
                 Stream wejscie = new MemoryStream(buffer);
                 wejscie.Seek(0, SeekOrigin.Begin);
                 Stream wyjscie = new MemoryStream();
-                //protokol.run(wejscie, wyjscie);
+                protokol.run(wejscie, wyjscie);
             }
         }
 

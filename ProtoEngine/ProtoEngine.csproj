@@ -46,6 +46,7 @@
     <Compile Include="DevicePrototype.cs" />
     <Compile Include="EmptyRule.cs" />
     <Compile Include="Expression.cs" />
+    <Compile Include="ExpressionException.cs" />
     <Compile Include="FullMessage.cs" />
     <Compile Include="FunctionCallExpression.cs" />
     <Compile Include="ListaSlave.cs" />
