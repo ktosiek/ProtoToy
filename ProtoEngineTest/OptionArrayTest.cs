@@ -71,7 +71,7 @@ namespace ProtoEngineTest
         [TestMethod()]
         public void setValueFromStringTest()
         {
-            OptionArray target = new OptionArray("test", "array int 3");
+            OptionArray target = new OptionArray("test", "array int 4");
             target.setValueFromString(" 1 ,2 ,3 ");
             Assert.AreEqual(1, ((OptionInt)target.getOption(0)).Value);
             Assert.AreEqual(2, ((OptionInt)target.getOption(1)).Value);
