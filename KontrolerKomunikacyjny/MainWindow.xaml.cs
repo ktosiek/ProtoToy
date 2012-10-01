@@ -25,6 +25,7 @@ namespace KontrolerKomunikacyjny
         public List<Slave> listaSlave;
         private Protocol protocol;
         private ArrayList daneListyPrototypow;
+        ScrollViewer opcjeUrzadzeniaScroll = new ScrollViewer();
         int i = 0;
         public MainWindow()
         {
@@ -32,6 +33,13 @@ namespace KontrolerKomunikacyjny
 
             RozmieszczeniePolRamek();
             ZaladowanieNazwPortow();
+
+            opcjeUrzadzeniaScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+            opcjeUrzadzeniaScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            Thickness thick = new Thickness(5, 590, 900, 0);
+            opcjeUrzadzeniaScroll.Margin = thick;
+            grid1.Children.Add(opcjeUrzadzeniaScroll);
+        
 
 
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
@@ -313,7 +321,8 @@ namespace KontrolerKomunikacyjny
              if (urzadzeniaListBox.SelectedItem != null)
             {
                  protocol.unregisterDevice(ZwrocDevice(urzadzeniaListBox.SelectedItem.ToString()));
-            urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
+                 urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
+                 opcjeUrzadzeniaScroll.Content = null;
             }
              else MessageBox.Show("Zaznacz urządzenie");
         }
@@ -321,25 +330,17 @@ namespace KontrolerKomunikacyjny
         {
             prototypeLabel.Content = (sender as ListBox).SelectedValue.ToString();
             Device device = ZwrocDevice((sender as ListBox).SelectedValue.ToString());
-                
+             StackPanel panel = new StackPanel();
+            foreach (Option option in device.Options)
+            {
 
-                ScrollViewer scroll = new ScrollViewer();
-                scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                Thickness thick = new Thickness(5, 590, 900, 0);
-                scroll.Margin = thick;
-                StackPanel panel = new StackPanel();
-                foreach (Option option in device.Options)
-                {
-
-                    Label label = new Label();
-                    label.Content = option.Name;
-                    panel.Children.Add(label);
-                    TextBox text = new TextBox();
-                    panel.Children.Add(text);
-                }
-                scroll.Content = panel;
-                grid1.Children.Add(scroll);
+                Label label = new Label();
+                label.Content = option.Name;
+                panel.Children.Add(label);
+                TextBox text = new TextBox();
+                panel.Children.Add(text);
+            }
+            opcjeUrzadzeniaScroll.Content = panel;
         }
         private void urzadzeniaListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
