@@ -360,13 +360,25 @@ namespace KontrolerKomunikacyjny
             if (zaznaczonyDevice != null)
             {
                 int i = 1;
-                foreach (Option option in zaznaczonyDevice.Options)
+               /* foreach (Option option in zaznaczonyDevice.Options)
                 {
-                    
                     TextBox text=(opcjeUrzadzeniaPanel.Children[i] as TextBox);
                     i += 2;
-                   MessageBox.Show(text.Text);
-                }
+                    option.setValueFromString(text.Text);
+                }*/
+                    TextBox text=(opcjeUrzadzeniaPanel.Children[i] as TextBox);
+                   // MessageBox.Show(text.Text);
+                    i += 2;
+                    zaznaczonyDevice.Options[0].setValueFromString(text.Text);
+                   text = (opcjeUrzadzeniaPanel.Children[i] as TextBox);
+               //    MessageBox.Show(text.Text);
+                 
+                    zaznaczonyDevice.Options[1].setValueFromString(text.Text);
+                    i += 2;
+                    text = (opcjeUrzadzeniaPanel.Children[i] as TextBox);
+                  //  MessageBox.Show(text.Text);
+                   // zaznaczonyDevice.Options[2].setValueFromString(text.Text);
+               
             }
         }
 
