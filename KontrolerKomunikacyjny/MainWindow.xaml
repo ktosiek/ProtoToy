@@ -46,15 +46,15 @@
         <Button Content="Dodaj urządzenie do systemu" Height="33" HorizontalAlignment="Left" Margin="220,538,0,0" Name="dodajUrzadzenie" VerticalAlignment="Top" Width="150" />
         <Label Content="OPCJE URZĄDZENIA: " Height="28" HorizontalAlignment="Left" Margin="4,538,0,0" Name="label1" VerticalAlignment="Top" Width="198" />
         <Label Height="26" HorizontalAlignment="Left" Margin="4,561,0,0" Name="prototypeLabel" VerticalAlignment="Top" Width="168" />
-        <Label Content="Adres slave" Height="26" HorizontalAlignment="Left" Margin="10,605,0,0" Name="label3" VerticalAlignment="Top" Width="130" />
-        <Label Content="Ilość wejść" Height="26" HorizontalAlignment="Left" Margin="10,654,0,0" Name="label4" VerticalAlignment="Top" Width="130" />
-        <Label Content="Ilość wyjść" Height="26" HorizontalAlignment="Left" Margin="10,703,0,0" Name="label7" VerticalAlignment="Top" Width="130" Grid.RowSpan="2" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="82,645,0,0" Name="IloscWejscTextbox" VerticalAlignment="Top" Width="120" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="82,694,0,0" Name="IloscWyjscTextbox" VerticalAlignment="Top" Width="120" Grid.RowSpan="2" />
-        <Label Content="Wpisz poprawny adres (1-247)" Height="26" HorizontalAlignment="Left" Margin="220,605,0,0" Name="BladAdresSlaveLabel" VerticalAlignment="Top" Width="190" />
-        <Label Content="Wpisz poprawną ilość wejść (1-32)" Height="26" HorizontalAlignment="Left" Margin="220,654,0,0" Name="BladIloscWejscLabel" VerticalAlignment="Top" Width="190" />
-        <Label Content="Wpisz poprawną ilość wyjść (1-32)" Height="26" HorizontalAlignment="Left" Margin="220,703,0,0" Name="BladIloscWyjscLabel" VerticalAlignment="Top" Width="190" Grid.RowSpan="2" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="82,605,0,0" Name="DodajAdresTextbox" VerticalAlignment="Top" Width="120" />
+        <Label Content="Adres slave" Height="26" HorizontalAlignment="Left" Margin="463,605,0,0" Name="label3" VerticalAlignment="Top" Width="130" />
+        <Label Content="Ilość wejść" Height="26" HorizontalAlignment="Left" Margin="463,654,0,0" Name="label4" VerticalAlignment="Top" Width="130" />
+        <Label Content="Ilość wyjść" Height="26" HorizontalAlignment="Left" Margin="463,703,0,0" Name="label7" VerticalAlignment="Top" Width="130" Grid.RowSpan="2" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="535,645,0,0" Name="IloscWejscTextbox" VerticalAlignment="Top" Width="120" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="535,694,0,0" Name="IloscWyjscTextbox" VerticalAlignment="Top" Width="120" Grid.RowSpan="2" />
+        <Label Content="Wpisz poprawny adres (1-247)" Height="26" HorizontalAlignment="Left" Margin="673,605,0,0" Name="BladAdresSlaveLabel" VerticalAlignment="Top" Width="190" />
+        <Label Content="Wpisz poprawną ilość wejść (1-32)" Height="26" HorizontalAlignment="Left" Margin="673,654,0,0" Name="BladIloscWejscLabel" VerticalAlignment="Top" Width="190" />
+        <Label Content="Wpisz poprawną ilość wyjść (1-32)" Height="26" HorizontalAlignment="Left" Margin="673,703,0,0" Name="BladIloscWyjscLabel" VerticalAlignment="Top" Width="190" Grid.RowSpan="2" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="535,605,0,0" Name="DodajAdresTextbox" VerticalAlignment="Top" Width="120" />
         <Frame Background="Black" Height="6" HorizontalAlignment="Left" Margin="7,301,0,0" Name="frame4" VerticalAlignment="Top" Width="441" />
     </Grid>
 </Window>

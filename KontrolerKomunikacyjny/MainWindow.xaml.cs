@@ -326,15 +326,20 @@ namespace KontrolerKomunikacyjny
                 ScrollViewer scroll = new ScrollViewer();
                 scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
                 scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                Thickness thick = new Thickness(10, 150, 900, 430);
+                Thickness thick = new Thickness(5, 590, 900, 0);
                 scroll.Margin = thick;
                 StackPanel panel = new StackPanel();
                 foreach (Option option in device.Options)
                 {
 
-                    MessageBox.Show(option.Name);
+                    Label label = new Label();
+                    label.Content = option.Name;
+                    panel.Children.Add(label);
+                    TextBox text = new TextBox();
+                    panel.Children.Add(text);
                 }
-            
+                scroll.Content = panel;
+                grid1.Children.Add(scroll);
         }
         private void urzadzeniaListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
