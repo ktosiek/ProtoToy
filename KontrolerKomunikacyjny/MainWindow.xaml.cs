@@ -36,6 +36,11 @@ namespace KontrolerKomunikacyjny
             InitializeComponent();
 
              ZaladowanieNazwPortow();
+             OtworzPrzycisk.TabIndex = 0;
+             prototypyListBox.TabIndex = 1;
+             dodajUrzadzenieButton.TabIndex = 2;
+             urzadzeniaListBox.TabIndex = 3;
+             ustawOpcjeButton.TabIndex = 4;
 
             opcjeUrzadzeniaScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             opcjeUrzadzeniaScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -54,7 +59,8 @@ namespace KontrolerKomunikacyjny
                 list.Add(device.Name);
             daneListyPrototypow = list;
             prototypyListBox.ItemsSource = null;
-            prototypyListBox.ItemsSource = daneListyPrototypow; 
+            prototypyListBox.ItemsSource = daneListyPrototypow;
+            //prototypyListBox.
         }
         private void ZaladowanieNazwPortow()
         {
