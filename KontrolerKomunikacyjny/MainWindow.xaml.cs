@@ -359,9 +359,13 @@ namespace KontrolerKomunikacyjny
         {
             if (zaznaczonyDevice != null)
             {
+                int i = 1;
                 foreach (Option option in zaznaczonyDevice.Options)
                 {
-                   // option=panel
+                    
+                    TextBox text=(opcjeUrzadzeniaPanel.Children[i] as TextBox);
+                    i += 2;
+                   MessageBox.Show(text.Text);
                 }
             }
         }
