@@ -135,7 +135,7 @@ namespace ProtoEngine
         public override void setValueFromString(string valueString)
         {
             string[] elems = valueString.Split(',');
-            if (elems.Length != this.OptionsArray.Length)
+            if (elems.Length > this.OptionsArray.Length)
             {
                 throw new ArgumentException("Wrong amount of elements!");
             }
