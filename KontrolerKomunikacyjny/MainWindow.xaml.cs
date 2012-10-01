@@ -348,13 +348,20 @@ namespace KontrolerKomunikacyjny
             if (zaznaczonyDevice != null)
             {
                 int i = 1;
+                int blad = 0;
                foreach (Option option in zaznaczonyDevice.Options)
                 {
-                    TextBox text=(opcjeUrzadzeniaPanel.Children[i] as TextBox);
-                    i += 2;
-                    option.setValueFromString(text.Text);
+                    
+                   TextBox text=(opcjeUrzadzeniaPanel.Children[i] as TextBox);
+                   if (text.Text != "" && text.Text != " ")
+                   {
+                       i += 2;
+                       option.setValueFromString(text.Text);
+                   }
+                   else blad = 1;
+                        
                 }
-                  
+                 if(blad==1) MessageBox.Show("Uzupełnij wszystkie pola opcji urządzenia.");
             }
         }
         private byte[] SpakujWszystkoDoTablicyBajtow()
