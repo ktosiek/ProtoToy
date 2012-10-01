@@ -23,10 +23,11 @@ namespace KontrolerKomunikacyjny
     public partial class MainWindow : Window
     {
         public List<Slave> listaSlave;
-        private Protocol protocol;
+        private Protocol protokol;
         private ArrayList daneListyPrototypow;
         ScrollViewer opcjeUrzadzeniaScroll = new ScrollViewer();
         int i = 0;
+        Device zaznaczonyDevice;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,8 +40,6 @@ namespace KontrolerKomunikacyjny
             Thickness thick = new Thickness(5, 590, 900, 0);
             opcjeUrzadzeniaScroll.Margin = thick;
             grid1.Children.Add(opcjeUrzadzeniaScroll);
-        
-
 
             BladAdresSlaveLabel.Visibility = Visibility.Hidden;
             BladIloscWejscLabel.Visibility = Visibility.Hidden;
@@ -61,7 +60,7 @@ namespace KontrolerKomunikacyjny
             daneListyPrototypow = new ArrayList();
             ArrayList list = new ArrayList();
             
-            foreach (DevicePrototype device in protocol.DevicePrototypes)
+            foreach (DevicePrototype device in protokol.DevicePrototypes)
                 list.Add(device.Name);
             daneListyPrototypow = list;
             prototypyListBox.ItemsSource = null;
@@ -89,8 +88,8 @@ namespace KontrolerKomunikacyjny
             if (result == true)
             {
                 filename = dlg.FileName;
-                protocol = new Protocol(filename);
-                protocolLabel.Content += protocol.Name;
+                protokol = new Protocol(filename);
+                protocolLabel.Content += protokol.Name;
                 ZaladowanieNazwPrototypow();
                 ZaladowanieOpcjiProtokolu();
                 byte adres;
@@ -108,7 +107,7 @@ namespace KontrolerKomunikacyjny
             Thickness thick = new Thickness(10, 150,900, 430);
             scroll.Margin = thick;
             StackPanel panel = new StackPanel();
-            foreach (Option option in protocol.Options)
+            foreach (Option option in protokol.Options)
             {
                 CheckBox check = new CheckBox();
                 check.Content = option.Name;
@@ -292,7 +291,7 @@ namespace KontrolerKomunikacyjny
                  DevicePrototype proto=ZwrocDevicePrototype(prototypyListBox.SelectedItem.ToString());
                  if (proto != null)
                  {
-                     protocol.registerDevice(proto.create());
+                     protokol.registerDevice(proto.create());
                      urzadzeniaListBox.Items.Add(prototypyListBox.SelectedValue.ToString());
                      
                  }
@@ -303,7 +302,7 @@ namespace KontrolerKomunikacyjny
         }
         private DevicePrototype ZwrocDevicePrototype(String nazwa) {
 
-            foreach (DevicePrototype proto in protocol.DevicePrototypes)
+            foreach (DevicePrototype proto in protokol.DevicePrototypes)
                 if (proto.Name == nazwa)
                     return proto;
             return null;
@@ -311,7 +310,7 @@ namespace KontrolerKomunikacyjny
         private Device ZwrocDevice(String nazwa)
         {
 
-            foreach (Device dev in protocol.RegisteredDevices)
+            foreach (Device dev in protokol.RegisteredDevices)
                 if (dev.Name == nazwa)
                     return dev;
             return null;
@@ -320,17 +319,15 @@ namespace KontrolerKomunikacyjny
         {
              if (urzadzeniaListBox.SelectedItem != null)
             {
-                 protocol.unregisterDevice(ZwrocDevice(urzadzeniaListBox.SelectedItem.ToString()));
+                 protokol.unregisterDevice(ZwrocDevice(urzadzeniaListBox.SelectedItem.ToString()));
                  urzadzeniaListBox.Items.RemoveAt(urzadzeniaListBox.Items.IndexOf(urzadzeniaListBox.SelectedItem));
                  opcjeUrzadzeniaScroll.Content = null;
             }
              else MessageBox.Show("Zaznacz urządzenie");
         }
-        private void ZaladowanieOpcjiUrzadzenia(object sender)
+        private void ZaladowanieOpcjiUrzadzenia(Device device)
         {
-            prototypeLabel.Content = (sender as ListBox).SelectedValue.ToString();
-            Device device = ZwrocDevice((sender as ListBox).SelectedValue.ToString());
-             StackPanel panel = new StackPanel();
+            StackPanel panel = new StackPanel();
             foreach (Option option in device.Options)
             {
 
@@ -346,10 +343,22 @@ namespace KontrolerKomunikacyjny
         {
             if ((sender as ListBox) != null)
                 if ((sender as ListBox).SelectedValue != null)
-                    ZaladowanieOpcjiUrzadzenia(sender);  
+                {
+                    zaznaczonyDevice = ZwrocDevice((sender as ListBox).SelectedValue.ToString());
+                    ZaladowanieOpcjiUrzadzenia(zaznaczonyDevice);
+                }
                 else prototypeLabel.Content = null;
     
         }
+
+        private void ustawOpcjeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        
+
+      
 
 
        
