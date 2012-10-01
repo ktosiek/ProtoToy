@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ProtoEngine;
 using System.IO.Ports;
+using System.IO;
 
 namespace KontrolerKomunikacyjny
 {
@@ -81,8 +82,7 @@ namespace KontrolerKomunikacyjny
                 protocolLabel.Content += protokol.Name;
                 ZaladowanieNazwPrototypow();
                 ZaladowanieOpcjiProtokolu();
-                byte adres;
-                byte.TryParse(DodajAdresTextbox.Text, out adres);
+             
             }
         }
         private void ZaladowanieOpcjiProtokolu()
@@ -355,6 +355,48 @@ namespace KontrolerKomunikacyjny
                     option.setValueFromString(text.Text);
                 }
                   
+            }
+        }
+        private byte[] SpakujWszystkoDoTablicyBajtow()
+        {
+            byte[] buffer=new byte[257]; //maksymalna wartość przesyłanej ramki w MODBUS-ie
+            int i = 0;
+            byte adres, funkcja, adresWy, wartoscWy;
+            int blad = 0;
+            if (!byte.TryParse(AdresTextbox.Text, out adres)) //sprawdza, czy adres jest typu byte
+            {
+                MessageBox.Show("Adres musi być typu byte.");
+                blad = 1;
+                buffer[i++] = adres;
+            }
+            if (!byte.TryParse(FunkcjaTextbox.Text, out funkcja)) //sprawdza, czy kod funkcji jest typu byte
+            {
+                MessageBox.Show("Funkcja musi być typu byte.");
+                blad = 1;
+                buffer[i++] = funkcja;
+            }
+            if (!byte.TryParse(AdresWyTextbox.Text, out adresWy)) //TODO sprawdza czy adres we/wy jest typu 2*byte
+            {
+                buffer[i++] = adresWy;
+            }
+            if (!byte.TryParse(WartoscTextbox.Text, out wartoscWy)) //sprawdza, czy wartość we/wy jest typu byte
+            {
+                buffer[i++] = wartoscWy;
+            }
+           // buffer[i++] = Crc_MlodszyBajt();
+           // buffer[i++] = Crc_StarszyBajt();
+            if (blad == 1) return null;
+            return buffer;
+        }
+        private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] buffer=SpakujWszystkoDoTablicyBajtow();
+            if (buffer != null)
+            {
+                Stream wejscie = new MemoryStream(buffer);
+                wejscie.Seek(0, SeekOrigin.Begin);
+                Stream wyjscie = new MemoryStream();
+                //protokol.run(wejscie, wyjscie);
             }
         }
 

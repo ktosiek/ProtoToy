@@ -10,8 +10,8 @@
         <Border BorderBrush="Silver" BorderThickness="1" Height="249" HorizontalAlignment="Left" Margin="282,25,0,0" Name="border1" VerticalAlignment="Top" Width="244"></Border>
         <Button Content="Otwórz plik XML" Height="67" HorizontalAlignment="Left" Margin="7,6,0,0" Name="OtworzPrzycisk" VerticalAlignment="Top" Width="117" Click="otworzPrzycisk" />
         <TextBox Height="35" HorizontalAlignment="Left" Margin="376,84,0,0" Name="FunkcjaTextbox" VerticalAlignment="Top" Width="120" />        <Label Height="410" HorizontalAlignment="Left" Margin="812,50,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="221" />
-   <TextBox Height="35" HorizontalAlignment="Left" Margin="376,165,0,0" Name="AdresWeWyTextbox" VerticalAlignment="Top" Width="120" />
-        <Label  Height="26" HorizontalAlignment="Left" Margin="291,165,0,0" Name="AdresWyWeLabel" VerticalAlignment="Top" Width="130" Content="Adres wyjścia" />
+   <TextBox Height="35" HorizontalAlignment="Left" Margin="376,165,0,0" Name="AdresWyTextbox" VerticalAlignment="Top" Width="120" />
+        <Label  Height="26" HorizontalAlignment="Left" Margin="291,165,0,0" Name="AdresWyLabel" VerticalAlignment="Top" Width="130" Content="Adres wyjścia" />
 
         <Label  Height="26" HorizontalAlignment="Left" Margin="291,84,0,0" Name="FunkcjaLabel" VerticalAlignment="Top" Width="130" Content="Kod funkcji" />
         <Label Content="MASTER" Height="31" HorizontalAlignment="Left" Margin="280,6,0,0" Name="label5" VerticalAlignment="Top" Width="205" />
@@ -39,7 +39,7 @@
         <Label Height="26" HorizontalAlignment="Left" Margin="4,561,0,0" Name="prototypeLabel" VerticalAlignment="Top" Width="168" />
         <Frame Background="Black" Height="6" HorizontalAlignment="Left" Margin="7,301,0,0" Name="frame4" VerticalAlignment="Top" Width="441" />
         <Label Content="Adres urządzenia" Height="26" HorizontalAlignment="Left" Margin="280,36,0,0" Name="label3" VerticalAlignment="Top" Width="130" />
-        <TextBox Height="35" Margin="376,36,565,0" Name="DodajAdresTextbox" VerticalAlignment="Top" />
-        <Button Content="Wyślij" Height="58" Name="WyslijPrzycisk" Width="120" Margin="542,82,399,583" />
+        <TextBox Height="35" Margin="376,36,565,0" Name="AdresTextbox" VerticalAlignment="Top" />
+        <Button Content="Wyślij" Height="58" Name="WyslijPrzycisk" Width="120" Margin="542,82,399,583" Click="WyslijPrzycisk_Click" />
     </Grid>
 </Window>
