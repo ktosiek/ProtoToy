@@ -47,6 +47,15 @@ namespace ProtoEngine
         /// <param name="valueString"></param>
         abstract public void setValueFromString(string valueString);
 
+        /// <summary>
+        /// Zwraca wartość opcji jako ciąg znaków. Zwrócona wartość musi
+        /// się nadawać do przekazania setValueFromString, i operacja:
+        /// o.setValueFromString(o.getValueFromString()) nie może zmieniać
+        /// wartości opcji
+        /// </summary>
+        /// <param name="valueString"></param>
+        abstract public string getValueAsString();
+
         public abstract override bool Equals(object obj);
 
         public static Dictionary<String, Type> optionClasses = new Dictionary<String, Type>() {

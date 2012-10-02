@@ -119,6 +119,18 @@ namespace ProtoEngine
             }
         }
 
+        public override string getValueAsString()
+        {
+            if (Value)
+            {
+                return "true";
+            }
+            else
+            {
+                return "false";
+            }
+        }
+
         public override bool Equals(object obj)
         {
             if (this.GetType().IsInstanceOfType(obj))

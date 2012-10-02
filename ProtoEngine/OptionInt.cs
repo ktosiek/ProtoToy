@@ -145,6 +145,11 @@ namespace ProtoEngine
             this.Value = int.Parse(valueString.Trim());
         }
 
+        public override string getValueAsString()
+        {
+            return this.Value.ToString();
+        }
+
         public override bool Equals(object obj)
         {
             if (this.GetType().IsInstanceOfType(obj))

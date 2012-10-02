@@ -78,5 +78,18 @@ namespace ProtoEngineTest
             target.setValueFromString("TruE");
             Assert.AreEqual(true, target.Value);
         }
+
+
+        /// <summary>
+        ///A test for getValueAsString
+        ///</summary>
+        [TestMethod()]
+        public void getValueAsStringTest()
+        {
+            OptionBool target = new OptionBool("test", false);
+            Assert.AreEqual("false", target.getValueAsString());
+            target.Value = true;
+            Assert.AreEqual("true", target.getValueAsString());
+        }
     }
 }

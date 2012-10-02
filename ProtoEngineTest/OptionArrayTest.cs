@@ -77,5 +77,27 @@ namespace ProtoEngineTest
             Assert.AreEqual(2, ((OptionInt)target.getOption(1)).Value);
             Assert.AreEqual(3, ((OptionInt)target.getOption(2)).Value);
         }
+
+
+        /// <summary>
+        ///A test for getValueAsString
+        ///</summary>
+        [TestMethod()]
+        public void getValueAsStringTest()
+        {
+            OptionArray target = new OptionArray("test", "array int 4");
+            target.setValueFromString("0,1,2,3");
+            List<OptionInt> elements = new List<OptionInt>();
+            for (int i = 0; i < target.Count; i++)
+            {
+                elements.Add((OptionInt)target.getOption(i));
+            }
+            target.setValueFromString(target.getValueAsString());
+            for (int i = 0; i < target.Count; i++)
+            {
+                Assert.AreEqual(elements[i], target.getOption(i));
+                Assert.AreEqual(i, ((OptionInt)target.getOption(i)).Value);
+            }
+        }
     }
 }

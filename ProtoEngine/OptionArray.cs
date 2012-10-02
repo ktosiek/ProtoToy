@@ -145,6 +145,18 @@ namespace ProtoEngine
             }
         }
 
+        public override string getValueAsString()
+        {
+            StringBuilder ret = new StringBuilder();
+            for (int i = 0; i < this.OptionsArray.Length; i++)
+            {
+                ret.Append(getOption(i).getValueAsString());
+                if (i + 1 != this.OptionsArray.Length)
+                    ret.Append(", ");
+            }
+            return ret.ToString();
+        }
+
         public override bool Equals(object obj)
         {
             if (this.GetType().IsInstanceOfType(obj))
