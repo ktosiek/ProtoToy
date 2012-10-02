@@ -416,6 +416,28 @@ namespace KontrolerKomunikacyjny
             if (blad == 1) return null;
             return buffer;
         }
+        private String SpakujWszystkoDoTablicyStringow()
+        {
+            String buffer="";
+            byte adres,funkcja,adresWy,wartoscWy;
+            byte.TryParse(AdresTextbox.Text, out adres); //sprawdza, czy adres jest typu byte         
+            buffer += adres.ToString();
+            byte.TryParse(FunkcjaTextbox.Text, out funkcja);
+            buffer+=","+funkcja.ToString();
+            byte.TryParse(AdresWyTextbox.Text, out adresWy);
+            buffer += "," + adresWy.ToString();
+            byte.TryParse(WartoscTextbox.Text, out wartoscWy);
+            buffer += "," + wartoscWy.ToString();
+            return buffer;
+
+        }
+        private void WyswietlPodglad(byte[] ramkaMaster)
+        {
+            String tmp = "Master: ";
+            ChatEtykieta.Content += "\n" + tmp+SpakujWszystkoDoTablicyStringow();
+            String tmp2 = "Slave: ";
+            ChatEtykieta.Content += "\n" + tmp2;
+        }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
             byte[] buffer=SpakujWszystkoDoTablicyBajtow();
@@ -424,7 +446,8 @@ namespace KontrolerKomunikacyjny
                 Stream wejscie = new MemoryStream(buffer);
                 wejscie.Seek(0, SeekOrigin.Begin);
                 Stream wyjscie = new MemoryStream();
-                protokol.run(wejscie, wyjscie);
+             //   protokol.run(wejscie, wyjscie);
+                WyswietlPodglad(buffer);
             }
         }
 
