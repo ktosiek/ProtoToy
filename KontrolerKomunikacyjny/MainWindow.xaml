@@ -7,23 +7,14 @@
             <RowDefinition Height="662*" />
             <RowDefinition Height="7*" />
         </Grid.RowDefinitions>
-        <Border BorderBrush="Silver" BorderThickness="1" Height="249" HorizontalAlignment="Left" Margin="282,25,0,0" Name="border1" VerticalAlignment="Top" Width="244"></Border>
         <Button Content="Otwórz plik XML" Height="67" HorizontalAlignment="Left" Margin="7,6,0,0" Name="OtworzPrzycisk" VerticalAlignment="Top" Width="117" Click="otworzPrzycisk" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="376,84,0,0" Name="FunkcjaTextbox" VerticalAlignment="Top" Width="120" />        <Label Height="410" HorizontalAlignment="Left" Margin="812,50,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="221" />
-   <TextBox Height="35" HorizontalAlignment="Left" Margin="376,165,0,0" Name="AdresWyTextbox" VerticalAlignment="Top" Width="120" />
-        <Label  Height="26" HorizontalAlignment="Left" Margin="291,165,0,0" Name="AdresWyLabel" VerticalAlignment="Top" Width="130" Content="Adres wyjścia" />
-
-        <Label  Height="26" HorizontalAlignment="Left" Margin="291,84,0,0" Name="FunkcjaLabel" VerticalAlignment="Top" Width="130" Content="Kod funkcji" />
-        <Label Content="MASTER" Height="31" HorizontalAlignment="Left" Margin="280,6,0,0" Name="label5" VerticalAlignment="Top" Width="205" />
+        <Label Height="410" HorizontalAlignment="Left" Margin="812,50,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="221" />
         <Label Content="PODGLĄD RAMEK" Height="31" HorizontalAlignment="Left" Margin="812,25,0,0" Name="label6" VerticalAlignment="Top" Width="205" />
         <Frame Height="6" HorizontalAlignment="Left" Margin="7,525,0,0" Name="frame1" VerticalAlignment="Top" Width="441" Background="Black" />
         <Frame Height="231" HorizontalAlignment="Left" Margin="442,301,0,0" Name="frame2" VerticalAlignment="Top" Width="6" Background="Black" />
         <Frame Background="Black" Height="461" HorizontalAlignment="Right" Margin="0,25,255,0" Name="frame3" VerticalAlignment="Top" Width="7" />
         <Frame Background="Black" Height="295" HorizontalAlignment="Left" Margin="268,12,0,0" Name="frame5" VerticalAlignment="Top" Width="6" />
         <Frame Background="Black" Height="7" HorizontalAlignment="Left" Margin="10,112,0,0" Name="frame6" VerticalAlignment="Top" Width="264" />
-        <TextBox Height="35" HorizontalAlignment="Left" Margin="376,221,0,0" Name="WartoscTextbox" VerticalAlignment="Top" Width="120" />
-        <Label Height="26" HorizontalAlignment="Left" Margin="291,221,0,0" Name="WartoscLabel" VerticalAlignment="Top" Width="130" Content="Wartość wyjścia" />
-        <Label Height="24" HorizontalAlignment="Left" Margin="300,131,0,0" Name="DaneLabel" VerticalAlignment="Top" Width="175" Content="DANE" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="138,50,0,0" Name="comboBox1" VerticalAlignment="Top" Width="120" ItemsSource="{Binding}"></ComboBox>
         <Label Content="WYBIERZ PORT" Height="28" HorizontalAlignment="Left" Margin="138,11,0,0" Name="label8" VerticalAlignment="Top" Width="155" />
         <Label Content="LISTA PROTOTYPÓW URZĄDZEŃ" Height="28" HorizontalAlignment="Left" Margin="10,327,0,0" Name="label9" VerticalAlignment="Top" Width="189" />
@@ -38,8 +29,17 @@
         <Label Content="OPCJE URZĄDZENIA: " Height="28" HorizontalAlignment="Left" Margin="4,538,0,0" Name="label1" VerticalAlignment="Top" Width="198" />
         <Label Height="26" HorizontalAlignment="Left" Margin="4,561,0,0" Name="prototypeLabel" VerticalAlignment="Top" Width="168" />
         <Frame Background="Black" Height="6" HorizontalAlignment="Left" Margin="7,301,0,0" Name="frame4" VerticalAlignment="Top" Width="441" />
-        <Label Content="Adres urządzenia" Height="26" HorizontalAlignment="Left" Margin="280,36,0,0" Name="label3" VerticalAlignment="Top" Width="130" />
-        <TextBox Height="35" Margin="376,36,565,0" Name="AdresTextbox" VerticalAlignment="Top" />
-        <Button Content="Wyślij" Height="58" Name="WyslijPrzycisk" Width="120" Margin="542,82,399,583" Click="WyslijPrzycisk_Click" />
+        <Button Content="Wyślij" Height="58" Name="WyslijPrzycisk" Width="120" Margin="648,352,293,314" Click="WyslijPrzycisk_Click" />
+        <Border BorderBrush="Silver" BorderThickness="1" Height="249" HorizontalAlignment="Left" Margin="478,36,0,0" Name="border1" VerticalAlignment="Top" Width="244" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="572,95,0,0" Name="FunkcjaTextbox" VerticalAlignment="Top" Width="120" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="572,176,0,0" Name="AdresWyTextbox" VerticalAlignment="Top" Width="120" />
+        <Label Content="Adres wyjścia" Height="26" HorizontalAlignment="Left" Margin="487,176,0,0" Name="AdresWyLabel" VerticalAlignment="Top" Width="130" />
+        <Label Content="Kod funkcji" Height="26" HorizontalAlignment="Left" Margin="487,95,0,0" Name="FunkcjaLabel" VerticalAlignment="Top" Width="130" />
+        <Label Content="MASTER" Height="31" HorizontalAlignment="Left" Margin="476,17,0,0" Name="label5" VerticalAlignment="Top" Width="205" />
+        <TextBox Height="35" HorizontalAlignment="Left" Margin="572,232,0,0" Name="WartoscTextbox" VerticalAlignment="Top" Width="120" />
+        <Label Content="Wartość wyjścia" Height="26" HorizontalAlignment="Left" Margin="487,232,0,0" Name="WartoscLabel" VerticalAlignment="Top" Width="130" />
+        <Label Content="DANE" Height="24" HorizontalAlignment="Left" Margin="496,142,0,0" Name="DaneLabel" VerticalAlignment="Top" Width="175" />
+        <Label Content="Adres urządzenia" Height="26" HorizontalAlignment="Left" Margin="476,47,0,0" Name="label3" VerticalAlignment="Top" Width="130" />
+        <TextBox Height="35" Margin="572,47,369,0" Name="AdresTextbox" VerticalAlignment="Top" />
     </Grid>
 </Window>

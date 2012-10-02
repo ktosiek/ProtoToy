@@ -37,10 +37,9 @@ namespace KontrolerKomunikacyjny
 
              ZaladowanieNazwPortow();
              OtworzPrzycisk.TabIndex = 0;
-             prototypyListBox.TabIndex = 1;
-             dodajUrzadzenieButton.TabIndex = 2;
-             urzadzeniaListBox.TabIndex = 3;
-             ustawOpcjeButton.TabIndex = 4;
+             dodajUrzadzenieButton.TabIndex = 1;
+             urzadzeniaListBox.TabIndex = 2;
+             ustawOpcjeButton.TabIndex = 3;
 
             opcjeUrzadzeniaScroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             opcjeUrzadzeniaScroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
@@ -60,7 +59,8 @@ namespace KontrolerKomunikacyjny
             daneListyPrototypow = list;
             prototypyListBox.ItemsSource = null;
             prototypyListBox.ItemsSource = daneListyPrototypow;
-            //prototypyListBox.
+            if(prototypyListBox.Items.Count>0)
+            prototypyListBox.SelectedItem = prototypyListBox.Items[0];
         }
         private void ZaladowanieNazwPortow()
         {
@@ -287,8 +287,8 @@ namespace KontrolerKomunikacyjny
                  if (proto != null)
                  {
                      protokol.registerDevice(proto.create());
-                     urzadzeniaListBox.Items.Add(prototypyListBox.SelectedValue.ToString());
-                     
+                     urzadzeniaListBox.Items.Add(prototypyListBox.SelectedValue.ToString()+" "+i++);
+                     urzadzeniaListBox.SelectedItem = urzadzeniaListBox.Items[0];
                  }
                  else
                      MessageBox.Show("Nie znaleziono na liscie prototypow.");
@@ -303,12 +303,26 @@ namespace KontrolerKomunikacyjny
                     return proto;
             return null;
     }
+        private bool EkstraPorownanie(String krotszy, String dluzszy)
+        {
+            int i = 0;
+            foreach (char ch in krotszy)
+            {
+                if (ch == dluzszy[i++]) ;
+                else return false;
+            }
+            return true;
+        }
         private Device ZwrocDevice(String nazwa)
         {
 
             foreach (Device dev in protokol.RegisteredDevices)
-                if (dev.Name == nazwa)
-                    return dev;
+            {
+                  if (EkstraPorownanie(dev.Name,nazwa))
+               
+                //  if(dev.Name==nazwa)
+                return dev;
+            }
             return null;
         }
 
@@ -325,9 +339,10 @@ namespace KontrolerKomunikacyjny
             }
              else MessageBox.Show("Zaznacz urządzenie");
         }
-        private void ZaladowanieOpcjiUrzadzenia(Device device)
+        private void ZaladowanieOpcjiUrzadzenia(Device device,String s)
         {
-             prototypeLabel.Content = device.Name;
+            opcjeUrzadzeniaPanel = new StackPanel();
+            prototypeLabel.Content = s;
             foreach (Option option in device.Options)
             {
 
@@ -345,7 +360,7 @@ namespace KontrolerKomunikacyjny
                 if ((sender as ListBox).SelectedValue != null)
                 {
                     zaznaczonyDevice = ZwrocDevice((sender as ListBox).SelectedValue.ToString());
-                    ZaladowanieOpcjiUrzadzenia(zaznaczonyDevice);
+                    ZaladowanieOpcjiUrzadzenia(zaznaczonyDevice, (sender as ListBox).SelectedValue.ToString());
                 }    
         }
 
