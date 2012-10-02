@@ -1,11 +1,11 @@
 ﻿<Window x:Class="KontrolerKomunikacyjny.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Kontroler komunikacyjny na intefejsie RS" Height="772" Width="1127" Name="window1">
-    <Grid Height="731" Width="1061" Name="grid1" ShowGridLines="False">
+      Title="Kontroler komunikacyjny na intefejsie RS" Height="859" Width="1127" Name="window1">
+    <Grid Height="780" Width="1061" Name="grid1" ShowGridLines="False">
         <Grid.RowDefinitions>
-            <RowDefinition Height="662*" />
-            <RowDefinition Height="7*" />
+            <RowDefinition Height="727*" />
+            <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
         <Button Content="Otwórz plik XML" Height="67" HorizontalAlignment="Left" Margin="7,6,0,0" Name="OtworzPrzycisk" VerticalAlignment="Top" Width="117" Click="otworzPrzycisk" />
         <Label Height="410" HorizontalAlignment="Left" Margin="758,156,0,0" Name="ChatEtykieta" VerticalAlignment="Top" Width="281" />

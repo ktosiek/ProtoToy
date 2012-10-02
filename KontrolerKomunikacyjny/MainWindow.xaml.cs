@@ -96,7 +96,7 @@ namespace KontrolerKomunikacyjny
             ScrollViewer scroll = new ScrollViewer();
             scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            Thickness thick = new Thickness(10, 150,900, 430);
+            Thickness thick = new Thickness(10, 150,900, 500);
             scroll.Margin = thick;
             StackPanel panel = new StackPanel();
             foreach (Option option in protokol.Options)
@@ -341,15 +341,18 @@ namespace KontrolerKomunikacyjny
         }
         private void ZaladowanieOpcjiUrzadzenia(Device device,String s)
         {
+           // opcjeUrzadzeniaScroll = null;
+            //opcjeUrzadzeniaScroll = new ScrollViewer();
+            opcjeUrzadzeniaPanel = null;
             opcjeUrzadzeniaPanel = new StackPanel();
             prototypeLabel.Content = s;
             foreach (Option option in device.Options)
             {
-
                 Label label = new Label();
                 label.Content = option.Name;
                 opcjeUrzadzeniaPanel.Children.Add(label);
                 TextBox text = new TextBox();
+                text.Text = option.getValueAsString();
                 opcjeUrzadzeniaPanel.Children.Add(text);
             }
             opcjeUrzadzeniaScroll.Content = opcjeUrzadzeniaPanel;
