@@ -287,6 +287,8 @@ namespace KontrolerKomunikacyjny
                  if (proto != null)
                  {
                      protokol.registerDevice(proto.create());
+                     int indeks=protokol.RegisteredDevices.Count-1;
+                     protokol.RegisteredDevices[indeks].Name=prototypyListBox.SelectedValue.ToString()+" "+i;
                      urzadzeniaListBox.Items.Add(prototypyListBox.SelectedValue.ToString()+" "+i++);
                      urzadzeniaListBox.SelectedItem = urzadzeniaListBox.Items[0];
                  }
@@ -318,9 +320,9 @@ namespace KontrolerKomunikacyjny
 
             foreach (Device dev in protokol.RegisteredDevices)
             {
-                  if (EkstraPorownanie(dev.Name,nazwa))
+                 // if (EkstraPorownanie(dev.Name,nazwa))
                
-                //  if(dev.Name==nazwa)
+                  if(dev.Name==nazwa)
                 return dev;
             }
             return null;
@@ -363,7 +365,11 @@ namespace KontrolerKomunikacyjny
                 if ((sender as ListBox).SelectedValue != null)
                 {
                     zaznaczonyDevice = ZwrocDevice((sender as ListBox).SelectedValue.ToString());
-                    ZaladowanieOpcjiUrzadzenia(zaznaczonyDevice, (sender as ListBox).SelectedValue.ToString());
+                    if (zaznaczonyDevice != null)
+                    {
+                        ZaladowanieOpcjiUrzadzenia(zaznaczonyDevice, (sender as ListBox).SelectedValue.ToString());
+                     
+                    }
                 }    
         }
 
@@ -453,6 +459,8 @@ namespace KontrolerKomunikacyjny
                 WyswietlPodglad(buffer);
             }
         }
+
+  
 
         
 

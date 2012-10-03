@@ -22,7 +22,7 @@
         <ListBox Height="95" HorizontalAlignment="Left" Margin="212,352,0,0" Name="urzadzeniaListBox" VerticalAlignment="Top" Width="93" SelectionChanged="urzadzeniaListBox_SelectionChanged" />
         <Label Content="LISTA URZĄDZEŃ W SYSTEMIE" Height="28" HorizontalAlignment="Left" Margin="212,327,0,0" Name="label11" VerticalAlignment="Top" Width="209" />
         <Button Content="Usuń urządzenie z systemu" Height="33" HorizontalAlignment="Left" Margin="212,453,0,0" Name="usunUrzadzenieButton" VerticalAlignment="Top" Width="150" Click="usunUrzadzenieButton_Click_1" />
-        <Button Content="Ustaw opcje urządzenia" Height="33" HorizontalAlignment="Left" Margin="235,647,0,0" Name="ustawOpcjeButton" VerticalAlignment="Top" Width="150" Click="ustawOpcjeButton_Click" />
+        <Button Content="Ustaw opcje urządzenia" Height="33" HorizontalAlignment="Left" Margin="195,538,0,0" Name="ustawOpcjeButton" VerticalAlignment="Top" Width="150" Click="ustawOpcjeButton_Click" />
         <Label Content="OPCJE URZĄDZENIA: " Height="28" HorizontalAlignment="Left" Margin="4,538,0,0" Name="label1" VerticalAlignment="Top" Width="198" />
         <Label Height="26" HorizontalAlignment="Left" Margin="4,561,0,0" Name="prototypeLabel" VerticalAlignment="Top" Width="168" />
         <Frame Background="Black" Height="6" HorizontalAlignment="Left" Margin="7,301,0,0" Name="frame4" VerticalAlignment="Top" Width="441" />

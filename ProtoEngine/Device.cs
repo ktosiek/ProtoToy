@@ -8,7 +8,7 @@ namespace ProtoEngine
     public class Device
     {
         private String name;
-        public String Name { get { return name; } }
+        public String Name { set { name = value; } get { return name; } }
         private List<Option> options = new List<Option>();
         public List<Option> Options { get { return options; } }
         private Rule responds_when = Rule.empty();
