@@ -343,8 +343,6 @@ namespace KontrolerKomunikacyjny
         }
         private void ZaladowanieOpcjiUrzadzenia(Device device,String s)
         {
-           // opcjeUrzadzeniaScroll = null;
-            //opcjeUrzadzeniaScroll = new ScrollViewer();
             opcjeUrzadzeniaPanel = null;
             opcjeUrzadzeniaPanel = new StackPanel();
             prototypeLabel.Content = s;
@@ -427,10 +425,10 @@ namespace KontrolerKomunikacyjny
         }
         private String SpakujWszystkoDoTablicyStringow()
         {
-            String buffer="";
+            String buffer;
             byte adres,funkcja,adresWy,wartoscWy;
             byte.TryParse(AdresTextbox.Text, out adres); //sprawdza, czy adres jest typu byte         
-            buffer += adres.ToString();
+            buffer = adres.ToString();
             byte.TryParse(FunkcjaTextbox.Text, out funkcja);
             buffer+=","+funkcja.ToString();
             byte.TryParse(AdresWyTextbox.Text, out adresWy);
@@ -440,23 +438,41 @@ namespace KontrolerKomunikacyjny
             return buffer;
 
         }
-        private void WyswietlPodglad(byte[] ramkaMaster)
+        private void WyswietlPodglad(byte[] ramkaMaster,byte[] ramkaSlave,String nazwaUrzadzenia)
         {
             String tmp = "Master: ";
             ChatEtykieta.Content += "\n" + tmp+SpakujWszystkoDoTablicyStringow();
-            String tmp2 = "Slave: ";
-            ChatEtykieta.Content += "\n" + tmp2;
+            String tmp2 = nazwaUrzadzenia+": ";
+            ChatEtykieta.Content += "\n" + tmp2+SpakujWszystkoDoTablicyStringow();
+        }
+        private Device Wyslij(String adres)
+        {
+            
+            byte[] ramka;
+            foreach (Device device in protokol.RegisteredDevices)
+            {
+                if (adres == device.Options[0].getValueAsString())
+                {
+                    return device; 
+                }
+            }
+            return null;
         }
         private void WyslijPrzycisk_Click(object sender, RoutedEventArgs e)
         {
             byte[] buffer=SpakujWszystkoDoTablicyBajtow();
             if (buffer != null)
             {
-                Stream wejscie = new MemoryStream(buffer);
-                wejscie.Seek(0, SeekOrigin.Begin);
-                Stream wyjscie = new MemoryStream();
-             //   protokol.run(wejscie, wyjscie);
-                WyswietlPodglad(buffer);
+               // Stream wejscie = new MemoryStream(buffer);
+              //  wejscie.Seek(0, SeekOrigin.Begin);
+             //   Stream wyjscie = new MemoryStream();
+            //   protokol.run(wejscie, wyjscie);
+                byte[] ramka=null;
+                Device device=Wyslij(AdresTextbox.Text);
+                if(device!=null)
+                    WyswietlPodglad(buffer,ramka,device.Name);
+                else
+                    MessageBox.Show("Nie ma urządzenia o takim adresie.");
             }
         }
 
