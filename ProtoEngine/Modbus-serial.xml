@@ -48,7 +48,7 @@
       <field name="quantity_of_coils" type="word"/>
       <conditional>
         <match_expr>(gt $quantity_of_coils 2000)</match_expr>
-<!--        <warning>Too many coils!</warning> -->
+        <!--        <warning>Too many coils!</warning> -->
         <set name="exception_code" value="3"/>
       </conditional>
     </msg>
@@ -56,6 +56,20 @@
       <match name="function_code" value="1"/>
       <field name="byte_count" type="word"/>
       <field name="coil_status" type="array byte $byte_count"/>
+    </msg>
+
+    <msg type="request" name="read_hreg_req">
+      <match name="function_code" value="3"/>
+      <field name="starting_address" type="word"/>
+      <field name="quantity_of_registers" type="word"/>
+      <conditional>
+        <match_expr>(gt $quantity_of_registers 125)</match_expr>
+        <set name="exception_code" value="3"/>
+      </conditional>
+    </msg>
+    <msg type="response" name="read_hreg_resp">
+      <match name="function_code" value="2"/>
+      <field name="hreg_status" type="array word $quantity_of_registers"/>
     </msg>
     
   </msgs>
@@ -87,6 +101,28 @@
             <set name="byte_count" value="(+ 1 (/ $quantity_of_coils 8))"/>
           </conditional>
           <set name="coil_status" value="(pack_bool (substr $coil_values $starting_address (+ 1 $last_coil)))"/>
+        </transaction>
+      </transactions>
+    </device>
+
+    <device name="Holding registers">
+      <options>
+        <option name="dev_addr" type="byte"/>
+        <option name="number_of_registers" type="int"/>
+        <option name="hreg_values" type="array word 125"/>
+      </options>
+      <responds_when>
+        <match name="address" value="$dev_addr"/>
+      </responds_when>
+      <transactions>
+        <transaction name="read_hreg">
+          <match name="function_code" value="3"/>
+          <set name="last_hreg" value="(+ $starting_address $quantity_of_registers)"/>
+          <conditional>
+            <match_expr>(gt $last_hreg $number_of_registers)</match_expr>
+            <set name="exception_code" value="2"/>
+          </conditional>
+          <set name="hreg_status" value="(substr $hreg_values $starting_address $last_hreg)" />
         </transaction>
       </transactions>
     </device>
