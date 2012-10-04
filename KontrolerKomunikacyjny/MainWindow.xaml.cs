@@ -105,12 +105,12 @@ namespace KontrolerKomunikacyjny
                 check.Content = option.Name;
                 panel.Children.Add(check);           
             }
-            for (int i = 0; i < 100; i++)
+          /*  for (int i = 0; i < 100; i++)
             {
                 CheckBox check = new CheckBox();
-                check.Content = "option.Name";
+                check.Content = "Teścik stu.";
                 panel.Children.Add(check);         
-            }
+            }*/
             scroll.Content = panel;
             grid1.Children.Add(scroll);
         }
@@ -447,7 +447,7 @@ namespace KontrolerKomunikacyjny
         }
         private Device Wyslij(String adres)
         {
-            
+      
             byte[] ramka;
             foreach (Device device in protokol.RegisteredDevices)
             {
